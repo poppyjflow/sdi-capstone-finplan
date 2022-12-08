@@ -70,7 +70,7 @@ const Home = () => {
     { id: 5, pri_ranking: 'Billary Konwik', age: 18 },
     { id: 6, pri_ranking: 'Bob Martin', age: 18 },
     { id: 7, pri_ranking: 'Matthew Richardson', age: 54 },
-    { id: 8, pri_ranking: 'Ritchie Peterson', age: 54 },
+    { id: 8, pri_ranking: 'Neymar Jr', age: 30 },
     { id: 9, name: 'Bryan Martin', age: 40 },
     { id: 10, name: 'Mark Martin', age: 44 },
     { id: 11, name: 'Michelle Sebastian', age: 24 },
