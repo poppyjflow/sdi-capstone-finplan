@@ -9,9 +9,12 @@ import ReactDataGrid from '@inovua/reactdatagrid-enterprise';
 import CheckBox from '@inovua/reactdatagrid-community/packages/CheckBox';
 
 // CSS.
+// import './css/index.css'
+// import './css/app.css'
 import '@inovua/reactdatagrid-enterprise/index.css';
 //import '@inovua/reactdatagrid-enterprise/base.css'
 import '@inovua/reactdatagrid-enterprise/theme/amber-dark.css';
+//import { createTheming } from 'react-color-theme';
 
 const getColumns = (visibleQ1,visibleQ2,visibleQ3,visibleQ4) => {
   return [
@@ -50,12 +53,23 @@ const Home = () => {
   const [visibleQ2, setVisibleQ2] = useState(false);
   const [visibleQ3, setVisibleQ3] = useState(false);
   const [visibleQ4, setVisibleQ4] = useState(false);
-  const [styleTheme, setStyleTheme] = useState('amber-dark');
-  const [isDarkMode, setDarkMode] = React.useState(true);
+  const [gridStyleTheme, setGridStyleTheme] = useState('amber-dark');
+  const [pageStyleTheme, setPageStyleTheme] = useState('dark');
+  const [isDarkMode, setIsDarkMode] = React.useState(true);
   const toggleDarkMode = (checked) => {
-    setDarkMode(checked);
-    if(checked) {setStyleTheme('amber-dark')}
-    else {setStyleTheme('default-light')}
+    setIsDarkMode(checked);
+    if(checked) {
+      // For the data grid.
+      setPageStyleTheme('dark')
+      setGridStyleTheme('amber-dark')
+
+      // For the page itself.
+
+    }
+    else {
+      setGridStyleTheme('default-light')
+      setPageStyleTheme('light')
+    }
   };
 
   //  const [columns, setColumns] = useState(getColumns())
@@ -84,7 +98,7 @@ const Home = () => {
 
   return (
     <>
-      <div>
+      <div className='App' data-theme={pageStyleTheme}>
       <div style={{marginBottom: 20}}>
           <CheckBox checked={visibleQ1} onChange={visibleQ1 => {
           setVisibleQ1(visibleQ1);
@@ -127,7 +141,7 @@ const Home = () => {
 
       <ReactDataGrid
         idProperty="id"
-        theme={styleTheme}
+        theme={gridStyleTheme}
         style={gridStyle}
         columns={columns}
         dataSource={dataSource}
