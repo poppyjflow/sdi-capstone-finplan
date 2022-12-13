@@ -1,5 +1,5 @@
-const {passHasher, hashCompare} = require('./hashingHelpers.js')
-const {getRequest, getWithID, deleteRequest} = require('./queryHelpers.js')
+const { passHasher, hashCompare } = require('./hashingHelpers.js')
+const { getRequest, getWithID, deleteRequest } = require('./queryHelpers.js')
 const express = require('express');
 const cors = require('cors');
 
@@ -80,9 +80,9 @@ app.patch('/requests/:id', (req, res) => {
       user: `${body.user}`,
       unit: `${body.unit}`,
       pri_code: `${body.priCode}`,
-      request_code:`${body.requestCode}`,
-      desc_title:`${body.descTitle}`,
-      desc_details:`${body.descDetails}`,
+      request_code: `${body.requestCode}`,
+      desc_title: `${body.descTitle}`,
+      desc_details: `${body.descDetails}`,
       desc_impact: `${body.descDetails}`
     })
     .then(() => res.status(201).json('Request has been successfully updated.'))
@@ -121,24 +121,77 @@ app.post('/requests', (req, res) => {
       user: `${body.user}`,
       unit: `${body.unit}`,
       pri_code: `${body.priCode}`,
-      request_code:`${body.requestCode}`,
-      desc_title:`${body.descTitle}`,
-      desc_details:`${body.descDetails}`,
+      request_code: `${body.requestCode}`,
+      desc_title: `${body.descTitle}`,
+      desc_details: `${body.descDetails}`,
       desc_impact: `${body.descDetails}`
     })
     .then(() => res.status(201).json('Request successfully created.'))
-    .catch (err => {
+    .catch(err => {
       console.log(err);
       res.status(400).json('There was an error posting to the database.')
     })
 })
 
-//RESERVED FOR WHEN LOGIN IS IMPLEMENTED
-// app.post('/login', (req, res) => {
-//   const { body } = req;
-//   let hashedPass = passHasher(body.password)
-//   res.status(202).json('Authenticated')
-// })
+app.post('/login', async (req, res) => {
+  const { username } = req.body;
+  const plain = req.body.password;
+  knex('users')
+    .select('username', 'password', 'id')
+    .where('username', username.toLowerCase())
+    .then(result => {
+      if (result[0]) {
+        console.log(result[0]);
+        console.log(`${plain} =? ${result[0].password}`);
+        bcrypt.compare(plain, result[0].password, (err, isMatch) => {
+          if (isMatch) {
+            console.log(isMatch);
+            const token = randomBytes(256);
+            res.status(200).send({ auth: token.toString('hex'), id: result[0].id });
+          }
+          else {
+            res.status(401).send(result);
+          }
+        });
+      }
+      else {
+        res.status(401).send(null);
+      }
+    });
+});
+
+app.post('/users', async (req, res) => {
+  const { org, rank, firstName, lastName, email, isAdmin } = req.body;
+  const plain = reg.body.password;
+  let doesExist = await checkUsername(username)
+  //let hashedPass = await passHasher(password)
+  try {
+    if (doesExist) {
+      res.status(403).json('Username has been used. Please try another.')
+      return
+    }
+    bcrypt.hash(plain, saltRounds, (err, hash) => {
+      knex('users')
+        .insert({
+          org: org,
+          rank: rank,
+          l_name: lastName,
+          f_name: firstName,
+          password: hash,
+          email: email,
+          is_admin: isAdmin,
+        }, ['username'])
+        .then(() => res.status(200).json({ message: `Account for ${email} has been successfully created.` }))
+      if (err) {
+        res.status(400).json('There was a problem processing your request.')
+      }
+    });
+  }
+  catch (err) {
+    console.log(err)
+    res.status(400).json('There was a problem processing your request.')
+  }
+})
 
 //DELETE A SPECIFIC REQUEST
 app.delete('/requests/:id', (req, res) => {

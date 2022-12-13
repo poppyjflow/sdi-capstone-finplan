@@ -12,7 +12,7 @@ const Root = () => {
 
   const handleEnter = (e) => {
     e.preventDefault();
-    navigate('/main');
+    navigate('/login');
   };
 
   // console.log('Root context obj: ', user);
@@ -23,7 +23,6 @@ const Root = () => {
     >
       <Box className='banner'>
         <BannerButton action={handleEnter} />
-        <h1>asdfasdfasd</h1>
       </Box>
       <footer className='footer'
         style={{

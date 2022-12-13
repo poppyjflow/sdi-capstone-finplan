@@ -13,7 +13,11 @@ import ProtectedRoutes from './layouts/ProtectedRoutes';
 import PublicRoutes from './layouts/PublicRoutes';
 import ErrorPage from './routes/error-page';
 import Root from './routes/Root';
+import Register from './routes/Register';
+import Login from './routes/Login';
 import Home from './routes/Home';
+import loginAction from './actions/loginAction';
+import registerAction from './actions/registerAction';
 
 const router = createBrowserRouter([
   {
@@ -28,14 +32,25 @@ const router = createBrowserRouter([
         element: <PublicRoutes />,
         children: [
           {
-            path: '/main',
-            element: <Home />,
+            path: '/login',
+            element: <Login />,
+            action: loginAction,
+          },
+          {
+            path: '/register',
+            element: <Register />,
+            action: registerAction,
           },
         ],
       },
       {
         element: <ProtectedRoutes />,
-        children: []
+        children: [
+          {
+            path: '/main',
+            element: <Home />,
+          },
+        ]
       },
     ]
   }

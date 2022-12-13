@@ -5,12 +5,12 @@ import PublicNavbar from '../components/PublicNavbar';
 import Box from '@mui/material/Box';
 
 const PublicRoutes = () => {
-  // const [user, setUser] = useOutletContext();
-  // const navigate = useNavigate();
+  const [user, setUser] = useOutletContext();
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (user.auth) navigate('/main');
-  // }, [user]);
+  useEffect(() => {
+    if (user.auth) navigate('/main');
+  }, [user]);
 
   return (
     <Box className='page' width='100%'>
@@ -24,7 +24,7 @@ const PublicRoutes = () => {
         flexDirection='column'
         justifyContent='center'
       >
-        <Outlet />
+        <Outlet context={[user, setUser]} />
       </Box>
       <Box
         width='100%'
