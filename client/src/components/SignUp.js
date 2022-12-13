@@ -1,8 +1,20 @@
 function SignUp() {
 
-    // CheckSignUP()={
+    function CheckSignUP(e){
 
-    // }
+        e.preventDefault();
+        
+        let rank = document.getElementById("rank").value;
+        let fname = document.getElementById('fname').value;
+        let lname = document.getElementById('lname').value;
+        let unit = document.getElementById("unit").value;
+        let email = document.getElementById("email").value;
+        let password = document.getElementById("psw").value;
+        let password_repeat = document.getElementById("psw-repeat").value;
+        console.log(rank,fname,lname,unit,email,password,password_repeat)
+
+
+    }
 
 
     return (
@@ -11,36 +23,32 @@ function SignUp() {
                 <h1>Sign Up</h1>
                 <p>Please fill in this form to create an account.</p>
 
-                <label htmlFor="rank">rank</label>
-                <input type="text" placeholder="rank"></input>
+                <label htmlFor="rank">Rank</label>
+                <input type="text" placeholder="rank" id = "rank" ></input>
 
                 <label htmlFor="fname">frist Name</label>
-                <input type="text" placeholder="first Name"/>
+                <input type="text" placeholder="first Name" id="fname"/>
 
-                <label htmlFor="lname">last Name</label>
-                <input type="text" placeholder="Lirst Name"/>
+                <label htmlFor="lname">Last Name</label>
+                <input type="text" placeholder="lirst Name" id="lname"/>
 
-                <label htmlFor="unit"> Please enter </label>
-                <input type="text" placeholder="enter unit"/>
+                <label htmlFor="unit"> Unit</label>
+                <input type="text" placeholder="enter unit" id="unit" required/>
 
                 <label htmlFor="email"><b>Email</b></label>
-                <input type="text" placeholder="Enter Email" name="email" required />
+                <input type="text" placeholder="Enter Email" name="email" id="email"required />
 
                 <label htmlFor="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psw" />
+                <input type="password" placeholder="Enter Password" name="psw" id="psw" required/>
 
                 <label htmlForr="psw-repeat"><b>Repeat Password</b></label>
-                <input type="password" placeholder="Repeat Password" name="psw-repeat" />
-
-                <label>
-                    <input type="checkbox" checked="checked" name="remember"  /> Remember me
-                </label>
+                <input type="password" placeholder="Repeat Password" name="psw-repeat" id="psw-repeat" required/>
 
                 <p>By creating an account you agree to our terms Privacy</p>
 
                 <div class="clearfix">
                     <button type="button" class="cancelbtn">Cancel</button>
-                    <button type="submit" class="signupbtn">Sign Up</button>
+                    <button type="submit" class="signupbtn" onClick={CheckSignUP}>Sign Up</button>
                 </div>
             </div>
         </form>
