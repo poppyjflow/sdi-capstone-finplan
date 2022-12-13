@@ -21,28 +21,21 @@ app.get('/requests', (req, res) => {
   getRequest('requests', res)
 })
 
-//GET REQUESTS COMBINED WITH requests_allocations_obligations
-// app.get('/requests/all', (req, res) => {
-//   knex('requests_allocations_obligations_requests')
-//     .select('*')
-//     .from('requests')
-//     .innerJoin(
-//       'requests_allocations_obligations',
-//       'requests.id',
-//       '=',
-//       'requests_allocations_obligations.requests_id'
-//     )
-//     .then(rows => res.status(200).json(rows))
-//     .catch(err => {
-//       console.log(err);
-//       res.status(400).json('There was a problem processing your request.')
-//     })
-// })
+//GET REQUEST w/ ID
+app.get('/requests/:id', (req, res) => {
+  const { id } = req.params;
+  getWithID('requests', 'id', id, res)
+})
 
 //GET requests_allocations_obligations FOR A REQUEST
-app.get('/requests/allocations_obligations/:requestID', (req, res) => {
+app.get('/requests_allocations_obligations/:requestID', (req, res) => {
   const { requestID } = req.params;
   getWithID('requests_allocations_obligations', 'requests_id', requestID, res)
+})
+
+//GET ALL REQUEST CODES
+app.get('/requests_allocations_obligations', (req, res) => {
+  getRequest('requests_allocations_obligations', res)
 })
 
 //GET ALL REQUEST CODES
@@ -123,6 +116,7 @@ app.post('/requests', (req, res) => {
     })
 })
 
+//ADD A NEW request_allocation_obligation FOR A REQUEST
 app.post('/requests_allocations_obligations', async (req, res) => {
   const { body } = req;
   const requestID = await getID(body.requestName, 'desc_title', 'requests')
@@ -198,6 +192,12 @@ app.delete('/requests/:id', (req, res) => {
 app.delete('/users/:id', (req, res) => {
   const { id } = req.params;
   deleteRequest('users', id, res)
+})
+
+//DELETE A request_allocation_obligation
+app.delete('/requests_allocations_obligations/:id', (req, res) => {
+  const { id } = req.params;
+  deleteRequest('requests_allocations_obligations', id, res)
 })
 
 module.exports = app
