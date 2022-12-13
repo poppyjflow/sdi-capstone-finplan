@@ -22,22 +22,22 @@ app.get('/requests', (req, res) => {
 })
 
 //GET REQUESTS COMBINED WITH requests_allocations_obligations
-app.get('/requests/all', (req, res) => {
-  knex('requests_allocations_obligations_requests')
-    .select('*')
-    .from('requests')
-    .innerJoin(
-      'requests_allocations_obligations',
-      'requests.id',
-      '=',
-      'requests_allocations_obligations.requests_id'
-    )
-    .then(rows => res.status(200).json(rows))
-    .catch(err => {
-      console.log(err);
-      res.status(400).json('There was a problem processing your request.')
-    })
-})
+// app.get('/requests/all', (req, res) => {
+//   knex('requests_allocations_obligations_requests')
+//     .select('*')
+//     .from('requests')
+//     .innerJoin(
+//       'requests_allocations_obligations',
+//       'requests.id',
+//       '=',
+//       'requests_allocations_obligations.requests_id'
+//     )
+//     .then(rows => res.status(200).json(rows))
+//     .catch(err => {
+//       console.log(err);
+//       res.status(400).json('There was a problem processing your request.')
+//     })
+// })
 
 //GET requests_allocations_obligations FOR A REQUEST
 app.get('/requests/allocations_obligations/:requestID', (req, res) => {
