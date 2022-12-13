@@ -3,16 +3,7 @@ function SignUp() {
     function CheckSignUP(e){
 
         e.preventDefault();
-        
-        let rank = document.getElementById("rank").value;
-        let fname = document.getElementById('fname').value;
-        let lname = document.getElementById('lname').value;
-        let unit = document.getElementById("unit").value;
-        let email = document.getElementById("email").value;
-        let password = document.getElementById("psw").value;
-        let password_repeat = document.getElementById("psw-repeat").value;
-        console.log(rank,fname,lname,unit,email,password,password_repeat)
-
+    
 
     }
 

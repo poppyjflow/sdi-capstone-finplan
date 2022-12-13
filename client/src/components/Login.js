@@ -9,10 +9,9 @@ const Container = styled('form')({
 })
 
 function Login() {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [authentication,SetAuthentication] = useState(null);
-
+    const [authentication,setAuthentication] = useState(null);
 
     const navigate = useNavigate();
 
@@ -20,15 +19,15 @@ function Login() {
         console.log("handle run")
         // const navigate = useNavigate();
         e.preventDefault();
-
-        console.log(email);
+        console.log(username);
 
         let body ={
-            "email": email,
+            "username": username,
             "password": password
         }
+        console.log(body)
 
-        fetch('/login',{
+        fetch('http://localhost:8080/login',{
             method:'POST',
             headers:{'Content-Type': 'application/json'},
             mode: 'cors',
@@ -36,38 +35,27 @@ function Login() {
         })
             .then(res => res.json())
             //need to change result wait for database
-            .then(result => SetAuthentication(result))
+            .then(result => {
+                console.log(result[0].id)
+                sessionStorage.setItem("loginStatus", "true")
+                sessionStorage.setItem("userId", String(result[0].id))
+                navigate('/');
+            })
+            .catch(() => alert("something is wrong "))
         console.log(body);
-
     }
-    useEffect(()=>{
-        if (authentication === null){
-
-        }
-        else if (authentication) {
-            document.cookie = "loginStatus=true"
-            document.cookie = `loginUserEmail=${email}`
-            navigate('/');
-        }else{
-            alert("password or username not correct")
-         }
-},[authentication])
-
-
-    // console.log(document.cookie);
-
-
-
 
 
     return (
         <div>
             <Container>
-                <label htmlFor="email">email</label>
-                <input type="text" id="email" 
-                       placeholder="Your email here.." 
-                       value={email} 
-                       onChange={event => setEmail(event.target.value)} />
+
+                <label htmlFor="username">username</label>
+                <input type="text" id="username" 
+                       placeholder="Your username here.." 
+                       value={username} 
+                       onChange={event => setUsername(event.target.value)} />
+
 
                 <label htmlFor="password">password</label>
                 <input type="current-password" id="password" 
