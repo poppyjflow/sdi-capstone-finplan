@@ -1,5 +1,5 @@
 const {passHasher, hashCompare} = require('./hashingHelpers.js')
-const {getRequest, getWithID, deleteRequest} = require('./queryHelpers.js')
+const {getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js')
 const express = require('express');
 const cors = require('cors');
 
@@ -22,27 +22,32 @@ app.get('/requests', (req, res) => {
 })
 
 //GET REQUESTS COMBINED WITH requests_allocations_obligations
-app.get('/requests/all', (req, res) => {
-  knex('requests_allocations_obligations_requests')
-    .select('*')
-    .from('requests')
-    .innerJoin(
-      'requests_allocations_obligations',
-      'requests.id',
-      '=',
-      'requests_allocations_obligations.requests_id'
-    )
-    .then(rows => res.status(200).json(rows))
-    .catch(err => {
-      console.log(err);
-      res.status(400).json('There was a problem processing your request.')
-    })
-})
+// app.get('/requests/all', (req, res) => {
+//   knex('requests_allocations_obligations_requests')
+//     .select('*')
+//     .from('requests')
+//     .innerJoin(
+//       'requests_allocations_obligations',
+//       'requests.id',
+//       '=',
+//       'requests_allocations_obligations.requests_id'
+//     )
+//     .then(rows => res.status(200).json(rows))
+//     .catch(err => {
+//       console.log(err);
+//       res.status(400).json('There was a problem processing your request.')
+//     })
+// })
 
 //GET requests_allocations_obligations FOR A REQUEST
 app.get('/requests/allocations_obligations/:requestID', (req, res) => {
   const { requestID } = req.params;
   getWithID('requests_allocations_obligations', 'requests_id', requestID, res)
+})
+
+//GET ALL REQUEST CODES
+app.get('/request_codes', (req, res) => {
+  getRequest('request_codes', res)
 })
 
 //GET ALL USERS
@@ -56,19 +61,6 @@ app.get('/users/:id', (req, res) => {
   getWithID('users', 'id', id, res)
 })
 
-//GET USERNAME FOR USER w/ ID
-app.get('/users/username/:id', (req, res) => {
-  const { id } = req.params;
-  knex('users')
-    .select('uname')
-    .where('id', '=', `${id}`)
-    .then(username => res.status(200).json(username))
-    .catch(err => {
-      console.log(err);
-      res.status(400).json('There was an error accessing the database.')
-    })
-})
-
 //UPDATE SPECIFIC REQUEST INFORMATION
 app.patch('/requests/:id', (req, res) => {
   const { id } = req.params;
@@ -77,10 +69,9 @@ app.patch('/requests/:id', (req, res) => {
     .where('id', '=', `${id}`)
     .update({
       pri_ranking: `${body.priRanking}`,
-      user: `${body.user}`,
-      unit: `${body.unit}`,
-      pri_code: `${body.priCode}`,
-      request_code:`${body.requestCode}`,
+      users_id: `${body.user}`,
+      pri_code_id: `${body.priCode}`,
+      request_code_id:`${body.requestCode}`,
       desc_title:`${body.descTitle}`,
       desc_details:`${body.descDetails}`,
       desc_impact: `${body.descDetails}`
@@ -95,7 +86,7 @@ app.patch('/requests/:id', (req, res) => {
 //UPDATE A SPECIFIC USER (DOES NOT INCLUDE USERNAME/PASS)
 app.patch('/users/:id', (req, res) => {
   const { id } = req.params;
-  const { body } = req.body;
+  const { body } = req;
   knex('users')
     .where('id', '=', `${id}`)
     .update({
@@ -118,13 +109,12 @@ app.post('/requests', (req, res) => {
   knex('requests')
     .insert({
       pri_ranking: `${body.priRanking}`,
-      user: `${body.user}`,
-      unit: `${body.unit}`,
-      pri_code: `${body.priCode}`,
-      request_code:`${body.requestCode}`,
+      users_id: `${body.user}`,
+      pri_code_id: `${body.priCode}`,
+      request_code_id:`${body.requestCode}`,
       desc_title:`${body.descTitle}`,
       desc_details:`${body.descDetails}`,
-      desc_impact: `${body.descDetails}`
+      desc_impact: `${body.descImpact}`
     })
     .then(() => res.status(201).json('Request successfully created.'))
     .catch (err => {
@@ -133,11 +123,69 @@ app.post('/requests', (req, res) => {
     })
 })
 
-//RESERVED FOR WHEN LOGIN IS IMPLEMENTED
+app.post('/requests_allocations_obligations', async (req, res) => {
+  const { body } = req;
+  const requestID = await getID(body.requestName, 'desc_title', 'requests')
+  try{
+    if(requestID === null){
+      res.status(400).json(`No requests exist for the name: ${body.requestName}`)
+    }
+    knex('requests_allocations_obligations')
+      .insert({
+        year_fy: `${body.year}`,
+        quarter: `${body.quarter}`,
+        description: `${body.description}`,
+        request_amount:`${body.requestAmount}`,
+        allocation_amount:`${body.allocationAmount}`,
+        obligation_amount:`${body.obligationAmount}`,
+        requests_id: `${requestID}`
+      })
+      .then(() => res.status(201).json('Creation successful.'))
+  }
+  catch(err) {
+      console.log(err);
+      res.status(400).json('There was an error posting to the database.')
+    }
+})
+
+//CREATE NEW USER
+app.post('/user', async (req, res) => {
+  const { body } = req;
+  let doesExist = await checkUsername(body.username)
+  let hashedPass = await passHasher(body.password)
+  try{
+    if(doesExist){
+      res.status(403).json('Username has been used. Please try another.')
+      return
+    }
+    knex('users')
+    .insert({
+      rank: `${body.rank}`,
+      fname: `${body.firstname}`,
+      lname: `${body.lastname}`,
+      unit: `${body.unit}`,
+      email: `${body.email}`,
+      uname: `${body.username}`,
+      passwd: `${hashedPass}`
+    })
+    .then(() => res.status(200).json('User creation successful.'))
+  }
+  catch(err) {
+    console.log(err)
+    res.status(400).json('There was a problem processing your request.')
+  }
+})
+
+//LOGIN
 // app.post('/login', (req, res) => {
 //   const { body } = req;
-//   let hashedPass = passHasher(body.password)
-//   res.status(202).json('Authenticated')
+//   let userHash = getUserhash(body.username)
+//   console.log(userHash)
+//   let passDoesMatch = hashCompare(body.password, userHash)
+//   res.status(202).json(userInfo)
+  // if(passDoesMatch){
+
+  // }
 // })
 
 //DELETE A SPECIFIC REQUEST
