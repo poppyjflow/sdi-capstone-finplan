@@ -11,8 +11,8 @@ exports.up = function(knex) {
         table.integer('request_amount');
         table.integer('allocation_amount');
         table.integer('obligation_amount');
-        table.string('requests_id');
-      });    
+        table.integer('requests_id');
+      });
 };
 
 /**

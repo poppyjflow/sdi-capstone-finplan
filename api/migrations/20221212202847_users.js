@@ -12,7 +12,7 @@ exports.up = function(knex) {
         table.string('email');
         table.string('uname');
         table.string('passwd');
-      });    
+      });
 };
 
 /**
@@ -20,8 +20,5 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-    // return knex.schema.dropTableIfExists('request_codes');
-    // return knex.schema.dropTableIfExists('requests_allocations_obligations');
-    // return knex.schema.dropTableIfExists('requests');
     return knex.schema.dropTableIfExists('users');
 };
