@@ -8,9 +8,9 @@ exports.up = function (knex) {
     table.increments('id');
     table.integer('org').references('id').inTable('orgs');
     table.date('quarter_start');
-    table.integer('allocated_funds');
-    table.integer('requested_funds');
-    table.integer('spent_funds');
+    table.decimal('allocated_funds', [12], [2]);
+    table.decimal('requested_funds', [12], [2]);
+    table.decimal('spent_funds', [12], [2]);
   });
 };
 

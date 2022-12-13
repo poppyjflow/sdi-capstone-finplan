@@ -8,6 +8,7 @@ exports.up = function (knex) {
     table.integer('user').references('id').inTable('users').onDelete('CASCADE');
     table.integer('quarter').references('id').inTable('quarterlies').onDelete('CASCADE');
     table.integer('priority').nullable();
+    table.decimal('cost', [12], [2]).nullable();
     table.string('request_code');
     table.string('request_title');
     table.string('description');
