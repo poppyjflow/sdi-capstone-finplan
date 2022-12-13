@@ -9,6 +9,7 @@ exports.up = function (knex) {
     table.integer('rank');
     table.string('l_name').notNullable;
     table.string('f_name').notNullable;
+    table.string('password').notNullable();
     table.string('email').notNullable().unique();
     table.boolean('is_admin').defaultTo(false);
   });

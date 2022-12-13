@@ -6,6 +6,7 @@ exports.up = function (knex) {
   return knex.schema.createTable('orgs', table => {
     table.increments('id');
     table.string('name');
+    table.integer('parent_org').references('id').inTable('orgs').nullable().onDelete('CASCADE');
   });
 };
 

@@ -4,12 +4,13 @@
  */
 
 exports.up = function (knex) {
-  return knex.schema.createTable('quartelies', table => {
+  return knex.schema.createTable('quarterlies', table => {
     table.increments('id');
     table.integer('org').references('id').inTable('orgs');
     table.date('quarter_start');
     table.integer('allocated_funds');
-    table.integer('')
+    table.integer('requested_funds');
+    table.integer('spent_funds');
   });
 };
 
