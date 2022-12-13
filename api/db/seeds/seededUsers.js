@@ -36,7 +36,7 @@ const getUsers = () => {
 
   users.push(user1, user2, user3);
 
-  return getUsers;
+  return users;
 };
 
-export default getUsers;
+exports.getUsers = getUsers;
