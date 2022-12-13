@@ -22,3 +22,6 @@ exports.up = function (knex) {
 exports.down = function (knex) {
   return knex.schema.dropTableIfExists('users');
 };
+
+
+//.nullable().references('id').inTable('orgs').onDelete('CASCADE');
