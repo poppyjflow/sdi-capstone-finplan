@@ -216,11 +216,5 @@ app.delete('/requests_allocations_obligations/:id', (req, res) => {
   deleteRequest('requests_allocations_obligations', id, res)
 })
 
-//DELETE A request_allocation_obligation
-app.delete('/requests_allocations_obligations/:id', (req, res) => {
-  const { id } = req.params;
-  deleteRequest('requests_allocations_obligations', id, res)
-})
-
 module.exports = app
 
