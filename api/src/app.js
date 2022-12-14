@@ -17,6 +17,36 @@ app.use(cors({
 app.use(express.json());
 app.use(morgan('tiny'));
 
+//BEGIN REQUESTS
+
+//GET ALL REQUESTS
+app.get('/requests', (req, res) => {
+  getRequest('requests', res)
+})
+
+//GET REQUEST w/ ID
+app.get('/requests/:id', (req, res) => {
+  const { id } = req.params;
+  getWithID('requests', 'id', id, res)
+})
+
+//GET quarterlies by ID
+app.get('/quarterlies/:id', (req, res) => {
+  const { id } = req.params;
+  getWithID('quarterlies', 'id', id, res)
+})
+
+//GET ALL quarterlies
+app.get('/quarterlies', (req, res) => {
+  getRequest('quarterlies', res)
+})
+
+//GET ALL ORGS
+app.get('/orgs', (req, res) => {
+  getRequest('orgs', res)
+})
+
+//GET ALL USERS
 app.get('/users', (req, res) => {
   getRequest('users', res)
 })
@@ -32,13 +62,13 @@ app.patch('/requests/:id', (req, res) => {
   knex('requests')
     .where('id', '=', `${id}`)
     .update({
-      pri_ranking: `${body.priRanking}`,
-      users_id: `${body.user}`,
-      pri_code_id: `${body.priCode}`,
-      request_code_id: `${body.requestCode}`,
-      desc_title: `${body.descTitle}`,
-      desc_details: `${body.descDetails}`,
-      desc_impact: `${body.descDetails}`
+      user: `${body.user}`,
+      quarter: `${body.quarter}`,
+      priority: `${body.priority}`,
+      cost: `${body.cost}`,
+      request_code: `${body.requestCode}`,
+      request_title: `${body.descTitle}`,
+      description: `${body.descDetails}`,
     })
     .then(() => res.status(201).json('Request has been successfully updated.'))
     .catch(err => {
@@ -54,9 +84,9 @@ app.patch('/users/:id', (req, res) => {
     .where('id', '=', `${id}`)
     .update({
       rank: `${body.rank}`,
-      fname: `${body.firstname}`,
-      lname: `${body.lastname}`,
-      unit: `${body.unit}`,
+      f_name: `${body.firstname}`,
+      l_name: `${body.lastname}`,
+      org: `${body.org}`,
       email: `${body.email}`,
     })
     .then(() => res.status(201).json('User has been successfully updated.'))
@@ -70,13 +100,13 @@ app.post('/requests', (req, res) => {
   const { body } = req;
   knex('requests')
     .insert({
-      pri_ranking: `${body.priRanking}`,
-      users_id: `${body.user}`,
-      pri_code_id: `${body.priCode}`,
-      request_code_id: `${body.requestCode}`,
-      desc_title: `${body.descTitle}`,
-      desc_details: `${body.descDetails}`,
-      desc_impact: `${body.descImpact}`
+      user: `${body.user}`,
+      quarter: `${body.quarter}`,
+      priority: `${body.priority}`,
+      cost: `${body.cost}`,
+      request_code: `${body.requestCode}`,
+      request_title: `${body.descTitle}`,
+      description: `${body.descDetails}`
     })
     .then(() => res.status(201).json('Request successfully created.'))
     .catch(err => {
@@ -85,6 +115,31 @@ app.post('/requests', (req, res) => {
     })
 })
 
+//ADD A NEW quarterly FOR A REQUEST
+app.post('/quarterlies', async (req, res) => {
+  const { body } = req;
+  const requestID = await getID(body.requestName, 'desc_title', 'requests')
+  try {
+    if (requestID === null) {
+      res.status(400).json(`No requests exist for the name: ${body.requestName}`)
+    }
+    knex('quarterlies')
+      .insert({
+        org: `${body.org}`,
+        quarter_start: `${body.quarter}`,
+        allocated_funds: `${body.allocatedFunds}`,
+        requested_funds: `${body.requestFunds}`,
+        spent_funds: `${body.spentFunds}`
+      })
+      .then(() => res.status(201).json('Creation successful.'))
+  }
+  catch (err) {
+    console.log(err);
+    res.status(400).json('There was an error posting to the database.')
+  }
+})
+
+//LOGIN
 app.post('/login', async (req, res) => {
   const { email } = req.body;
   const plain = req.body.password;
@@ -112,6 +167,7 @@ app.post('/login', async (req, res) => {
     });
 });
 
+//CREATE NEW USER
 app.post('/users', async (req, res) => {
   const { org, branch, rank, firstName, lastName, email, isAdmin } = req.body;
   const plain = req.body.password;
@@ -170,9 +226,10 @@ app.delete('/users/:id', (req, res) => {
 })
 
 //DELETE A request_allocation_obligation
-app.delete('/requests_allocations_obligations/:id', (req, res) => {
+app.delete('/quarterlies/:id', (req, res) => {
   const { id } = req.params;
-  deleteRequest('requests_allocations_obligations', id, res)
+  deleteRequest('quarterlies', id, res)
 })
 
 module.exports = app
+
