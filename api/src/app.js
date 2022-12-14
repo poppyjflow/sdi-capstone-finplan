@@ -1,18 +1,23 @@
-const {passHasher, hashCompare} = require('./hashingHelpers.js')
-const {getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js')
+const { passHasher, hashCompare } = require('./hashingHelpers.js')
+const { getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js')
 const express = require('express');
 const cors = require('cors');
+const morgan = require('morgan');
+const { randomBytes } = require('node:crypto');
 
 const env = process.env.NODE_ENV || 'development'
 const config = require('../knexfile')[env]
 const knex = require('knex')(config)
 const app = express();
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 app.use(cors({
   origin: true,
   credentials: true
 }));
-app.use(express.json())
+app.use(express.json());
+app.use(morgan('tiny'));
 
 //BEGIN REQUESTS
 
@@ -64,9 +69,9 @@ app.patch('/requests/:id', (req, res) => {
       pri_ranking: `${body.priRanking}`,
       users_id: `${body.user}`,
       pri_code_id: `${body.priCode}`,
-      request_code_id:`${body.requestCode}`,
-      desc_title:`${body.descTitle}`,
-      desc_details:`${body.descDetails}`,
+      request_code_id: `${body.requestCode}`,
+      desc_title: `${body.descTitle}`,
+      desc_details: `${body.descDetails}`,
       desc_impact: `${body.descDetails}`
     })
     .then(() => res.status(201).json('Request has been successfully updated.'))
@@ -79,6 +84,7 @@ app.patch('/requests/:id', (req, res) => {
 //UPDATE A SPECIFIC USER (DOES NOT INCLUDE USERNAME/PASS)
 app.patch('/users/:id', (req, res) => {
   const { id } = req.params;
+  const { body } = req;
   const { body } = req;
   knex('users')
     .where('id', '=', `${id}`)
@@ -104,13 +110,13 @@ app.post('/requests', (req, res) => {
       pri_ranking: `${body.priRanking}`,
       users_id: `${body.user}`,
       pri_code_id: `${body.priCode}`,
-      request_code_id:`${body.requestCode}`,
-      desc_title:`${body.descTitle}`,
-      desc_details:`${body.descDetails}`,
+      request_code_id: `${body.requestCode}`,
+      desc_title: `${body.descTitle}`,
+      desc_details: `${body.descDetails}`,
       desc_impact: `${body.descImpact}`
     })
     .then(() => res.status(201).json('Request successfully created.'))
-    .catch (err => {
+    .catch(err => {
       console.log(err);
       res.status(400).json('There was an error posting to the database.')
     })
@@ -120,8 +126,8 @@ app.post('/requests', (req, res) => {
 app.post('/requests_allocations_obligations', async (req, res) => {
   const { body } = req;
   const requestID = await getID(body.requestName, 'desc_title', 'requests')
-  try{
-    if(requestID === null){
+  try {
+    if (requestID === null) {
       res.status(400).json(`No requests exist for the name: ${body.requestName}`)
     }
     knex('requests_allocations_obligations')
@@ -129,63 +135,68 @@ app.post('/requests_allocations_obligations', async (req, res) => {
         year_fy: `${body.year}`,
         quarter: `${body.quarter}`,
         description: `${body.description}`,
-        request_amount:`${body.requestAmount}`,
-        allocation_amount:`${body.allocationAmount}`,
-        obligation_amount:`${body.obligationAmount}`,
+        request_amount: `${body.requestAmount}`,
+        allocation_amount: `${body.allocationAmount}`,
+        obligation_amount: `${body.obligationAmount}`,
         requests_id: `${requestID}`
       })
       .then(() => res.status(201).json('Creation successful.'))
   }
-  catch(err) {
-      console.log(err);
-      res.status(400).json('There was an error posting to the database.')
-    }
+  catch (err) {
+    console.log(err);
+    res.status(400).json('There was an error posting to the database.')
+  }
 })
 
 //CREATE NEW USER
-app.post('/user', async (req, res) => {
-  const { body } = req;
-  let doesExist = await checkUsername(body.username)
-  let hashedPass = await passHasher(body.password)
-  try{
-    if(doesExist){
-      res.status(403).json('Username has been used. Please try another.')
-      return
-    }
-    knex('users')
-    .insert({
-      rank: `${body.rank}`,
-      fname: `${body.firstname}`,
-      lname: `${body.lastname}`,
-      unit: `${body.unit}`,
-      email: `${body.email}`,
-      uname: `${body.username}`,
-      passwd: `${hashedPass}`
-    })
-    .then(() => res.status(200).json('User creation successful.'))
-  }
-  catch(err) {
-    console.log(err)
-    res.status(400).json('There was a problem processing your request.')
-  }
-})
-
-//LOGIN
 app.post('/login', async (req, res) => {
-  const { body } = req;
-  let userHash = await getUserhash(body.username)
-  console.log(userHash)
-  let passDoesMatch = await hashCompare(body.password, userHash)
-  // res.status(202).json(passDoesMatch)
-  if(passDoesMatch){
+  const { email } = req.body;
+  const plain = req.body.password;
+  knex('users')
+    .select('email', 'password', 'id')
+    .where('email', email.toLowerCase())
+    .then(result => {
+      if (result[0]) {
+        console.log(result[0]);
+        console.log(`${plain} =? ${result[0].password}`);
+        bcrypt.compare(plain, result[0].password, (err, isMatch) => {
+          if (isMatch) {
+            console.log(isMatch);
+            const token = randomBytes(256);
+            res.status(200).send({ auth: token.toString('hex'), id: result[0].id });
+          }
+          else {
+            res.status(401).send(result);
+          }
+        });
+      }
+      else {
+        res.status(401).send(null);
+      }
+    });
+});
+
+app.post('/users', async (req, res) => {
+  const { org, branch, rank, firstName, lastName, email, isAdmin } = req.body;
+  const plain = req.body.password;
+  bcrypt.hash(plain, saltRounds, (err, hash) => {
     knex('users')
-    .select('id', 'rank','fname','lname','unit','email','uname')
-    .where('uname', '=', `${body.username}`)
-    .then(info => res.status(200).json(info))
-  }else{
-    res.status(400).json("something is wrong")
-  }
-})
+      .insert({
+        org: org,
+        branch: branch,
+        rank: rank,
+        l_name: lastName,
+        f_name: firstName,
+        password: hash,
+        email: email,
+        is_admin: isAdmin,
+      }, ['email'])
+      .then(() => res.status(200).json({ message: `Account for ${email} has been successfully created.` }))
+    if (err) {
+      res.status(400).json('There was a problem processing your request.')
+    }
+  });
+});
 
 //DELETE A SPECIFIC REQUEST
 app.delete('/requests/:id', (req, res) => {
@@ -205,4 +216,11 @@ app.delete('/requests_allocations_obligations/:id', (req, res) => {
   deleteRequest('requests_allocations_obligations', id, res)
 })
 
+//DELETE A request_allocation_obligation
+app.delete('/requests_allocations_obligations/:id', (req, res) => {
+  const { id } = req.params;
+  deleteRequest('requests_allocations_obligations', id, res)
+})
+
 module.exports = app
+
