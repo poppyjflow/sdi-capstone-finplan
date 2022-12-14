@@ -1,5 +1,5 @@
-const {passHasher, hashCompare} = require('./hashingHelpers.js')
-const {getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js')
+const { passHasher, hashCompare } = require('./hashingHelpers.js')
+const { getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js')
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -69,9 +69,9 @@ app.patch('/requests/:id', (req, res) => {
       pri_ranking: `${body.priRanking}`,
       users_id: `${body.user}`,
       pri_code_id: `${body.priCode}`,
-      request_code_id:`${body.requestCode}`,
-      desc_title:`${body.descTitle}`,
-      desc_details:`${body.descDetails}`,
+      request_code_id: `${body.requestCode}`,
+      desc_title: `${body.descTitle}`,
+      desc_details: `${body.descDetails}`,
       desc_impact: `${body.descDetails}`
     })
     .then(() => res.status(201).json('Request has been successfully updated.'))
@@ -109,13 +109,13 @@ app.post('/requests', (req, res) => {
       pri_ranking: `${body.priRanking}`,
       users_id: `${body.user}`,
       pri_code_id: `${body.priCode}`,
-      request_code_id:`${body.requestCode}`,
-      desc_title:`${body.descTitle}`,
-      desc_details:`${body.descDetails}`,
+      request_code_id: `${body.requestCode}`,
+      desc_title: `${body.descTitle}`,
+      desc_details: `${body.descDetails}`,
       desc_impact: `${body.descImpact}`
     })
     .then(() => res.status(201).json('Request successfully created.'))
-    .catch (err => {
+    .catch(err => {
       console.log(err);
       res.status(400).json('There was an error posting to the database.')
     })
@@ -125,8 +125,8 @@ app.post('/requests', (req, res) => {
 app.post('/requests_allocations_obligations', async (req, res) => {
   const { body } = req;
   const requestID = await getID(body.requestName, 'desc_title', 'requests')
-  try{
-    if(requestID === null){
+  try {
+    if (requestID === null) {
       res.status(400).json(`No requests exist for the name: ${body.requestName}`)
     }
     knex('requests_allocations_obligations')
@@ -134,17 +134,17 @@ app.post('/requests_allocations_obligations', async (req, res) => {
         year_fy: `${body.year}`,
         quarter: `${body.quarter}`,
         description: `${body.description}`,
-        request_amount:`${body.requestAmount}`,
-        allocation_amount:`${body.allocationAmount}`,
-        obligation_amount:`${body.obligationAmount}`,
+        request_amount: `${body.requestAmount}`,
+        allocation_amount: `${body.allocationAmount}`,
+        obligation_amount: `${body.obligationAmount}`,
         requests_id: `${requestID}`
       })
       .then(() => res.status(201).json('Creation successful.'))
   }
-  catch(err) {
-      console.log(err);
-      res.status(400).json('There was an error posting to the database.')
-    }
+  catch (err) {
+    console.log(err);
+    res.status(400).json('There was an error posting to the database.')
+  }
 })
 
 //CREATE NEW USER
