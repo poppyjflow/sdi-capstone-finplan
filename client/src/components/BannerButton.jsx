@@ -85,6 +85,7 @@ const BannerButton = ({ action }) => {
         focusRipple
         key={image.title}
         style={{
+          height: '40vh',
           width: image.width,
         }}
         onClick={action}
