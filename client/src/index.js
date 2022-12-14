@@ -18,6 +18,7 @@ import Login from './routes/Login';
 import Home from './routes/Home';
 import loginAction from './actions/loginAction';
 import registerAction from './actions/registerAction';
+import Settings from './routes/Settings'
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
           {
             path: '/main',
             element: <Home />,
+          },
+          {
+            path: '/settings',
+            element: <Settings />
           },
         ]
       },
