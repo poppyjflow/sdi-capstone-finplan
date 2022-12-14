@@ -97,7 +97,7 @@ const BannerButton = ({ action }) => {
             backgroundRepeat: 'no-repeat',
             backgroundSize: '100%',
           }} />
-        <ImageBackdrop className="welcom-backdrop" />
+        <ImageBackdrop className="welcome-backdrop" />
         <Image>
           <Typography
             component="span"
