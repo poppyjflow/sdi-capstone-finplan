@@ -14,7 +14,7 @@ const registerAction = async ({ request }) => {
   } = Object.fromEntries(await request?.formData());
 
   console.log(`${firstName}\n${lastName}\n${email}\n${username}\n${password}`);
-  axios.post('http://localhost:8081/users',
+  axios.post('http://localhost:8080/users',
     {
       branch: branch,
       rank: rank,

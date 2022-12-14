@@ -3,8 +3,7 @@
  * @returns { Promise<void> } 
  */
 
-const { getUsers } = require('./seededUsers');
-
+const { getUsers } = require('../template-data/seededUsers');
 
 exports.seed = async function (knex) {
   // Deletes ALL existing entries

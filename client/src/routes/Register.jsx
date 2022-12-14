@@ -21,11 +21,6 @@ const Register = () => {
   const [rank, setRank] = useState('');
   const test = useActionData();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-  };
-
   const handleBranchChange = (e) => {
     e.preventDefault();
     console.log('select thingy', e.target.value);
@@ -44,7 +39,7 @@ const Register = () => {
       justifyContent='center'
     >
       <Box width='35%'>
-        <Form method='post' onSubmit={handleSubmit} action='/register'>
+        <Form method='post' action='/register'>
           <Grid2 container spacing={2}>
             <Grid2 xs={6}>
               <FormControl fullWidth>

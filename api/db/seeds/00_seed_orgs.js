@@ -3,7 +3,7 @@
  * @returns { Promise<void> } 
  */
 
-const { getOrgs } = require('./seededOrgs');
+const { getOrgs } = require('../template-data/seededOrgs');
 
 
 exports.seed = async function (knex) {

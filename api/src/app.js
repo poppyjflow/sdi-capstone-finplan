@@ -1,31 +1,21 @@
-const { passHasher, hashCompare } = require('./hashingHelpers.js')
-const { getRequest, getWithID, deleteRequest } = require('./queryHelpers.js')
 const express = require('express');
 const cors = require('cors');
+const morgan = require('morgan');
+const { randomBytes } = require('node:crypto');
 
 const env = process.env.NODE_ENV || 'development'
 const config = require('../knexfile')[env]
 const knex = require('knex')(config)
 const app = express();
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 app.use(cors({
   origin: true,
   credentials: true
 }));
-app.use(express.json())
-
-app.get('/requests', (req, res) => {
-  getRequest('requests', res)
-})
-
-app.get('/users', (req, res) => {
-  getRequest('users', res)
-})
-
-app.get('/users/:id', (req, res) => {
-  const { id } = req.params;
-  getWithID('users', 'id', id, res)
-})
+app.use(express.json());
+app.use(morgan('tiny'));
 
 app.patch('/users/:id', (req, res) => {
   const { id } = req.params;
@@ -95,35 +85,23 @@ app.post('/login', async (req, res) => {
 
 app.post('/users', async (req, res) => {
   const { org, rank, firstName, lastName, email, isAdmin } = req.body;
-  const plain = reg.body.password;
-  let doesExist = await checkUsername(username)
-  //let hashedPass = await passHasher(password)
-  try {
-    if (doesExist) {
-      res.status(403).json('Username has been used. Please try another.')
-      return
+  const plain = req.body.password;
+  bcrypt.hash(plain, saltRounds, (err, hash) => {
+    knex('users')
+      .insert({
+        org: org,
+        rank: rank,
+        l_name: lastName,
+        f_name: firstName,
+        password: hash,
+        email: email,
+        is_admin: isAdmin,
+      }, ['email'])
+      .then(() => res.status(200).json({ message: `Account for ${email} has been successfully created.` }))
+    if (err) {
+      res.status(400).json('There was a problem processing your request.')
     }
-    bcrypt.hash(plain, saltRounds, (err, hash) => {
-      knex('users')
-        .insert({
-          org: org,
-          rank: rank,
-          l_name: lastName,
-          f_name: firstName,
-          password: hash,
-          email: email,
-          is_admin: isAdmin,
-        }, ['username'])
-        .then(() => res.status(200).json({ message: `Account for ${email} has been successfully created.` }))
-      if (err) {
-        res.status(400).json('There was a problem processing your request.')
-      }
-    });
-  }
-  catch (err) {
-    console.log(err)
-    res.status(400).json('There was a problem processing your request.')
-  }
-})
+  });
+});
 
 module.exports = app
