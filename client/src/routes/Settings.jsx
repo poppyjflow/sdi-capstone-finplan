@@ -1,7 +1,7 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 
-const Home = () => {
+const Settings = () => {
   return (
     <Box height='100%'>
 
@@ -9,4 +9,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Settings;

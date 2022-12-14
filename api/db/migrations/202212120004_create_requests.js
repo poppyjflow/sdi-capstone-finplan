@@ -5,6 +5,7 @@
 exports.up = function (knex) {
   return knex.schema.createTable('requests', table => {
     table.increments('id');
+    table.integer('org').nullable().references('id').inTable('orgs').onDelete('CASCADE');
     table.integer('user').references('id').inTable('users').onDelete('CASCADE');
     table.integer('quarter').references('id').inTable('quarterlies').onDelete('CASCADE');
     table.integer('priority').nullable();

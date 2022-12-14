@@ -1,5 +1,3 @@
-const { passHasher, hashCompare } = require('./hashingHelpers.js')
-const { getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js')
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -19,47 +17,15 @@ app.use(cors({
 app.use(express.json());
 app.use(morgan('tiny'));
 
-//BEGIN REQUESTS
-
-//GET ALL REQUESTS
-app.get('/requests', (req, res) => {
-  getRequest('requests', res)
-})
-
-//GET REQUEST w/ ID
-app.get('/requests/:id', (req, res) => {
-  const { id } = req.params;
-  getWithID('requests', 'id', id, res)
-})
-
-//GET requests_allocations_obligations by ID
-app.get('/requests_allocations_obligations/:id', (req, res) => {
-  const { id } = req.params;
-  getWithID('requests_allocations_obligations', 'id', id, res)
-})
-
-//GET ALL requests_allocations_obligations
-app.get('/requests_allocations_obligations', (req, res) => {
-  getRequest('requests_allocations_obligations', res)
-})
-
-//GET ALL REQUEST CODES
-app.get('/request_codes', (req, res) => {
-  getRequest('request_codes', res)
-})
-
-//GET ALL USERS
 app.get('/users', (req, res) => {
   getRequest('users', res)
 })
 
-//GET USER w/ ID
 app.get('/users/:id', (req, res) => {
   const { id } = req.params;
   getWithID('users', 'id', id, res)
 })
 
-//UPDATE SPECIFIC REQUEST INFORMATION
 app.patch('/requests/:id', (req, res) => {
   const { id } = req.params;
   const { body } = req;
@@ -81,7 +47,6 @@ app.patch('/requests/:id', (req, res) => {
     })
 })
 
-//UPDATE A SPECIFIC USER (DOES NOT INCLUDE USERNAME/PASS)
 app.patch('/users/:id', (req, res) => {
   const { id } = req.params;
   const { body } = req;
@@ -101,7 +66,6 @@ app.patch('/users/:id', (req, res) => {
     })
 })
 
-//ADD A NEW REQUEST
 app.post('/requests', (req, res) => {
   const { body } = req;
   knex('requests')
@@ -121,33 +85,6 @@ app.post('/requests', (req, res) => {
     })
 })
 
-//ADD A NEW request_allocation_obligation FOR A REQUEST
-app.post('/requests_allocations_obligations', async (req, res) => {
-  const { body } = req;
-  const requestID = await getID(body.requestName, 'desc_title', 'requests')
-  try {
-    if (requestID === null) {
-      res.status(400).json(`No requests exist for the name: ${body.requestName}`)
-    }
-    knex('requests_allocations_obligations')
-      .insert({
-        year_fy: `${body.year}`,
-        quarter: `${body.quarter}`,
-        description: `${body.description}`,
-        request_amount: `${body.requestAmount}`,
-        allocation_amount: `${body.allocationAmount}`,
-        obligation_amount: `${body.obligationAmount}`,
-        requests_id: `${requestID}`
-      })
-      .then(() => res.status(201).json('Creation successful.'))
-  }
-  catch (err) {
-    console.log(err);
-    res.status(400).json('There was an error posting to the database.')
-  }
-})
-
-//CREATE NEW USER
 app.post('/login', async (req, res) => {
   const { email } = req.body;
   const plain = req.body.password;
@@ -196,6 +133,29 @@ app.post('/users', async (req, res) => {
     }
   });
 });
+
+app.get('/requests/org/:id', async (req, res) => {
+  const { id } = req.params;
+  knex('request')
+    .select('*')
+    .where('org', id)
+    .then(requests => {
+      const data = requests.map((request) => request);
+      res.status(200).send(data);
+    });
+});
+
+app.get('requests/user/:id', async (req, res) => {
+  const { id } = req.params;
+  knex('request')
+    .select('*')
+    .where('user', id)
+    .then(requests => {
+      const data = requests.map((request) => request);
+      res.status(200).send(data);
+    });
+});
+
 
 //DELETE A SPECIFIC REQUEST
 app.delete('/requests/:id', (req, res) => {
