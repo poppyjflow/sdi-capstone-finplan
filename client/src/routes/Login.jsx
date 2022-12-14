@@ -31,8 +31,8 @@ const Login = () => {
         method='post'>
         <TextField
           sx={{ width: '20%', mr: 3 }}
-          label='Username'
-          inputProps={{ name: 'username', required: true }} />
+          label='Email'
+          inputProps={{ name: 'email', required: true }} />
         <TextField
           sx={{ width: '20%', mr: 3 }}
           label='Password'

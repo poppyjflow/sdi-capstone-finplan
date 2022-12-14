@@ -2,17 +2,13 @@ import React, { useState } from 'react';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { Form, useActionData, useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import ranks from './ranks';
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
 
 const branches = ['USAF', 'USSF', 'USA', 'USMC', 'USN', 'USCG', 'CIV'];
 
@@ -49,6 +45,7 @@ const Register = () => {
                   fullWidth
                   value={branch}
                   label="Branch"
+                  inputProps={{ name: 'branch', required: true }}
                   onChange={handleBranchChange}
                 >
                   {branches.map(branch => <MenuItem key={branch} value={branch}>{branch}</MenuItem>)}
@@ -64,6 +61,7 @@ const Register = () => {
                   fullWidth
                   value={rank}
                   label='Rank'
+                  inputProps={{ name: 'rank', required: true }}
                   onChange={handleRankChange}
                 >
                   {ranks[branch.toLowerCase()]?.map(rank => <MenuItem key={rank.rank} value={rank.abbr}>{rank.abbr}</MenuItem>)}

@@ -57,11 +57,11 @@ app.post('/requests', (req, res) => {
 })
 
 app.post('/login', async (req, res) => {
-  const { username } = req.body;
+  const { email } = req.body;
   const plain = req.body.password;
   knex('users')
-    .select('username', 'password', 'id')
-    .where('username', username.toLowerCase())
+    .select('email', 'password', 'id')
+    .where('email', email.toLowerCase())
     .then(result => {
       if (result[0]) {
         console.log(result[0]);
@@ -84,12 +84,13 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/users', async (req, res) => {
-  const { org, rank, firstName, lastName, email, isAdmin } = req.body;
+  const { org, branch, rank, firstName, lastName, email, isAdmin } = req.body;
   const plain = req.body.password;
   bcrypt.hash(plain, saltRounds, (err, hash) => {
     knex('users')
       .insert({
         org: org,
+        branch: branch,
         rank: rank,
         l_name: lastName,
         f_name: firstName,

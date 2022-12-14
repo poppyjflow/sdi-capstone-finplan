@@ -1,21 +1,21 @@
 import axios from 'axios';
 
 const loginAction = async ({ request }) => {
-  const { username, password } = Object.fromEntries(await request?.formData());
-  console.log(`'From the route action: ' ${username}, ${password}`);
+  const { email, password } = Object.fromEntries(await request?.formData());
+  console.log(`'From the route action: ' ${email}, ${password}`);
 
-  const token = await axios.post(('http://localhost:8081/login'),
+  const token = await axios.post(('http://localhost:8080/login'),
     {
-      username: username,
+      email: email,
       password: password,
     }
   );
   console.log('login action: ', token);
   if (token.data.auth) {
-    sessionStorage.setItem('user', JSON.stringify({ auth: token.data.auth, user: username, id: token.data.id }));
+    sessionStorage.setItem('user', JSON.stringify({ auth: token.data.auth, user: email, id: token.data.id }));
     return {
       auth: token.data.auth,
-      user: username,
+      user: email,
       id: token.data.id,
     };
   }

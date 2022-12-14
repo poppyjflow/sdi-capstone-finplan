@@ -9,11 +9,10 @@ const registerAction = async ({ request }) => {
     firstName,
     lastName,
     email,
-    username,
     password
   } = Object.fromEntries(await request?.formData());
 
-  console.log(`${firstName}\n${lastName}\n${email}\n${username}\n${password}`);
+  console.log(`${branch}\n${rank}\n${firstName}\n${lastName}\n${email}\n${password}`);
   axios.post('http://localhost:8080/users',
     {
       branch: branch,
