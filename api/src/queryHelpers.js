@@ -7,6 +7,8 @@ const knex = require('knex')(config)
 const app = express();
 
 //REQUEST HELPERS
+
+//BASIC GET REQUEST
 const getRequest = (table, res) => {
   knex(`${table}`)
     .select('*')
@@ -17,6 +19,7 @@ const getRequest = (table, res) => {
     })
 }
 
+//GET AN ID FOR A GIVEN NAME
 const getID = async (name, columnName, table) => {
   let id = await knex(`${table}`)
   .select(`id`)
@@ -30,6 +33,7 @@ const getID = async (name, columnName, table) => {
   return id
 }
 
+//GET THE HASH FOR A USERNAME
 const getUserhash = async (username) => {
   let hash = await knex('users')
     .select('passwd')
@@ -43,6 +47,7 @@ const getUserhash = async (username) => {
   return hash
 }
 
+//VERIFY USERNAME EXISTENCE
 const checkUsername = async (username) => {
   let password = await getUserhash(username)
   try{
@@ -53,6 +58,7 @@ const checkUsername = async (username) => {
   }
 }
 
+//GET ALL DATA FOR A GIVEN ID
 const getWithID = (table, id_param, id_value, res) => {
     knex(`${table}`)
     .select('*')
@@ -64,6 +70,7 @@ const getWithID = (table, id_param, id_value, res) => {
     })
 }
 
+//GET USERNAME WITH A GIVEN ID
 const getUsername = async (userID) => {
   let username = await knex('users')
     .select('uname')
@@ -76,6 +83,7 @@ const getUsername = async (userID) => {
   return username
 }
 
+//GENERIC DELETE REQUEST
 const deleteRequest = (table, id, res) => {
   knex(`${table}`)
     .delete('*')
