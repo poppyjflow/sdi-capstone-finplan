@@ -35,6 +35,10 @@ const Navbar = () => {
     navigate('/main');
   };
 
+  const handleSettings = () => {
+    navigate('/settings')
+  }
+
   return (
     <>
       <AppBar
@@ -73,6 +77,9 @@ const Navbar = () => {
             >
               <MenuItem onClick={handleLogout}>
                 <Typography textAlign="center">Logout</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleSettings}>
+                <Typography textAlign="center">Settings</Typography>
               </MenuItem>
             </Menu>
           </Box>

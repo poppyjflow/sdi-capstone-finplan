@@ -93,6 +93,7 @@ app.patch('/users/:id', (req, res) => {
       l_name: `${body.lastname}`,
       org: `${body.org}`,
       email: `${body.email}`,
+      branch: `${body.branch}`
     })
     .then(() => res.status(201).json('User has been successfully updated.'))
     .catch(err => {
