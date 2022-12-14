@@ -27,13 +27,13 @@ app.get('/requests/:id', (req, res) => {
   getWithID('requests', 'id', id, res)
 })
 
-//GET requests_allocations_obligations FOR A REQUEST
-app.get('/requests_allocations_obligations/:requestID', (req, res) => {
-  const { requestID } = req.params;
-  getWithID('requests_allocations_obligations', 'requests_id', requestID, res)
+//GET requests_allocations_obligations by ID
+app.get('/requests_allocations_obligations/:id', (req, res) => {
+  const { id } = req.params;
+  getWithID('requests_allocations_obligations', 'id', id, res)
 })
 
-//GET ALL REQUEST CODES
+//GET ALL requests_allocations_obligations
 app.get('/requests_allocations_obligations', (req, res) => {
   getRequest('requests_allocations_obligations', res)
 })
