@@ -12,8 +12,7 @@ const hashCompare = async (inputPassword, storedHash) => {
     return doesMatch
   }
   catch(err){
-    console.log(err)
-    // throw err
+    console.log('Occurred in hashCompare', err)
   }
 }
 

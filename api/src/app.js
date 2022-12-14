@@ -85,6 +85,7 @@ app.patch('/requests/:id', (req, res) => {
 app.patch('/users/:id', (req, res) => {
   const { id } = req.params;
   const { body } = req;
+  const { body } = req;
   knex('users')
     .where('id', '=', `${id}`)
     .update({
@@ -215,4 +216,11 @@ app.delete('/requests_allocations_obligations/:id', (req, res) => {
   deleteRequest('requests_allocations_obligations', id, res)
 })
 
+//DELETE A request_allocation_obligation
+app.delete('/requests_allocations_obligations/:id', (req, res) => {
+  const { id } = req.params;
+  deleteRequest('requests_allocations_obligations', id, res)
+})
+
 module.exports = app
+
