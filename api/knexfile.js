@@ -7,7 +7,7 @@ const HOST = process.env.DATABASE_HOST || '127.0.0.1';
 const USER = process.env.POSTGRES_USER || 'postgres';
 const PASSWORD = process.env.POSTGRES_PASSWORD || 'docker';
 const DATABASE = process.env.POSTGRES_DB || 'db';
-const PORT = process.env.PORT || 49153;
+const PORT = process.env.PORT || 5432;
 
 module.exports = {
 
@@ -16,9 +16,9 @@ module.exports = {
     connection: {
       host: HOST,
       user: USER,
-      password: 'postgrespw',
+      password: PASSWORD,
       port: PORT,
-      database: 'capstone'
+      database: DATABASE
     },
     migrations: {
       tableName: 'knex_migrations',
