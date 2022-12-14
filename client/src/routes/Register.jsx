@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import ranks from './ranks';
-import Box from '@mui/material/Box'
+import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -56,7 +56,7 @@ const Register = () => {
                   label="Branch"
                   onChange={handleBranchChange}
                 >
-                  {branches.map(branch => <MenuItem value={branch}>{branch}</MenuItem>)}
+                  {branches.map(branch => <MenuItem key={branch} value={branch}>{branch}</MenuItem>)}
                 </Select>
               </FormControl>
             </Grid2>
@@ -71,7 +71,7 @@ const Register = () => {
                   label='Rank'
                   onChange={handleRankChange}
                 >
-                  {ranks[branch.toLowerCase()]?.map(rank => <MenuItem value={rank.abbr}>{rank.abbr}</MenuItem>)}
+                  {ranks[branch.toLowerCase()]?.map(rank => <MenuItem key={rank.rank} value={rank.abbr}>{rank.abbr}</MenuItem>)}
                 </Select>
               </FormControl>
             </Grid2>
