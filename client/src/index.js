@@ -15,10 +15,12 @@ import ErrorPage from './routes/error-page';
 import Root from './routes/Root';
 import Register from './routes/Register';
 import Login from './routes/Login';
-import Home from './routes/Home';
+import UserHome from './routes/UserHome';
 import loginAction from './actions/loginAction';
 import registerAction from './actions/registerAction';
+import CreateRequest from './routes/CreateRequest';
 import Settings from './routes/Settings'
+
 
 const router = createBrowserRouter([
   {
@@ -49,7 +51,11 @@ const router = createBrowserRouter([
         children: [
           {
             path: '/main',
-            element: <Home />,
+            element: <UserHome />,
+          },
+          {
+            path: '/new-request',
+            element: <CreateRequest />,
           },
           {
             path: '/settings',

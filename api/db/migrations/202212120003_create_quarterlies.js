@@ -6,7 +6,7 @@
 exports.up = function (knex) {
   return knex.schema.createTable('quarterlies', table => {
     table.increments('id');
-    table.integer('org').references('id').inTable('orgs');
+    table.integer('org').references('id').inTable('orgs').onDelete('CASCADE');
     table.date('quarter_start');
     table.decimal('allocated_funds', [12], [2]);
     table.decimal('requested_funds', [12], [2]);

@@ -11,6 +11,7 @@ const createFakeRequests = () => {
   for (let i = 0; i < 500; i++) {
     const item = {
       user: Math.ceil(Math.random() * 3),
+      org: Math.ceil(Math.random() * 4),
       priority: Math.ceil(Math.random() * 5),
       cost: faker.finance.amount(100000, 10000000, 2),
       request_code: (requests[Math.floor(Math.random() * 5)]),

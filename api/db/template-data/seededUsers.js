@@ -4,6 +4,7 @@ const getUsers = () => {
 
   const user1 = {
     org: 1,
+    branch: 'USSF',
     rank: 'Col',
     l_name: 'Doe',
     f_name: 'John',
@@ -14,6 +15,7 @@ const getUsers = () => {
 
   const user2 = {
     org: 2,
+    branch: 'USAF',
     rank: 'Lt. Col',
     l_name: 'Smith',
     f_name: 'Jane',
@@ -25,6 +27,7 @@ const getUsers = () => {
 
   const user3 = {
     org: 3,
+    branch: 'USA',
     rank: '1LT',
     l_name: 'Brown',
     f_name: 'Robert',

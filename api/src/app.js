@@ -1,5 +1,3 @@
-const { passHasher, hashCompare } = require('./hashingHelpers.js')
-const { getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js')
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -53,13 +51,11 @@ app.get('/users', (req, res) => {
   getRequest('users', res)
 })
 
-//GET USER w/ ID
 app.get('/users/:id', (req, res) => {
   const { id } = req.params;
   getWithID('users', 'id', id, res)
 })
 
-//UPDATE SPECIFIC REQUEST INFORMATION
 app.patch('/requests/:id', (req, res) => {
   const { id } = req.params;
   const { body } = req;
@@ -81,7 +77,6 @@ app.patch('/requests/:id', (req, res) => {
     })
 })
 
-//UPDATE A SPECIFIC USER (DOES NOT INCLUDE USERNAME/PASS)
 app.patch('/users/:id', (req, res) => {
   const { id } = req.params;
   const { body } = req;
@@ -102,7 +97,6 @@ app.patch('/users/:id', (req, res) => {
     })
 })
 
-//ADD A NEW REQUEST
 app.post('/requests', (req, res) => {
   const { body } = req;
   knex('requests')
@@ -196,6 +190,29 @@ app.post('/users', async (req, res) => {
     }
   });
 });
+
+app.get('/requests/org/:id', async (req, res) => {
+  const { id } = req.params;
+  knex('request')
+    .select('*')
+    .where('org', id)
+    .then(requests => {
+      const data = requests.map((request) => request);
+      res.status(200).send(data);
+    });
+});
+
+app.get('requests/user/:id', async (req, res) => {
+  const { id } = req.params;
+  knex('request')
+    .select('*')
+    .where('user', id)
+    .then(requests => {
+      const data = requests.map((request) => request);
+      res.status(200).send(data);
+    });
+});
+
 
 //DELETE A SPECIFIC REQUEST
 app.delete('/requests/:id', (req, res) => {
