@@ -19,6 +19,8 @@ import UserHome from './routes/UserHome';
 import loginAction from './actions/loginAction';
 import registerAction from './actions/registerAction';
 import CreateRequest from './routes/CreateRequest';
+import Settings from './routes/Settings'
+
 
 const router = createBrowserRouter([
   {
@@ -54,6 +56,10 @@ const router = createBrowserRouter([
           {
             path: '/new-request',
             element: <CreateRequest />,
+          },
+          {
+            path: '/settings',
+            element: <Settings />
           },
         ]
       },
