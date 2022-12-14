@@ -171,16 +171,21 @@ app.post('/user', async (req, res) => {
 })
 
 //LOGIN
-// app.post('/login', (req, res) => {
-//   const { body } = req;
-//   let userHash = getUserhash(body.username)
-//   console.log(userHash)
-//   let passDoesMatch = hashCompare(body.password, userHash)
-//   res.status(202).json(userInfo)
-  // if(passDoesMatch){
-
-  // }
-// })
+app.post('/login', async (req, res) => {
+  const { body } = req;
+  let userHash = await getUserhash(body.username)
+  console.log(userHash)
+  let passDoesMatch = await hashCompare(body.password, userHash)
+  // res.status(202).json(passDoesMatch)
+  if(passDoesMatch){
+    knex('users')
+    .select('id', 'rank','fname','lname','unit','email','uname')
+    .where('uname', '=', `${body.username}`)
+    .then(info => res.status(200).json(info))
+  }else{
+    res.status(400).json("something is wrong")
+  }
+})
 
 //DELETE A SPECIFIC REQUEST
 app.delete('/requests/:id', (req, res) => {
