@@ -33,9 +33,23 @@ const UserHome = () => {
       field: 'id'
     },
     {
-      field: 'quarter',
+      field: 'req_date',
       editable: false,
-      headerName: 'FYQ',
+      headerName: 'FQ',
+      flex: .1,
+      headerAlign: 'center',
+      align: 'center',
+    },
+    {
+      field: 'org',
+      headerName: 'Org',
+      flex: .1,
+      headerAlign: 'center',
+      align: 'center',
+    },
+    {
+      field: 'user',
+      headerName: 'User',
       flex: .1,
       headerAlign: 'center',
       align: 'center',
@@ -58,7 +72,7 @@ const UserHome = () => {
       type: 'number',
     },
     {
-      field: 'request_code',
+      field: 'req_code',
       headerName: 'Category',
       flex: .2,
       headerAlign: 'center',
@@ -66,20 +80,28 @@ const UserHome = () => {
       editable: true,
     },
     {
-      field: 'request_title',
-      headerName: 'Title',
-      flex: .4,
-      headerAlign: 'center',
-      align: 'center',
-      editable: true,
-    },
-    {
-      field: 'description',
+      field: '',
       headerName: 'Description',
       flex: .4,
       headerAlign: 'center',
       align: 'center',
-      editable: true,
+      editable: false,
+    },
+    {
+      field: 'allocated_funds',
+      headerName: 'Allocation',
+      flex: .2,
+      headerAlign: 'center',
+      align: 'center',
+      editable: false,
+    },
+    {
+      field: 'spent_funds',
+      headerName: 'Obligation',
+      flex: .2,
+      headerAlign: 'center',
+      align: 'center',
+      editable: false,
     },
   ];
 
