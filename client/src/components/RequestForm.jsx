@@ -46,23 +46,26 @@ const RequestForm = () => {
         <Form method='post' action='/new-request'>
           <Grid2 container spacing={2} p={2}>
             <Grid2 xs={3}>
-              <InputLabel id='org'>Org</InputLabel>
-              <Select
-                labelId='org'
-                fullWidth
-                value={org}
-                onChange={handleOrgUpdate}
-                inputProps={{ name: 'org', required: false }}
-              >
-                {orgArray?.map(({ name, id }) => (
-                  <MenuItem key={id} value={id}>
-                    {name}
-                    <Tooltip key={id} placement='right' title={name} value={id} arrow >
-                      <InfoIcon />
-                    </Tooltip>
-                  </MenuItem>
-                ))}
-              </Select>
+              <Grid2>
+                <InputLabel id='org'>Org</InputLabel>
+                <Select
+                  labelId='org'
+                  fullWidth
+                  value={org}
+                  onChange={handleOrgUpdate}
+                  inputProps={{ name: 'org', required: false }}
+                >
+                  {orgArray?.map(({ name, id }) => (
+                    <MenuItem key={id} value={id}>
+                      {name}
+                      <Tooltip key={id} placement='right' title={name} value={id} arrow sx={{ ml: 2 }} >
+                        <InfoIcon />
+                      </Tooltip>
+                    </MenuItem>
+                  ))}
+                </Select>
+
+              </Grid2>
             </Grid2>
             <Grid2 xs={2}>
               <InputLabel id='priority'>Priority</InputLabel>
