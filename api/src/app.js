@@ -17,8 +17,6 @@ app.use(cors({
 app.use(express.json());
 app.use(morgan('tiny'));
 
-//BEGIN REQUESTS
-
 //GET ALL REQUESTS
 app.get('/requests', (req, res) => {
   getRequest('requests', res)
@@ -30,20 +28,11 @@ app.get('/requests/:id', (req, res) => {
   getWithID('requests', 'id', id, res)
 })
 
-//GET quarterlies by ID
-app.get('/quarterlies/:id', (req, res) => {
-  const { id } = req.params;
-  getWithID('quarterlies', 'id', id, res)
-})
-
-//GET ALL quarterlies
-app.get('/quarterlies', (req, res) => {
-  getRequest('quarterlies', res)
-})
-
 //GET ALL ORGS
 app.get('/orgs', (req, res) => {
-  getRequest('orgs', res)
+  knex('orgs')
+    .select('*')
+    .then((result) => res.status(201).json(result))
 })
 
 //GET ALL USERS
@@ -116,30 +105,6 @@ app.post('/requests', (req, res) => {
     })
 })
 
-//ADD A NEW quarterly FOR A REQUEST
-app.post('/quarterlies', async (req, res) => {
-  const { body } = req;
-  const requestID = await getID(body.requestName, 'desc_title', 'requests')
-  try {
-    if (requestID === null) {
-      res.status(400).json(`No requests exist for the name: ${body.requestName}`)
-    }
-    knex('quarterlies')
-      .insert({
-        org: `${body.org}`,
-        quarter_start: `${body.quarter}`,
-        allocated_funds: `${body.allocatedFunds}`,
-        requested_funds: `${body.requestFunds}`,
-        spent_funds: `${body.spentFunds}`
-      })
-      .then(() => res.status(201).json('Creation successful.'))
-  }
-  catch (err) {
-    console.log(err);
-    res.status(400).json('There was an error posting to the database.')
-  }
-})
-
 //LOGIN
 app.post('/login', async (req, res) => {
   const { email } = req.body;
@@ -191,29 +156,6 @@ app.post('/users', async (req, res) => {
   });
 });
 
-app.get('/requests/org/:id', async (req, res) => {
-  const { id } = req.params;
-  knex('request')
-    .select('*')
-    .where('org', id)
-    .then(requests => {
-      const data = requests.map((request) => request);
-      res.status(200).send(data);
-    });
-});
-
-app.get('requests/user/:id', async (req, res) => {
-  const { id } = req.params;
-  knex('request')
-    .select('*')
-    .where('user', id)
-    .then(requests => {
-      const data = requests.map((request) => request);
-      res.status(200).send(data);
-    });
-});
-
-
 //DELETE A SPECIFIC REQUEST
 app.delete('/requests/:id', (req, res) => {
   const { id } = req.params;
@@ -224,12 +166,6 @@ app.delete('/requests/:id', (req, res) => {
 app.delete('/users/:id', (req, res) => {
   const { id } = req.params;
   deleteRequest('users', id, res)
-})
-
-//DELETE A request_allocation_obligation
-app.delete('/quarterlies/:id', (req, res) => {
-  const { id } = req.params;
-  deleteRequest('quarterlies', id, res)
 })
 
 module.exports = app

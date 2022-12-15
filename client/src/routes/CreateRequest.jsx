@@ -1,9 +1,17 @@
 import React from 'react';
 import RequestForm from '../components/RequestForm';
+import Box from '@mui/material/Box';
 
 const CreateRequest = () => {
   return (
-    <RequestForm />
+
+    <Box
+      className='create-request'
+      display='flex'
+      justifyContent='center'
+    >
+      <RequestForm />
+    </Box>
   );
 };
 

@@ -5,14 +5,18 @@
 exports.up = function (knex) {
   return knex.schema.createTable('requests', table => {
     table.increments('id');
-    table.integer('org').nullable().references('id').inTable('orgs').onDelete('CASCADE');
     table.integer('user').references('id').inTable('users').onDelete('CASCADE');
-    table.integer('quarter').references('id').inTable('quarterlies').onDelete('CASCADE');
+    table.date('req_date').notNullable();
+    table.integer('org').nullable().references('id').inTable('orgs').onDelete('CASCADE');
     table.integer('priority').nullable();
-    table.decimal('cost', [12], [2]).nullable();
-    table.string('request_code');
-    table.string('request_title');
+    table.integer('cost').nullable();
+    table.string('req_code');
+    table.string('req_title');
     table.string('description');
+    table.string('req_impact');
+    table.boolean('req_granted').defaultTo(false);
+    table.integer('allocated_funds').nullable();
+    table.integer('spent_funds').nullable();
   });
 };
 

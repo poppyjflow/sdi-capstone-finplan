@@ -6,7 +6,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
-import ranks from './ranks';
+import ranks from '../data/ranks';
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 
