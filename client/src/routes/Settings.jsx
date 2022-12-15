@@ -1,35 +1,40 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import { useOutletContext, Form } from 'react-router-dom';
+=======
+import React, {useState, useEffect} from 'react';
+>>>>>>> Pre-master rebase commit; settings account info change mostly function (need to know specific endpoints), work on email notifications started
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { CardActionArea } from '@mui/material';
 import Switch from '@mui/material/Switch';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
+import EditUserForm from '../components/EditUserForm';
 import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import { Form } from 'react-router-dom';
+import { Button } from '@mui/material';
+import { Stack } from '@mui/material';
+
 
 const Settings = () => {
+<<<<<<< HEAD
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
   const [user, setUser] = useOutletContext();
   const [open, setOpen] = useState(false);
   const [userPatchData, setUserPatchData] = useState(null);
+=======
+  const [ toggled, setToggled ] = useState(false);
+  const [currentDate, setCurrentDate] = useState('');
+  const [postBody, setPostBody] = useState(null);
+>>>>>>> Pre-master rebase commit; settings account info change mostly function (need to know specific endpoints), work on email notifications started
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleEmailChange = () => {
+    setToggled(!toggled)
+    return
+  }
 
+<<<<<<< HEAD
   const handleSubmit = () => {
     handleClose();
     //NEED INPUT VALIDATION BEFORE SUBMIT
@@ -61,9 +66,30 @@ const Settings = () => {
     }
     return;
   }, []);
+=======
+  const handleEmailSubmit = () => {
+    return
+  }
+
+  const handleDateChange = (event) => {
+    setCurrentDate(event.target.value)
+  }
+
+  useEffect(() => {
+    let yourDate = new Date();
+    const offset = yourDate.getTimezoneOffset()
+    yourDate = new Date(yourDate.getTime() - (offset*60*1000))
+    setCurrentDate(yourDate.toISOString().split('T')[0])
+  }, [])
+>>>>>>> Pre-master rebase commit; settings account info change mostly function (need to know specific endpoints), work on email notifications started
+
+  //on page load, request server data related to email notifications for unit
+    //if present in database, toggled = true
+    //toggled = false
 
   return (
     <>
+<<<<<<< HEAD
       {userPatchData ?
         <Box height='100%'>
           <Card sx={{ maxWidth: '100%', height: 'auto', paddingTop: '1em' }}>
@@ -216,6 +242,74 @@ const Settings = () => {
         :
         <p>Loading...</p>
       }
+=======
+    <Box height='100%'>
+    <Card sx={{ maxWidth: '100%', height: 'auto', paddingTop: '1em'}}>
+      <CardContent>
+        <Typography gutterBottom variant="h4" component="div">
+          User Settings
+        </Typography>
+      </CardContent>
+    </Card>
+    <Card sx={{ maxWidth: '100%', marginTop: '2em' }}>
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            Enable Dark Mode
+          </Typography>
+          <Switch
+          defaultChecked
+          disabled
+          color='secondary'/>
+          <Typography variant="body2" color="text.secondary">
+            Dark mode is toggled on.
+          </Typography>
+        </CardContent>
+    </Card>
+    <Card sx={{ maxWidth: '100%', marginTop: '2em' }}>
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            Email Notifications
+          </Typography>
+          <div>
+            <Switch
+            checked={toggled}
+            onChange={handleEmailChange}
+            color='secondary'/>
+          </div>
+          {toggled ?
+          <Box>
+            <Form
+            style={{ display: 'contents', width: '5em' }}
+            method='post'
+            noValidate
+            onSubmit={handleEmailSubmit}>
+              <Stack>
+                <TextField
+                  id="date"
+                  label="Due Date"
+                  type="date"
+                  defaultValue={currentDate}
+                  onChange={handleDateChange}
+                  sx={{ width: 220, marginTop: '1em' }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+                <Button type='submit' variant='contained' color='error' sx={{width: 220, marginTop: '1em'}}>Apply Changes</Button>
+              </Stack>
+            </Form>
+          </Box>
+          :
+          <Typography variant="body2" color="text.secondary">
+            Email reminders for your command team are toggled off.
+          </Typography>
+          }
+        </CardContent>
+    </Card>
+    <EditUserForm />
+    </Box>
+
+>>>>>>> Pre-master rebase commit; settings account info change mostly function (need to know specific endpoints), work on email notifications started
     </>
   );
 };
