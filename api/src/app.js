@@ -1,3 +1,4 @@
+const {  getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelper.js')
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
