@@ -12,8 +12,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import ranks from '../routes/ranks';
+import ranks from '../data/ranks';
 import InputLabel from '@mui/material/InputLabel';
+import loadOrgs from '../loaders/loadOrgs';
 
 const EditUserForm = () => {
   const branches = ['USAF', 'USSF', 'USA', 'USMC', 'USN', 'USCG', 'CIV'];

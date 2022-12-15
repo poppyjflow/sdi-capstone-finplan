@@ -19,7 +19,7 @@ import UserHome from './routes/UserHome';
 import loginAction from './actions/loginAction';
 import registerAction from './actions/registerAction';
 import CreateRequest from './routes/CreateRequest';
-import Settings from './routes/Settings';
+import  Settings  from './routes/Settings';
 import loadOrgs from './loaders/loadOrgs';
 
 
