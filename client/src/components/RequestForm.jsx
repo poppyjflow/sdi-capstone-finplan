@@ -11,14 +11,16 @@ import { NumericFormat } from 'react-number-format';
 import MenuItem from '@mui/material/MenuItem';
 import priorityCodes from '../data/priorityCodes';
 import reqCodes from '../data/reqCodes';
-import { useEffect } from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import { Button } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
+import Stack from '@mui/material/Stack';
 
 const RequestForm = () => {
   const [user] = useOutletContext();
   const [org, setOrg] = useState('');
-  const [pri, setPri] = useState('MEn');
+  const [pri, setPri] = useState('');
+  const [reqCode, setReqCode] = useState('');
   const orgArray = useLoaderData();
 
   const handleOrgUpdate = (e) => {
@@ -28,8 +30,12 @@ const RequestForm = () => {
 
   const handlePriUpdate = (e) => {
     e.preventDefault();
-    console.log(e.target.value);
     setPri(e.target.value);
+  };
+
+  const handleReqUpdate = (e) => {
+    e.preventDefault();
+    setReqCode(e.target.value);
   };
 
   return (
@@ -37,7 +43,7 @@ const RequestForm = () => {
       maxWidth='60%'
     >
       <Paper>
-        <Form>
+        <Form method='post' action='/new-request'>
           <Grid2 container spacing={2} p={2}>
             <Grid2 xs={3}>
               <InputLabel id='org'>Org</InputLabel>
@@ -48,7 +54,14 @@ const RequestForm = () => {
                 onChange={handleOrgUpdate}
                 inputProps={{ name: 'org', required: false }}
               >
-                {orgArray?.map(({ name, id }) => <MenuItem key={id} value={id}>{name}</MenuItem>)}
+                {orgArray?.map(({ name, id }) => (
+                  <MenuItem key={id} value={id}>
+                    {name}
+                    <Tooltip key={id} placement='right' title={name} value={id} arrow >
+                      <InfoIcon />
+                    </Tooltip>
+                  </MenuItem>
+                ))}
               </Select>
             </Grid2>
             <Grid2 xs={2}>
@@ -60,25 +73,45 @@ const RequestForm = () => {
                 onChange={handlePriUpdate}
                 inputProps={{ name: 'priority', required: true }}
               >
-                {priorityCodes.map(code => <Tooltip key={code.code} placement='left' title={code.name} arrow><MenuItem key={code.code} value={code.code}>{code.code}</MenuItem></Tooltip>)}
+                {priorityCodes?.map(({ name, code }) => (
+                  <MenuItem key={code} value={code}>
+                    {code}
+                    <Tooltip key={code} placement='right' title={name} value={code} arrow >
+                      <InfoIcon />
+                    </Tooltip>
+                  </MenuItem>))}
               </Select>
             </Grid2>
             <Grid2 xs={2}>
-              <InputLabel id='category'>Category</InputLabel>
+              <InputLabel id='req-code'>Category</InputLabel>
               <Select
-                labelId='catergory'
+                labelId='req-code'
                 fullWidth
-                value={org}
+                value={reqCode}
+                onChange={handleReqUpdate}
                 inputProps={{ name: 'req_code', required: true }}
               >
-                {reqCodes.map(code => <Tooltip key={code.code} placement='left' title={code.name} arrow><MenuItem key={code.code} value={code.code}>{code.code}</MenuItem></Tooltip>)}
+                {reqCodes?.map(({ name, code }) => (
+
+                  <MenuItem key={code} value={code}
+                  >
+                    {code}
+                    <Tooltip
+                      key={code}
+                      placement='right'
+                      title={name}
+                      value={code}
+                      arrow
+                    >
+                      <InfoIcon />
+                    </Tooltip>
+                  </MenuItem>
+                ))}
               </Select>
             </Grid2>
             <Grid2 xs={3}>
               <InputLabel id='req_date'>Request Date</InputLabel>
-              <TextField
-                fullWidth
-                type='date'
+              <TextField fullWidth type='date'
               >
               </TextField>
             </Grid2>
@@ -123,7 +156,7 @@ const RequestForm = () => {
           </Grid2>
         </Form>
       </Paper>
-    </Box>
+    </Box >
   );
 };
 
