@@ -4,6 +4,13 @@ const app = express();
 const port = 5555;
 
 
+function periodicRequest() {
+    setInterval(function() {
+      // Make the request to the backend server here
+    }, 50000); // Make the request every 5 seconds
+  }
+
+
 app.use(express.json());
 // require("dotenv").config();
 
