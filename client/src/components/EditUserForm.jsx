@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { useOutletContext, Form } from 'react-router-dom';
+import { useOutletContext, Form, useLoaderData } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -14,10 +14,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import ranks from '../data/ranks';
 import InputLabel from '@mui/material/InputLabel';
-import loadOrgs from '../loaders/loadOrgs';
 
 const EditUserForm = () => {
   const branches = ['USAF', 'USSF', 'USA', 'USMC', 'USN', 'USCG', 'CIV'];
+  const orgArray = useLoaderData();
   const [branch, setBranch] = useState('');
   const [rank, setRank]= useState('');
   const [user, setUser] = useOutletContext();
@@ -26,6 +26,7 @@ const EditUserForm = () => {
   const [userFormData, setUserFormData] = useState(null);
   const [patchData, setPatchData] = useState(null);
 
+  console.log(orgArray)
   const setFormData = (data) => {
     setUserFormData({
       rank:{
@@ -60,6 +61,10 @@ const EditUserForm = () => {
       }
     })
     return;
+  }
+
+  const convertOrg = () => {
+
   }
 
   const handleClickOpen = () => {

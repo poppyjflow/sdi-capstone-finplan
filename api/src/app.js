@@ -3,7 +3,6 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const { randomBytes } = require('node:crypto');
-const { getRequest } = require('./queryHelpers.js');
 
 const env = process.env.NODE_ENV || 'development';
 const config = require('../knexfile')[env];
