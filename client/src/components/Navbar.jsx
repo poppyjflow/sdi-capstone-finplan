@@ -36,7 +36,8 @@ const Navbar = () => {
   };
 
   const handleSettings = () => {
-    navigate('/settings')
+    navigate('/settings');
+    handleCloseUserMenu()
   }
 
   return (

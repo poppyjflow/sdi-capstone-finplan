@@ -1,8 +1,8 @@
+const {  getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js')
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const { randomBytes } = require('node:crypto');
-const { getRequest } = require('./queryHelpers.js');
 
 const env = process.env.NODE_ENV || 'development';
 const config = require('../knexfile')[env];
@@ -70,13 +70,14 @@ app.patch('/requests/:id', (req, res) => {
 app.patch('/users/:id', (req, res) => {
   const { id } = req.params;
   const { body } = req;
+  //GET ORG ID FROM ORG NAME IN BODY, INSERT
   knex('users')
     .where('id', '=', `${id}`)
     .update({
       rank: `${body.rank}`,
       f_name: `${body.firstname}`,
       l_name: `${body.lastname}`,
-      org: `${body.org}`,
+      // org: `${body.org}`,
       email: `${body.email}`,
       branch: `${body.branch}`
     })
