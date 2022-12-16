@@ -15,10 +15,10 @@ app.use(express.json());
 function periodicRequest() {
     setInterval( async function() {
         let selectedInfo = [];
-
          await knex('users')
-            .select('id','email','org')
-            // .where('id','=','1')
+            .innerJoin('notifications', 'users.org', '=', 'notifications.org_id')
+
+            .select('users.id','users.email','users.org')
             .then(info => {
                 console.log(info)
                 return info
@@ -27,14 +27,14 @@ function periodicRequest() {
             .catch(err =>console.log(err))
         
         for (let user of selectedInfo){
-            // console.log("setting options")
+            console.log("setting options")
             let option = mailOptionSetter(user.email)
 
-            // console.log('sending email')
+            console.log('sending email')
             sendMail(option)
         }
         
-    }, 30000); //5 sec
+    }, 5000); //5 sec
   }
 
 // execute the function 
