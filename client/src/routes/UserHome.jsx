@@ -149,7 +149,6 @@ const UserHome = () => {
       alignContent='center'
       justifyContent='space-evenly'
     >
-      <h1>Your Inventory</h1>
       <Box
         className='grid'
         height='80%'
