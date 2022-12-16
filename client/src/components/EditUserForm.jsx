@@ -17,7 +17,7 @@ import InputLabel from '@mui/material/InputLabel';
 
 const EditUserForm = () => {
   const branches = ['USAF', 'USSF', 'USA', 'USMC', 'USN', 'USCG', 'CIV'];
-  const orgArray = useLoaderData();
+  // const orgArray = useLoaderData();
   const [branch, setBranch] = useState('');
   const [rank, setRank]= useState('');
   const [user, setUser] = useOutletContext();
@@ -26,7 +26,6 @@ const EditUserForm = () => {
   const [userFormData, setUserFormData] = useState(null);
   const [patchData, setPatchData] = useState(null);
 
-  console.log(orgArray)
   const setFormData = (data) => {
     setUserFormData({
       rank:{
@@ -63,9 +62,9 @@ const EditUserForm = () => {
     return;
   }
 
-  const convertOrg = () => {
+  // const convertOrg = () => {
 
-  }
+  // }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -294,8 +293,8 @@ const EditUserForm = () => {
                 </Select>
               </FormControl>
           <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button type='submit'>Submit</Button>
+            <Button onClick={handleClose} variant='contained' color='error'>Cancel</Button>
+            <Button type='submit' variant='contained' color='primary'>Submit</Button>
           </DialogActions>
           {/* {errorAlert ? <Alert severity='error'>Please fill out all fields</Alert> : <></>} */}
             </Form>

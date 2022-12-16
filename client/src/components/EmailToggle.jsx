@@ -35,20 +35,20 @@ const EmailToggle = () => {
 
   const postEmailForm = () => {
     console.log(postBody)
-    // fetch('http://localhost:8080/email_notifications', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(postBody)
-    // })
-    // .then(res => res.json())
-    // .then(res => {
-    //   console.log(res);
-    // })
-    // .catch(err => {
-    //   console.log(err)
-    // })
+    fetch('http://localhost:8080/email_notifications', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(postBody)
+    })
+    .then(res => res.json())
+    .then(res => {
+      console.log(res);
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 
   useEffect(() => {
@@ -81,8 +81,8 @@ const EmailToggle = () => {
   useEffect(() => {
     if(userData){
       setPostBody({
-        frequency: 7,
-        org: userData.org,
+        frequency: "weekly",
+        org_id: userData.org,
         due_date: currentDate
       })
     }
@@ -92,13 +92,16 @@ const EmailToggle = () => {
   //   fetch('http://localhost:8080/email_notifications')
   //   .then(res => res.json())
   //   .then(res => {
-  //     res.length ? setToggled(true) : setToggled(false);
+  //     if(res.length){
+  //       //check to see if orgID exists in each notification
+  //       //toggle if true
+  //     }
   //   })
   //   .catch(err => {
   //     console.log(err)
   //   })
   //   return
-  // })
+  // }, [])
 
   return (
     <Card sx={{ maxWidth: '100%', marginTop: '2em' }}>
