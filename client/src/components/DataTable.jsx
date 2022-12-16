@@ -211,6 +211,8 @@ const DataTable = ({ columns, user, itemBar }) => {
           columns: {
             columnVisibilityModel: {
               id: false,
+              l_name: false,
+              f_name: false,
             },
           }
         }}

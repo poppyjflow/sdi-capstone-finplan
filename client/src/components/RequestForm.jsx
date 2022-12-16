@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import InfoIcon from '@mui/icons-material/Info';
 import Zoom from '@mui/material/Zoom';
 import ListItemText from '@mui/material/ListItemText';
+import InputAdornment from '@mui/material/InputAdornment';
 
 const RequestForm = () => {
   const [user] = useOutletContext();
@@ -36,7 +37,19 @@ const RequestForm = () => {
     setReqCode(e.target.value);
   };
 
-  const moneyField = (props) => <TextField label='Cost' variant='filled'{...props} required fullWidth />;
+  const moneyField = (props) => (
+    <TextField
+      name='cost'
+      label='Cost'
+      variant='filled'
+      {...props}
+      required
+      fullWidth
+      InputProps={{
+        startAdornment: <InputAdornment position="start">$</InputAdornment>
+      }}
+    />
+  );
 
   return (
     <Box
@@ -134,7 +147,7 @@ const RequestForm = () => {
               />
             </Grid2>
             <Grid2 xs={2}>
-              <NumericFormat prefix='$' customInput={moneyField} thousandSeparator=',' />
+              <NumericFormat customInput={moneyField} thousandSeparator=',' />
             </Grid2>
             <Grid2 xs={12}>
               <TextField
@@ -167,7 +180,7 @@ const RequestForm = () => {
             <Grid2 xs={10}>
             </Grid2>
             <Grid2 xs={2}>
-              <Button variant='contained'>
+              <Button fullWidth variant='contained' color='secondary' type='submit'>
                 Submit
               </Button>
             </Grid2>

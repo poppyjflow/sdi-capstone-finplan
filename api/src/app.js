@@ -1,4 +1,4 @@
-const {  getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js')
+const { getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js')
 const express = require('express');
 const cors = require('cors');
 // const morgan = require('morgan');
@@ -18,10 +18,15 @@ app.use(cors({
 app.use(express.json());
 // app.use(morgan('tiny'));
 
-//GET ALL REQUESTS
 app.get('/requests', (req, res) => {
-  getRequest('requests', res);
-});
+  knex({ reqs: 'requests' })
+    .join('users', 'users.id', 'user')
+    .join('orgs', 'reqs.org', 'orgs.id')
+    .select('reqs.*', 'users.l_name', 'users.f_name', 'orgs.name as org_name')
+    .then((result) => {
+      res.status(201).json(result)
+    })
+})
 
 //GET REQUEST w/ ID
 app.get('/requests/:id', (req, res) => {
@@ -94,16 +99,30 @@ app.patch('/users/:id', (req, res) => {
 });
 
 app.post('/requests', (req, res) => {
-  const { body } = req;
+
+  const {
+    user,
+    org,
+    priority,
+    reqCode,
+    reqDate,
+    cost,
+    title,
+    description,
+    impact,
+  } = req.body;
+
   knex('requests')
     .insert({
-      user: `${body.user}`,
-      quarter: `${body.quarter}`,
-      priority: `${body.priority}`,
-      cost: `${body.cost}`,
-      request_code: `${body.requestCode}`,
-      request_title: `${body.descTitle}`,
-      description: `${body.descDetails}`
+      user: user,
+      req_date: reqDate,
+      org: org,
+      priority: priority,
+      cost: cost,
+      req_code: reqCode,
+      req_title: title,
+      description: description,
+      req_impact: impact,
     })
     .then(() => res.status(201).json('Request successfully created.'))
     .catch(err => {
@@ -220,13 +239,13 @@ app.delete('/requests/:id', (req, res) => {
 app.delete('/email_notifications/:id', (req, res) => {
   const { id } = req.params;
   knex(`notifications`)
-  .delete('*')
-  .where('org_id', '=', `${id}`)
-  .then(() => res.status(200).json('Deletion successful'))
-  .catch(err => {
-    console.log('Occurred in deleteRequest', err)
-    res.status(400).json('There was a problem processing your request.')
-  })
+    .delete('*')
+    .where('org_id', '=', `${id}`)
+    .then(() => res.status(200).json('Deletion successful'))
+    .catch(err => {
+      console.log('Occurred in deleteRequest', err)
+      res.status(400).json('There was a problem processing your request.')
+    })
 });
 
 //DELETE A SPECIFIC USER
