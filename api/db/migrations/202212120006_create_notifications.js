@@ -6,7 +6,8 @@ exports.up = function (knex) {
   return knex.schema.createTable('notifications', table => {
     table.increments('id');
     table.string('frequency');
-    table.integer('user_id').references('id').inTable('users').onDelete('CASCADE');
+    table.integer('org_id');
+    table.date('due_date');
   });
 };
 
