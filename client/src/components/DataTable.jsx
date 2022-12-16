@@ -95,7 +95,7 @@ const DataTable = ({ columns, user, itemBar }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await axios.get(`http://localhost:8080/user/${user.id}`);
+      const res = await axios.get('http://localhost:8080/requests');
       console.log(res.data);
       setTableData(res.data);
     };

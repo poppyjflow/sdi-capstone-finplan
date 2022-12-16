@@ -2,19 +2,17 @@ import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { Form, useLoaderData } from 'react-router-dom';
+import { Form, useLoaderData, useOutletContext } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
-import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
-import { useOutletContext } from 'react-router-dom';
 import { NumericFormat } from 'react-number-format';
 import MenuItem from '@mui/material/MenuItem';
 import priorityCodes from '../data/priorityCodes';
 import reqCodes from '../data/reqCodes';
 import Tooltip from '@mui/material/Tooltip';
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
 import InfoIcon from '@mui/icons-material/Info';
-import Stack from '@mui/material/Stack';
+import Zoom from '@mui/material/Zoom';
+import ListItemText from '@mui/material/ListItemText';
 
 const RequestForm = () => {
   const [user] = useOutletContext();
@@ -38,6 +36,8 @@ const RequestForm = () => {
     setReqCode(e.target.value);
   };
 
+  const moneyField = (props) => <TextField label='Cost' variant='filled'{...props} required fullWidth />;
+
   return (
     <Box
       maxWidth='60%'
@@ -46,108 +46,123 @@ const RequestForm = () => {
         <Form method='post' action='/new-request'>
           <Grid2 container spacing={2} p={2}>
             <Grid2 xs={3}>
-              <Grid2>
-                <InputLabel id='org'>Org</InputLabel>
-                <Select
-                  labelId='org'
-                  fullWidth
-                  value={org}
-                  onChange={handleOrgUpdate}
-                  inputProps={{ name: 'org', required: false }}
-                >
-                  {orgArray?.map(({ name, id }) => (
-                    <MenuItem key={id} value={id}>
-                      {name}
-                      <Tooltip key={id} placement='right' title={name} value={id} arrow sx={{ ml: 2 }} >
-                        <InfoIcon />
-                      </Tooltip>
-                    </MenuItem>
-                  ))}
-                </Select>
-
-              </Grid2>
+              <TextField
+                name='org'
+                variant='filled'
+                fullWidth
+                select
+                label='Organization'
+                value={org}
+                onChange={handleOrgUpdate}
+              >
+                <MenuItem value=''><em>None</em></MenuItem>
+                {orgArray?.map(({ name, id }) => (
+                  <MenuItem key={id} value={id}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Grid2>
             <Grid2 xs={2}>
-              <InputLabel id='priority'>Priority</InputLabel>
-              <Select
-                labelId='priority'
+              <TextField
+                name='priority'
+                variant='filled'
                 fullWidth
+                select
+                label='Priority'
                 value={pri}
+                SelectProps={{ renderValue: (selected) => selected }}
                 onChange={handlePriUpdate}
-                inputProps={{ name: 'priority', required: true }}
               >
+                <MenuItem value=''><em>None</em></MenuItem>
                 {priorityCodes?.map(({ name, code }) => (
-                  <MenuItem key={code} value={code}>
-                    {code}
-                    <Tooltip key={code} placement='right' title={name} value={code} arrow >
-                      <InfoIcon />
-                    </Tooltip>
-                  </MenuItem>))}
-              </Select>
-            </Grid2>
-            <Grid2 xs={2}>
-              <InputLabel id='req-code'>Category</InputLabel>
-              <Select
-                labelId='req-code'
-                fullWidth
-                value={reqCode}
-                onChange={handleReqUpdate}
-                inputProps={{ name: 'req_code', required: true }}
-              >
-                {reqCodes?.map(({ name, code }) => (
-
-                  <MenuItem key={code} value={code}
+                  <MenuItem
+                    sx={{ display: 'flex', justifyContent: 'space-between' }}
+                    key={code}
+                    value={code}
                   >
                     {code}
+                    <Tooltip key={code} placement='right' title={name} arrow TransitionComponent={Zoom} >
+                      <InfoIcon />
+                    </Tooltip>
+                  </MenuItem>))},
+
+              </TextField>
+            </Grid2>
+            <Grid2 xs={2}>
+              <TextField
+                label='Category'
+                fullWidth
+                name='reqCode'
+                variant='filled'
+                required
+                select
+                value={reqCode}
+                SelectProps={{ renderValue: (selected) => selected }}
+                onChange={handleReqUpdate}
+              >
+                <MenuItem value=''><em>None</em></MenuItem>
+                {reqCodes?.map(({ name, code }) => (
+                  <MenuItem
+                    sx={{ display: 'flex', justifyContent: 'space-between' }}
+                    key={code}
+                    value={code}
+                  >
+                    <ListItemText primary={code} />
                     <Tooltip
                       key={code}
                       placement='right'
                       title={name}
-                      value={code}
                       arrow
+                      TransitionComponent={Zoom}
                     >
-                      <InfoIcon />
+                      <InfoIcon edge='end' />
                     </Tooltip>
                   </MenuItem>
                 ))}
-              </Select>
-            </Grid2>
-            <Grid2 xs={3}>
-              <InputLabel id='req_date'>Request Date</InputLabel>
-              <TextField fullWidth type='date'
-              >
               </TextField>
             </Grid2>
+            <Grid2 xs={3}>
+              <TextField
+                name='reqDate'
+                variant='filled'
+                fullWidth
+                type='date'
+                label='Request Date'
+                required
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid2>
             <Grid2 xs={2}>
-              <InputLabel id='requested'>$ Requested</InputLabel>
-              <NumericFormat prefix='$' customInput={TextField} thousandSeparator=',' />
+              <NumericFormat prefix='$' customInput={moneyField} thousandSeparator=',' />
             </Grid2>
             <Grid2 xs={12}>
               <TextField
+                name='title'
+                variant='filled'
                 fullWidth
                 label='Title'
                 multiline
-              >
-
-              </TextField>
+              />
             </Grid2>
             <Grid2 xs={12}>
               <TextField
+                name='description'
+                variant='filled'
                 fullWidth
                 label='Description'
                 multiline
                 minRows={3}
-              >
-
-              </TextField>
+              />
             </Grid2>
             <Grid2 xs={12}>
               <TextField
+                name='impact'
+                variant='filled'
                 fullWidth
                 label='Impact'
                 multiline
-              >
-              </TextField>
+              />
             </Grid2>
             <Grid2 xs={10}>
             </Grid2>
@@ -157,6 +172,7 @@ const RequestForm = () => {
               </Button>
             </Grid2>
           </Grid2>
+          <input type='hidden' name='user' value={user.id} />
         </Form>
       </Paper>
     </Box >

@@ -21,6 +21,7 @@ import registerAction from './actions/registerAction';
 import CreateRequest from './routes/CreateRequest';
 import Settings from './routes/Settings';
 import loadOrgs from './loaders/loadOrgs';
+import NewReqAction from './actions/NewReqAction';
 
 
 const router = createBrowserRouter([
@@ -57,6 +58,7 @@ const router = createBrowserRouter([
           {
             path: '/new-request',
             element: <CreateRequest />,
+            action: NewReqAction,
             loader: loadOrgs,
           },
           {
