@@ -39,6 +39,10 @@ const Navbar = ({ navProps }) => {
     navigate('/settings');
     handleCloseUserMenu()
   }
+  const handleSummary = () => {
+    navigate('/summary');
+    handleCloseUserMenu()
+  }
 
   return (
     <>
@@ -77,11 +81,14 @@ const Navbar = ({ navProps }) => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem onClick={handleLogout}>
-                <Typography textAlign="center">Logout</Typography>
+              <MenuItem onClick={handleSummary}>
+                <Typography textAlign="center">Summary View</Typography>
               </MenuItem>
               <MenuItem onClick={handleSettings}>
                 <Typography textAlign="center">Settings</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleLogout}>
+                <Typography textAlign="center">Logout</Typography>
               </MenuItem>
             </Menu>
           </Box>
