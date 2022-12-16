@@ -257,7 +257,7 @@ const EditUserForm = () => {
               error={userFormData.org.error}
               id="org"
               label="Organization"
-              type="text"
+              type="number"
               fullWidth
               variant="standard"
                onChange={handleFormChange}

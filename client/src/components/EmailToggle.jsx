@@ -15,16 +15,36 @@ const EmailToggle = () => {
   const [ toggled, setToggled ] = useState(false);
   const [currentDate, setCurrentDate] = useState('');
   const [postBody, setPostBody] = useState(null);
+  const [existsInDatabase, setExistsInDatabase] = useState(false);
 
   const handleEmailChange = (event) => {
     event.preventDefault()
     setToggled(!toggled)
-    return
+    if(existsInDatabase && userData){
+      fetch(`http://localhost:8080/email_notifications/${userData.org}`, {
+      method: 'DELETE'})
+      .then(res => {
+        if(res.status === 200){
+          alert('You will no longer receive email reminders.');
+          setExistsInDatabase(false);
+          return;
+        }
+        alert('There was an error processing your request.');
+        setToggled(true);
+        return;
+      })
+      .catch(err => {
+        console.log(err);
+        return;
+      })
+  }
+  return;
   }
 
-  const handleEmailSubmit = (event) => {
+  const handleEmailSubmit = async (event) => {
     event.preventDefault()
-    postEmailForm()
+    let didPost = await postEmailForm()
+    didPost === 201 ? setExistsInDatabase(true) : setExistsInDatabase(false)
     return
   }
 
@@ -35,21 +55,25 @@ const EmailToggle = () => {
 
   const postEmailForm = () => {
     console.log(postBody)
-    fetch('http://localhost:8080/email_notifications', {
+    let status = fetch('http://localhost:8080/email_notifications', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(postBody)
     })
-    .then(res => res.json())
     .then(res => {
-      console.log(res);
+      res.status === 201 ? alert('Email preferences updated.') : alert('There was an error processing your request.')
+      return res.status
     })
     .catch(err => {
       console.log(err)
+      return err
     })
+    return status
   }
+
+  //NEED TO IMPLEMENT A PATCH FOR IF THE ORG EXISTS IN DATABASE
 
   useEffect(() => {
     if(userData === null){
@@ -82,26 +106,31 @@ const EmailToggle = () => {
     if(userData){
       setPostBody({
         frequency: "weekly",
-        org_id: userData.org,
+        org: userData.org,
         due_date: currentDate
       })
     }
   }, [userData, currentDate])
 
-  // useEffect(() => {
-  //   fetch('http://localhost:8080/email_notifications')
-  //   .then(res => res.json())
-  //   .then(res => {
-  //     if(res.length){
-  //       //check to see if orgID exists in each notification
-  //       //toggle if true
-  //     }
-  //   })
-  //   .catch(err => {
-  //     console.log(err)
-  //   })
-  //   return
-  // }, [])
+  useEffect(() => {
+    if(userData){
+      fetch(`http://localhost:8080/email_notifications/${userData.org}`)
+      .then(res => res.json())
+      .then(res => {
+        if(res.length){
+          setToggled(true)
+          setExistsInDatabase(true)
+          return
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        alert('There was an error retrieving email preferences.')
+      })
+      return
+    }
+    return
+  }, [userData])
 
   return (
     <Card sx={{ maxWidth: '100%', marginTop: '2em' }}>
