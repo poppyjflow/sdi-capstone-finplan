@@ -164,20 +164,22 @@ app.post('/users', async (req, res) => {
 });
 
 app.post('/email_notifications', (req, res) => {
-  let { org, frequency, due_date } = req.body;
-  console.log(`before: ${due_date}`);
+  let { org_id, frequency, due_date } = req.body;
+  console.log(req.body)
+  // console.log(`before: ${due_date}`);
   //  due_date = new Date(due_date)
-  console.log(`after: ${due_date}`);
+  // console.log(`after: ${due_date}`);
 
   try {
-    if (org === null) {
+    if (org_id === null) {
       res.status(400).json(`No org name passed.`);
     }
     knex('notifications')
       .insert({
+        org_id: `${org_id}`,
         frequency: `${frequency}`,
-        org_id: `${org}`,
-        due_date: `${due_date}`,
+        due_date: `${due_date}`
+
       })
       .then(() => res.status(201).json('Creation successful.'));
   }
