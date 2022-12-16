@@ -54,7 +54,7 @@ let transporter = nodemailer.createTransport({
 function mailOptionSetter(endUserEmail) {
     let mailOptions = {
         from: '"System Admin" <from@example.com>',
-        to: `${endUserEmail}, user2@example.com`,
+        to: `${endUserEmail}`,
         subject: 'reminder',
         text: 'Hello, please check your budget request 😉 ',
         html: '<b>Hey Hello! </b><br> please check your budget request 😉'
