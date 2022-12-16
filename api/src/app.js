@@ -17,9 +17,14 @@ app.use(cors({
 app.use(express.json());
 app.use(morgan('tiny'));
 
-//GET ALL REQUESTS
 app.get('/requests', (req, res) => {
-  getRequest('requests', res)
+  knex({ reqs: 'requests' })
+    .join('users', 'users.id', 'user')
+    .join('orgs', 'reqs.org', 'orgs.id')
+    .select('reqs.*', 'users.l_name', 'users.f_name', 'orgs.name as org_name')
+    .then((result) => {
+      res.status(201).json(result)
+    })
 })
 
 //GET REQUEST w/ ID
@@ -87,16 +92,30 @@ app.patch('/users/:id', (req, res) => {
 })
 
 app.post('/requests', (req, res) => {
-  const { body } = req;
+
+  const {
+    user,
+    org,
+    priority,
+    reqCode,
+    reqDate,
+    cost,
+    title,
+    description,
+    impact,
+  } = req.body;
+
   knex('requests')
     .insert({
-      user: `${body.user}`,
-      quarter: `${body.quarter}`,
-      priority: `${body.priority}`,
-      cost: `${body.cost}`,
-      request_code: `${body.requestCode}`,
-      request_title: `${body.descTitle}`,
-      description: `${body.descDetails}`
+      user: user,
+      req_date: reqDate,
+      org: org,
+      priority: priority,
+      cost: cost,
+      req_code: reqCode,
+      req_title: title,
+      description: description,
+      req_impact: impact,
     })
     .then(() => res.status(201).json('Request successfully created.'))
     .catch(err => {

@@ -72,25 +72,33 @@ const Register = () => {
               <TextField
                 label='First Name'
                 fullWidth
-                inputProps={{ name: 'firstName', required: true }} />
+                name='firstName'
+                required
+              />
             </Grid2>
             <Grid2 xs={12} >
               <TextField
                 label='Last Name'
                 fullWidth
-                inputProps={{ name: 'lastName', required: true }} />
+                name='lastName'
+                required />
             </Grid2>
             <Grid2 xs={12} >
               <TextField
                 label='Email Address'
                 fullWidth
-                inputProps={{ name: 'email', type: 'email', required: true }} />
+                name='email'
+                type='email'
+                required />
             </Grid2>
             <Grid2 xs={12} >
               <TextField
                 label='Password'
                 fullWidth
-                inputProps={{ name: 'password', type: 'password', required: true }} />
+                name='password'
+                type='password'
+                required
+              />
             </Grid2>
             <Grid2 xs={12} >
               <Button fullWidth variant='contained' color='secondary' type='submit'>

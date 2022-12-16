@@ -12,7 +12,24 @@ import {
   GridToolbarDensitySelector,
 } from '@mui/x-data-grid';
 
+const getUserFullName = ({ row }) => `${row.f_name || ''} ${row.l_name || ''}`;
 
+const getFiscalQuarter = ({ value }) => {
+  const quarters = {
+    Q1: [9, 10, 11],
+    Q2: [0, 1, 2],
+    Q3: [3, 4, 5],
+    Q4: [6, 7, 8],
+  };
+  const result = new Date(value);
+  let formattedDate;
+  for (const quarter in quarters) {
+    if (quarters[quarter].includes(result.getMonth())) {
+      formattedDate = `${quarter} ${result.getFullYear()}`;
+    }
+  }
+  return formattedDate;
+};
 
 const UserHome = () => {
   const [user] = useOutletContext();
@@ -39,25 +56,33 @@ const UserHome = () => {
       flex: .1,
       headerAlign: 'center',
       align: 'center',
+      valueFormatter: getFiscalQuarter,
     },
     {
-      field: 'org',
+      field: 'org_name',
       headerName: 'Org',
-      flex: .1,
+      flex: .2,
       headerAlign: 'center',
       align: 'center',
     },
     {
-      field: 'user',
-      headerName: 'User',
-      flex: .1,
+      field: 'l_name',
+    },
+    {
+      field: 'f_name',
+    },
+    {
+      field: 'requestee',
+      headerName: 'Submitted By',
+      flex: .2,
       headerAlign: 'center',
       align: 'center',
+      valueGetter: getUserFullName,
     },
     {
       field: 'priority',
       headerName: 'Priority',
-      flex: .1,
+      flex: .07,
       headerAlign: 'center',
       align: 'center',
       editable: true,
@@ -65,11 +90,17 @@ const UserHome = () => {
     {
       field: 'cost',
       headerName: 'Cost',
-      flex: .2,
+      flex: .1,
       headerAlign: 'center',
       align: 'center',
       editable: true,
       type: 'number',
+      // valueFormatter: (params) => {
+      //   if (params.value == null) return '';
+
+      //   const formattedNum = params.value.toString().replaceAll(',', '');
+      //   return formattedNum;
+      // }
     },
     {
       field: 'req_code',
@@ -88,6 +119,7 @@ const UserHome = () => {
       editable: false,
     },
     {
+      type: 'number',
       field: 'allocated_funds',
       headerName: 'Allocation',
       flex: .2,
@@ -96,6 +128,7 @@ const UserHome = () => {
       editable: false,
     },
     {
+      type: 'number',
       field: 'spent_funds',
       headerName: 'Obligation',
       flex: .2,
@@ -152,7 +185,7 @@ const UserHome = () => {
       <Box
         className='grid'
         height='80%'
-        width={.8}
+        width={1}
         flexDirection='column'
       >
         <DataTable
