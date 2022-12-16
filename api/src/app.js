@@ -57,26 +57,7 @@ app.get('/users/:id', (req, res) => {
   getWithID('users', 'id', id, res);
 });
 
-app.patch('/requests/:id', (req, res) => {
-  const { id } = req.params;
-  const { body } = req;
-  knex('requests')
-    .where('id', '=', `${id}`)
-    .update({
-      user: `${body.user}`,
-      quarter: `${body.quarter}`,
-      priority: `${body.priority}`,
-      cost: `${body.cost}`,
-      request_code: `${body.requestCode}`,
-      request_title: `${body.descTitle}`,
-      description: `${body.descDetails}`,
-    })
-    .then(() => res.status(201).json('Request has been successfully updated.'))
-    .catch(err => {
-      console.log(err);
-      res.status(400).json('There was a problem processing your request.');
-    });
-});
+
 
 app.patch('/users/:id', (req, res) => {
   const { id } = req.params;
@@ -117,6 +98,25 @@ app.post('/requests', (req, res) => {
       user: user,
       req_date: reqDate,
       org: org,
+      priority: priority,
+      cost: cost,
+      req_code: reqCode,
+      req_title: title,
+      description: description,
+      req_impact: impact,
+    })
+    .then(() => res.status(201).json('Request successfully created.'))
+    .catch(err => {
+      console.log(err);
+      res.status(400).json('There was an error posting to the database.');
+    });
+});
+
+app.put('/requests', (req, res) => {
+  const { id, priority, reqCode, cost, title, description, impact, } = req.body;
+  knex('requests')
+    .where('id', id)
+    .update({
       priority: priority,
       cost: cost,
       req_code: reqCode,

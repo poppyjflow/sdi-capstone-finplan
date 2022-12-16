@@ -146,7 +146,7 @@ const DataTable = ({ columns, user, itemBar }) => {
       if (row.id === newRow.id) console.log('Old row data', row);
       return (row.id === newRow.id ? updatedRow : row);
     }));
-    submit(newRow, { method: 'put' });
+    submit(newRow, { method: 'put', action: '/main' });
     return updatedRow;
   };
 
@@ -213,6 +213,7 @@ const DataTable = ({ columns, user, itemBar }) => {
               id: false,
               l_name: false,
               f_name: false,
+              req_date: false,
             },
           }
         }}

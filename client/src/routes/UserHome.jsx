@@ -14,14 +14,14 @@ import {
 
 const getUserFullName = ({ row }) => `${row.f_name || ''} ${row.l_name || ''}`;
 
-const getFiscalQuarter = ({ value }) => {
+const getFiscalQuarter = ({ row }) => {
   const quarters = {
     Q1: [9, 10, 11],
     Q2: [0, 1, 2],
     Q3: [3, 4, 5],
     Q4: [6, 7, 8],
   };
-  const result = new Date(value);
+  const result = new Date(row.req_date);
   let formattedDate;
   for (const quarter in quarters) {
     if (quarters[quarter].includes(result.getMonth())) {
@@ -51,12 +51,15 @@ const UserHome = () => {
     },
     {
       field: 'req_date',
+    },
+    {
+      field: 'fiscal_quarter',
       editable: false,
       headerName: 'FQ',
       flex: .1,
       headerAlign: 'center',
       align: 'center',
-      valueFormatter: getFiscalQuarter,
+      valueGetter: getFiscalQuarter,
     },
     {
       field: 'org_name',
@@ -111,12 +114,12 @@ const UserHome = () => {
       editable: true,
     },
     {
-      field: '',
+      field: 'description',
       headerName: 'Description',
       flex: .4,
       headerAlign: 'center',
       align: 'center',
-      editable: false,
+      editable: true,
     },
     {
       type: 'number',
@@ -125,7 +128,7 @@ const UserHome = () => {
       flex: .2,
       headerAlign: 'center',
       align: 'center',
-      editable: false,
+      editable: true,
     },
     {
       type: 'number',
@@ -134,7 +137,7 @@ const UserHome = () => {
       flex: .2,
       headerAlign: 'center',
       align: 'center',
-      editable: false,
+      editable: true,
     },
   ];
 
