@@ -1,7 +1,7 @@
 const {  getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js')
 const express = require('express');
 const cors = require('cors');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const { randomBytes } = require('node:crypto');
 
 const env = process.env.NODE_ENV || 'development';
@@ -16,7 +16,7 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
-app.use(morgan('tiny'));
+// app.use(morgan('tiny'));
 
 //GET ALL REQUESTS
 app.get('/requests', (req, res) => {
@@ -27,6 +27,12 @@ app.get('/requests', (req, res) => {
 app.get('/requests/:id', (req, res) => {
   const { id } = req.params;
   getWithID('requests', 'id', id, res);
+});
+
+//GET EMAIL NOTIFICATIONS FOR SPECIFIC UNIT ID
+app.get('/email_notifications/:id', (req, res) => {
+  const { id } = req.params;
+  getWithID('notifications', 'org_id', id, res);
 });
 
 //GET ALL ORGS
@@ -70,14 +76,13 @@ app.patch('/requests/:id', (req, res) => {
 app.patch('/users/:id', (req, res) => {
   const { id } = req.params;
   const { body } = req;
-  //GET ORG ID FROM ORG NAME IN BODY, INSERT
   knex('users')
     .where('id', '=', `${id}`)
     .update({
       rank: `${body.rank}`,
       f_name: `${body.firstname}`,
       l_name: `${body.lastname}`,
-      // org: `${body.org}`,
+      org: `${body.org}`,
       email: `${body.email}`,
       branch: `${body.branch}`
     })
@@ -171,7 +176,7 @@ app.post('/email_notifications', (req, res) => {
     knex('notifications')
       .insert({
         frequency: `${frequency}`,
-        org_name: `${org}`,
+        org_id: `${org}`,
         due_date: `${due_date}`,
       })
       .then(() => res.status(201).json('Creation successful.'));
@@ -209,6 +214,19 @@ app.get('requests/user/:id', async (req, res) => {
 app.delete('/requests/:id', (req, res) => {
   const { id } = req.params;
   deleteRequest('requests', id, res);
+});
+
+//DELETE AN EMAIL NOTIFICATION
+app.delete('/email_notifications/:id', (req, res) => {
+  const { id } = req.params;
+  knex(`notifications`)
+  .delete('*')
+  .where('org_id', '=', `${id}`)
+  .then(() => res.status(200).json('Deletion successful'))
+  .catch(err => {
+    console.log('Occurred in deleteRequest', err)
+    res.status(400).json('There was a problem processing your request.')
+  })
 });
 
 //DELETE A SPECIFIC USER
