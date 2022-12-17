@@ -31,6 +31,12 @@ const getFiscalQuarter = ({ row }) => {
   return formattedDate;
 };
 
+const quarterSort = (v1, v2) => {
+  const val1 = v1.split(' ');
+  const val2 = v2.split(' ');
+  return (`${val1[1]}.${val1[0][1]}` - `${val2[1]}.${val2[0][1]}`);
+}
+
 const UserHome = () => {
   const [user] = useOutletContext();
 
@@ -56,15 +62,16 @@ const UserHome = () => {
       field: 'fiscal_quarter',
       editable: false,
       headerName: 'FQ',
-      flex: .1,
+      flex: .15,
       headerAlign: 'center',
       align: 'center',
       valueGetter: getFiscalQuarter,
+      sortComparator: quarterSort,
     },
     {
       field: 'org_name',
       headerName: 'Org',
-      flex: .2,
+      flex: .25,
       headerAlign: 'center',
       align: 'center',
     },
@@ -91,6 +98,22 @@ const UserHome = () => {
       editable: true,
     },
     {
+      field: 'req_code',
+      headerName: 'Category',
+      flex: .2,
+      headerAlign: 'center',
+      align: 'center',
+      editable: true,
+    },
+    {
+      field: 'req_title',
+      headerName: 'Request',
+      flex: .4,
+      headerAlign: 'center',
+      align: 'center',
+      editable: true,
+    },
+    {
       field: 'cost',
       headerName: 'Cost',
       flex: .1,
@@ -104,22 +127,6 @@ const UserHome = () => {
       //   const formattedNum = params.value.toString().replaceAll(',', '');
       //   return formattedNum;
       // }
-    },
-    {
-      field: 'req_code',
-      headerName: 'Category',
-      flex: .2,
-      headerAlign: 'center',
-      align: 'center',
-      editable: true,
-    },
-    {
-      field: 'description',
-      headerName: 'Description',
-      flex: .4,
-      headerAlign: 'center',
-      align: 'center',
-      editable: true,
     },
     {
       type: 'number',
@@ -188,7 +195,7 @@ const UserHome = () => {
       <Box
         className='grid'
         height='80%'
-        width={1}
+        width={.95}
         flexDirection='column'
       >
         <DataTable

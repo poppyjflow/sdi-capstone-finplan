@@ -214,6 +214,7 @@ const DataTable = ({ columns, user, itemBar }) => {
               l_name: false,
               f_name: false,
               req_date: false,
+              requestee: false,
             },
           }
         }}

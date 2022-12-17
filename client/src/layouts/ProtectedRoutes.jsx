@@ -15,13 +15,11 @@ const ProtectedRoutes = () => {
   }, [user]);
 
   return (
-    <Box className='page'>
+    <Box className='page' height='100%'>
       <Navbar />
       <Box
         className='content'
-        position='absolute'
-        left='10%'
-        right='10%'
+        width='100%'
         display='flex'
         flexDirection='column'
         justifyContent='center'
