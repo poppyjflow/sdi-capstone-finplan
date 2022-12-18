@@ -1,4 +1,5 @@
-const {  getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js')
+const {  getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js');
+const { getBannerData } = require('./banner.js');
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -171,7 +172,7 @@ app.post('/email_notifications', (req, res) => {
     knex('notifications')
       .insert({
         frequency: `${frequency}`,
-        org_name: `${org}`,
+        org_id: `${org}`,
         due_date: `${due_date}`,
       })
       .then(() => res.status(201).json('Creation successful.'));
@@ -204,6 +205,11 @@ app.get('requests/user/:id', async (req, res) => {
     });
 });
 
+// This spools-up the data for the summary banner at the top of the grid page.
+app.get('/banner', async (req, res) => {
+  const { org_id, year_fy } = req.body;
+  getBannerData(res, org_id, year_fy);
+});
 
 //DELETE A SPECIFIC REQUEST
 app.delete('/requests/:id', (req, res) => {
