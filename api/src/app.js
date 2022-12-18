@@ -1,7 +1,7 @@
 const { getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js')
 const express = require('express');
 const cors = require('cors');
-// const morgan = require('morgan');
+const morgan = require('morgan');
 const { randomBytes } = require('node:crypto');
 
 const env = process.env.NODE_ENV || 'development';
@@ -11,12 +11,16 @@ const app = express();
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+const formatNum = (num) => {
+  return num.replaceAll(',', '');
+}
+
 app.use(cors({
   origin: true,
   credentials: true
 }));
 app.use(express.json());
-// app.use(morgan('tiny'));
+app.use(morgan('tiny'));
 
 app.get('/requests', (req, res) => {
   knex({ reqs: 'requests' })
@@ -87,23 +91,21 @@ app.post('/requests', (req, res) => {
     priority,
     reqCode,
     reqDate,
-    cost,
+    requested,
     title,
     description,
-    impact,
   } = req.body;
 
   knex('requests')
     .insert({
       user: user,
-      req_date: reqDate,
       org: org,
+      req_date: reqDate,
       priority: priority,
-      cost: cost,
+      requested: formatNum(requested),
       req_code: reqCode,
       req_title: title,
       description: description,
-      req_impact: impact,
     })
     .then(() => res.status(201).json('Request successfully created.'))
     .catch(err => {
@@ -112,17 +114,21 @@ app.post('/requests', (req, res) => {
     });
 });
 
-app.put('/requests', (req, res) => {
-  const { id, priority, reqCode, cost, title, description, impact, } = req.body;
+app.put('/requests/:id', (req, res) => {
+  const { org, reqCode, reqDate, priority, allocated, requested, obligated, title, description, } = req.body;
+  const { id } = req.params;
   knex('requests')
     .where('id', id)
     .update({
-      priority: priority,
-      cost: cost,
+      org: org,
       req_code: reqCode,
+      req_date: reqDate,
+      priority: priority,
+      requested: requested,
+      allocated: allocated,
+      obligated: obligated,
       req_title: title,
       description: description,
-      req_impact: impact,
     })
     .then(() => res.status(201).json('Request successfully created.'))
     .catch(err => {

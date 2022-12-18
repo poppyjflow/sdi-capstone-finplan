@@ -39,8 +39,8 @@ const RequestForm = () => {
 
   const moneyField = (props) => (
     <TextField
-      name='cost'
-      label='Cost'
+      name='requested'
+      label='Requested'
       variant='filled'
       {...props}
       required
@@ -166,15 +166,6 @@ const RequestForm = () => {
                 label='Description'
                 multiline
                 minRows={3}
-              />
-            </Grid2>
-            <Grid2 xs={12}>
-              <TextField
-                name='impact'
-                variant='filled'
-                fullWidth
-                label='Impact'
-                multiline
               />
             </Grid2>
             <Grid2 xs={10}>
