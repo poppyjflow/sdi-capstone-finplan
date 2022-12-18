@@ -100,7 +100,7 @@ const DataTable = ({ columns, user, itemBar }) => {
       setTableData(res.data);
     };
     if (user.auth) fetchData();
-  }, []);
+  }, [user.auth]);
 
   const handleRowEditStart = (params, e) => {
     e.defaultMuiPrevented = true;
@@ -155,7 +155,7 @@ const DataTable = ({ columns, user, itemBar }) => {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
-      flex: .1,
+      //flex: .1,
       cellClassName: 'actions',
       getActions: ({ id }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
@@ -163,13 +163,13 @@ const DataTable = ({ columns, user, itemBar }) => {
         if (isInEditMode) {
           return [
             <GridActionsCellItem
-              key={id}
+              key={`${id}.save`}
               icon={<SaveAltIcon />}
               label='Save'
               onClick={handleSaveClick(id)}
             />,
             <GridActionsCellItem
-              key={id}
+              key={`${id}.cancel`}
               icon={<ClearIcon />}
               label="Cancel"
               onClick={handleCancelClick(id)}
@@ -179,13 +179,13 @@ const DataTable = ({ columns, user, itemBar }) => {
 
         return [
           <GridActionsCellItem
-            key={id}
+            key={`${id}.edit`}
             icon={<EditIcon />}
             label="Edit"
             onClick={handleEditClick(id)}
           />,
           <GridActionsCellItem
-            key={id}
+            key={`${id}.delete`}
             icon={<DeleteIcon />}
             label="Delete"
             onClick={handleDeleteClick(id)}
@@ -199,14 +199,25 @@ const DataTable = ({ columns, user, itemBar }) => {
     <>
       {/* <DetailsModal isOpen={openModal} setIsOpen={setOpenModal} data={data} /> */}
       <DataGrid
-        sx={{ bgcolor: '#888888' }}
+        sx={{
+          boxShadow: 2,
+          border: 2,
+          borderColor: '#3464eb',
+          bgcolor: '#888888',
+          '& .MuiDataGrid-cell:hover': {
+            color: 'primary.main',
+          },
+          '& .MuiSvgIcon-root': {
+            color: 'primary.main',
+          }
+        }}
         components={{
           NoRowsOverlay: CustomNoRowsOverlay,
           Toolbar: itemBar,
         }}
         initialState={{
           sorting: {
-            sortModel: [{ field: 'id', sort: 'asc' }]
+            sortModel: [{ field: 'fiscal_quarter', sort: 'asc' }]
           },
           columns: {
             columnVisibilityModel: {
@@ -218,6 +229,7 @@ const DataTable = ({ columns, user, itemBar }) => {
             },
           }
         }}
+        disableColumnMenu
         rows={tableData}
         columns={[...columns, ...userActions]}
         editMode='row'
@@ -227,6 +239,8 @@ const DataTable = ({ columns, user, itemBar }) => {
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
         onRowClick={handleRowClick}
+        columnBuffer={2}
+        columnThreshold={2}
         experimentalFeatures={{ newEditingApi: true }}
       />
     </>

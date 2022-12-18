@@ -1,15 +1,14 @@
 import React from 'react';
-import { useState } from 'react';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import DataTable from '../components/DataTable';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import SyncIcon from '@mui/icons-material/Sync';
 import AddIcon from '@mui/icons-material/Add';
 import {
   GridToolbarContainer,
   GridToolbarFilterButton,
   GridToolbarDensitySelector,
+  GridToolbarExport,
 } from '@mui/x-data-grid';
 
 const getUserFullName = ({ row }) => `${row.f_name || ''} ${row.l_name || ''}`;
@@ -47,8 +46,22 @@ const UserHome = () => {
     navigate('/new-request');
   };
 
-  const handleSource = (e) => {
-    e.preventDefault();
+  const renderDelta = ({ row }) => {
+    if (row.allocated && row.obligated) {
+      const percentage = row.obligated / row.allocated;
+      return (
+        <Box border='2px solid' borderRadius='8px'>
+          <Box
+            width={percentage}
+            borderRadius='8px'
+            bgcolor={percentage > .5 ? '#115e0a' : '#ff0008'}
+          >
+            {`$${row.obligated} / $${row.allocated}`}
+          </Box>
+        </Box>
+      )
+    }
+    return null;
   };
 
   const columns = [
@@ -61,6 +74,7 @@ const UserHome = () => {
     {
       field: 'fiscal_quarter',
       editable: false,
+      description: 'Fiscal quarter / year',
       headerName: 'FQ',
       flex: .15,
       headerAlign: 'center',
@@ -91,14 +105,16 @@ const UserHome = () => {
     },
     {
       field: 'priority',
+      description: 'Priority codes',
       headerName: 'Priority',
-      flex: .07,
+      flex: .1,
       headerAlign: 'center',
       align: 'center',
       editable: true,
     },
     {
       field: 'req_code',
+      description: 'Category each request falls into',
       headerName: 'Category',
       flex: .2,
       headerAlign: 'center',
@@ -107,31 +123,27 @@ const UserHome = () => {
     },
     {
       field: 'req_title',
-      headerName: 'Request',
-      flex: .4,
+      headerName: 'Details',
+      flex: .35,
       headerAlign: 'center',
       align: 'center',
       editable: true,
     },
     {
-      field: 'cost',
-      headerName: 'Cost',
-      flex: .1,
+      field: 'requested',
+      description: 'Requested funding',
+      headerName: 'Requested',
+      flex: .15,
       headerAlign: 'center',
       align: 'center',
       editable: true,
       type: 'number',
-      // valueFormatter: (params) => {
-      //   if (params.value == null) return '';
-
-      //   const formattedNum = params.value.toString().replaceAll(',', '');
-      //   return formattedNum;
-      // }
     },
     {
       type: 'number',
-      field: 'allocated_funds',
-      headerName: 'Allocation',
+      description: 'Allocated funding',
+      field: 'allocated',
+      headerName: 'Allocated',
       flex: .2,
       headerAlign: 'center',
       align: 'center',
@@ -139,12 +151,22 @@ const UserHome = () => {
     },
     {
       type: 'number',
-      field: 'spent_funds',
-      headerName: 'Obligation',
+      field: 'obligated',
+      description: 'How much of the allocated funding has been spent',
+      headerName: 'Obligated',
       flex: .2,
       headerAlign: 'center',
       align: 'center',
       editable: true,
+    },
+    {
+      field: 'delta',
+      headerName: 'Delta',
+      flex: .2,
+      headerAlign: 'center',
+      align: 'center',
+      editable: false,
+      renderCell: renderDelta,
     },
   ];
 
@@ -159,24 +181,13 @@ const UserHome = () => {
     </Button>
   );
 
-  const DataSource = () => (
-    <Button
-      onClick={handleSource}
-      variant='text'
-      color='primary'
-      startIcon={<SyncIcon />}
-    >
-      Switch Orgs
-    </Button>
-  );
-
   const ItemToolBar = () => {
     return (
       <GridToolbarContainer>
         <GridToolbarFilterButton />
         <GridToolbarDensitySelector />
         <NewRequest />
-        <DataSource />
+        <GridToolbarExport />
       </GridToolbarContainer>
     );
   };
@@ -194,7 +205,7 @@ const UserHome = () => {
     >
       <Box
         className='grid'
-        height='80%'
+        height='80vh'
         width={.95}
         flexDirection='column'
       >

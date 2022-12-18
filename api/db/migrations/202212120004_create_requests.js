@@ -9,14 +9,13 @@ exports.up = function (knex) {
     table.string('req_date').notNullable();
     table.integer('org').nullable().references('id').inTable('orgs').onDelete('CASCADE');
     table.string('priority').nullable();
-    table.integer('cost').nullable();
     table.string('req_code');
     table.string('req_title');
     table.string('description');
-    table.string('req_impact');
+    table.integer('requested').nullable().defaultTo(0);
     table.boolean('req_granted').defaultTo(false);
-    table.integer('allocated_funds').nullable();
-    table.integer('spent_funds').nullable();
+    table.integer('allocated').nullable().defaultTo(0);
+    table.integer('obligated').nullable().defaultTo(0);
   });
 };
 
