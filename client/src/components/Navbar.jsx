@@ -11,7 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import CottageOutlinedIcon from '@mui/icons-material/CottageOutlined';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ navProps }) => {
   const [user, setUser] = useOutletContext();
   const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate();
@@ -44,10 +44,11 @@ const Navbar = () => {
     <>
       <AppBar
         sx={{
-          mb: 2,
           overflow: 'hidden',
+          width: navProps.width,
+          ml: navProps.ml,
         }}
-        position='static'
+        position='fixed'
       >
         <ToolBar>
           <IconButton onClick={handleHome} sx={{ p: 0 }}>

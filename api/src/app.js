@@ -44,10 +44,43 @@ app.get('/email_notifications/:id', (req, res) => {
   getWithID('notifications', 'org_id', id, res);
 });
 
-//GET ALL ORGS
+
 app.get('/orgs', (req, res) => {
   knex('orgs')
     .select('*')
+    .then((result) => res.status(201).json(result))
+})
+
+app.get('/majcoms', (req, res) => {
+  knex('orgs')
+    .select('*')
+    .whereNull('majcom')
+    .then((result) => res.status(201).json(result))
+})
+
+app.get('/:majcom/wings', (req, res) => {
+  const { majcom } = req.params;
+  knex('orgs')
+    .select('*')
+    .where('majcom', majcom)
+    .whereNull('wing')
+    .then((result) => res.status(201).json(result))
+})
+
+app.get('/:wing/groups', (req, res) => {
+  const { wing } = req.params;
+  knex('orgs')
+    .select('*')
+    .whereNull('group')
+    .where('wing', wing)
+    .then((result) => res.status(201).json(result))
+})
+
+app.get('/:group/squadrons', (req, res) => {
+  const { group } = req.params;
+  knex('orgs')
+    .select('*')
+    .where('group', group)
     .then((result) => res.status(201).json(result))
 })
 
@@ -58,7 +91,10 @@ app.get('/users', (req, res) => {
 
 app.get('/users/:id', (req, res) => {
   const { id } = req.params;
-  getWithID('users', 'id', id, res);
+  knex('users')
+    .select('id', 'org', 'branch', 'rank', 'l_name', 'f_name', 'email', 'is_admin')
+    .where('id', id)
+    .then((result) => res.status(201).send(result))
 });
 
 
