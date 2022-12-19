@@ -16,6 +16,7 @@ const EmailToggle = () => {
   const [currentDate, setCurrentDate] = useState('');
   const [postBody, setPostBody] = useState(null);
   const [existsInDatabase, setExistsInDatabase] = useState(false);
+  const [reload, setReload] = useState(false);
 
   const handleEmailChange = (event) => {
     event.preventDefault()
@@ -43,8 +44,13 @@ const EmailToggle = () => {
 
   const handleEmailSubmit = async (event) => {
     event.preventDefault()
-    let didPost = await postEmailForm()
-    didPost === 201 ? setExistsInDatabase(true) : setExistsInDatabase(false)
+    if(!existsInDatabase){
+      let didPost = await postEmailForm();
+      didPost === 201 ? setExistsInDatabase(true) : setExistsInDatabase(false);
+      window.location.reload();
+      return
+    }
+    alert('You have already submitted an email request.')
     return
   }
 
@@ -54,7 +60,6 @@ const EmailToggle = () => {
   }
 
   const postEmailForm = () => {
-    console.log(postBody)
     if(postBody.org_id){
       let status = fetch('http://localhost:8080/email_notifications', {
         method: 'POST',
@@ -78,6 +83,7 @@ const EmailToggle = () => {
   }
 
   //NEED TO IMPLEMENT A PATCH FOR IF THE ORG EXISTS IN DATABASE
+
 
   useEffect(() => {
     if(userData === null){
