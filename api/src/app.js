@@ -240,7 +240,7 @@ app.post('/email_notifications', (req, res) => {
       .insert({
         org_id: `${org_id}`,
         frequency: `${frequency}`,
-        due_date: `${due_date}`
+        due_date: `${due_date}`,
       })
       .then(() => res.status(201).json('Creation successful.'));
   }
