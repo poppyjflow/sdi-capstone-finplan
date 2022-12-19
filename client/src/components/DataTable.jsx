@@ -153,13 +153,11 @@ const DataTable = ({ columns, user, itemBar }) => {
   const userActions = [
     {
       field: 'actions',
-      headerName: 'Actions',
       type: 'actions',
-      //flex: .1,
+      width: 70,
       cellClassName: 'actions',
       getActions: ({ id }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-
         if (isInEditMode) {
           return [
             <GridActionsCellItem

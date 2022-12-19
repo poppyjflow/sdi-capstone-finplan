@@ -74,9 +74,9 @@ const UserHome = () => {
     {
       field: 'fiscal_quarter',
       editable: false,
+      maxWidth: 80,
       description: 'Fiscal quarter / year',
       headerName: 'FQ',
-      flex: .15,
       headerAlign: 'center',
       align: 'center',
       valueGetter: getFiscalQuarter,
@@ -162,6 +162,7 @@ const UserHome = () => {
     {
       field: 'delta',
       headerName: 'Delta',
+      minWidth: 145,
       flex: .2,
       headerAlign: 'center',
       align: 'center',
@@ -194,27 +195,16 @@ const UserHome = () => {
 
   return (
     <Box
-      className='user-home'
-      height='100%'
-      display='flex'
-      flexWrap='wrap'
-      overflow='hidden'
+      className='grid'
+      height='80vh'
+      width={1}
       flexDirection='column'
-      alignContent='center'
-      justifyContent='space-evenly'
     >
-      <Box
-        className='grid'
-        height='80vh'
-        width={.95}
-        flexDirection='column'
-      >
-        <DataTable
-          itemBar={ItemToolBar}
-          user={user}
-          columns={columns}
-        />
-      </Box>
+      <DataTable
+        itemBar={ItemToolBar}
+        user={user}
+        columns={columns}
+      />
     </Box>
   );
 };
