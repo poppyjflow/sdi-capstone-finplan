@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid';
@@ -8,6 +8,23 @@ import { QuarterlyBarChart } from '../components/QuarterlyBarChart';
 
 
 const SummaryView = () => {
+  const [yearData, setYearData] = useState(null)
+
+  useEffect(() => {
+    let orgYear = {
+      org_id: 1,
+      year_fy: 2022
+    }
+    fetch('http://localhost:8080/banner', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(orgYear)
+    })
+    .then(res => console.log(res.json()))
+  }, [])
+
     return(
     <Grid sx={{flexGrow: 1, maxWidth: '100%', maxHeight: '100%', marginTop: '1em', marginBottom:'1em'}}>
       <Grid container
