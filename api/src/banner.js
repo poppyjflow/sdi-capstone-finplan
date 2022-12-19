@@ -30,7 +30,8 @@ const getBannerData = async (res, org_id, year_fy) => {
       qry = result;
     })
     .catch(err => {
-      res.status(400).json(err);
+      // res.status(400).json(err);
+      console.log(err)
     });
 
   // split return data by quarter.
@@ -120,7 +121,7 @@ const getBannerData = async (res, org_id, year_fy) => {
     res.status(201).json(returnObj);
   }
   catch (err) {
-    res.status(404).send(err);
+    res.status(404).json(err);
   }
 };
 

@@ -78,6 +78,7 @@ const router = createBrowserRouter([
           {
             path: '/summary',
             element: <SummaryView />,
+            loader: loadUserData
           },
         ]
       },
