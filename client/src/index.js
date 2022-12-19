@@ -24,6 +24,7 @@ import loadOrgs from './loaders/loadOrgs';
 import NewReqAction from './actions/NewReqAction';
 import Profile from './routes/Profile';
 import loadUserData from './loaders/loadUserData';
+import SummaryView from './routes/SummaryView';
 
 
 const router = createBrowserRouter([
@@ -73,6 +74,10 @@ const router = createBrowserRouter([
             path: '/profile',
             element: <Profile />,
             loader: loadUserData,
+          },
+          {
+            path: '/summary',
+            element: <SummaryView />,
           },
         ]
       },
