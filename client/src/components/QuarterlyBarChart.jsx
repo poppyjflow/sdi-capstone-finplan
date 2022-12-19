@@ -30,7 +30,6 @@ export const options = {
       text: 'Spending by Quarter',
     },
   },
-  // maintainAspectRatio: false
 };
 
 const labels = ['Q1', 'Q2', 'Q3', 'Q4'];
@@ -55,7 +54,5 @@ export function QuarterlyBarChart() {
   return <Bar
   options={options}
   data={data}
-  // height={"100%"}
-  // width={'400%'}
   />;
 }

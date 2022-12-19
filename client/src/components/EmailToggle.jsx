@@ -16,7 +16,6 @@ const EmailToggle = () => {
   const [currentDate, setCurrentDate] = useState('');
   const [postBody, setPostBody] = useState(null);
   const [existsInDatabase, setExistsInDatabase] = useState(false);
-  const [reload, setReload] = useState(false);
 
   const handleEmailChange = (event) => {
     event.preventDefault()
@@ -38,8 +37,8 @@ const EmailToggle = () => {
         console.log(err);
         return;
       })
-  }
-  return;
+    }
+    return;
   }
 
   const handleEmailSubmit = async (event) => {
@@ -83,7 +82,6 @@ const EmailToggle = () => {
   }
 
   //NEED TO IMPLEMENT A PATCH FOR IF THE ORG EXISTS IN DATABASE
-
 
   useEffect(() => {
     if(userData === null){
@@ -160,7 +158,7 @@ const EmailToggle = () => {
           <div>
             <Switch
             checked={toggled}
-            onChange={handleEmailChange}
+            onClick={handleEmailChange}
             color='secondary'/>
           </div>
           {toggled ?
@@ -188,7 +186,7 @@ const EmailToggle = () => {
           </Box>
           :
           <Typography variant="body2" color="text.secondary">
-            Email reminders for your command team are toggled off.
+            Due date email reminders for your organization are toggled off.
           </Typography>
           }
         </CardContent>
