@@ -52,6 +52,11 @@ app.get('/orgs', (req, res) => {
     .then((result) => res.status(201).json(result))
 })
 
+app.get('/orgs/:id', (req, res) => {
+  const { id } = req.params;
+  getWithID('orgs', 'id', id, res);
+})
+
 app.get('/majcoms', (req, res) => {
   knex('orgs')
     .select('*')

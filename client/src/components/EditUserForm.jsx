@@ -62,10 +62,6 @@ const EditUserForm = () => {
     return;
   }
 
-  // const convertOrg = () => {
-
-  // }
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -178,7 +174,7 @@ const EditUserForm = () => {
         firstname: userFormData.firstname.value,
         lastname: userFormData.lastname.value,
         branch: userFormData.branch.value,
-        org: userFormData.org.value,
+        // org: userFormData.org.value,
         email: userFormData.email.value,
       })
     }
@@ -248,7 +244,7 @@ const EditUserForm = () => {
               variant="standard"
               onChange={handleFormChange}
             />
-            <TextField
+            {/* <TextField
               autoFocus
               name='org'
               value={userFormData.org.value}
@@ -261,7 +257,7 @@ const EditUserForm = () => {
               fullWidth
               variant="standard"
                onChange={handleFormChange}
-            />
+            /> */}
             <FormControl fullWidth sx={{marginTop: '0.5em'}}>
                 <InputLabel id='branch'>Branch</InputLabel>
                 <Select

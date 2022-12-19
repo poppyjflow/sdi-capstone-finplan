@@ -15,7 +15,7 @@ const EmailToggle = () => {
   const [ toggled, setToggled ] = useState(false);
   const [currentDate, setCurrentDate] = useState('');
   const [postBody, setPostBody] = useState(null);
-  const [existsInDatabase, setExistsInDatabase] = useState(false);
+  const [existsInDatabase, setExistsInDatabase] = useState(null);
 
   const handleEmailChange = (event) => {
     event.preventDefault()
@@ -43,13 +43,13 @@ const EmailToggle = () => {
 
   const handleEmailSubmit = async (event) => {
     event.preventDefault()
-    if(!existsInDatabase){
-      let didPost = await postEmailForm();
-      didPost === 201 ? setExistsInDatabase(true) : setExistsInDatabase(false);
-      window.location.reload();
+    if(existsInDatabase){
+      alert('You have already submitted an email request.')
       return
     }
-    alert('You have already submitted an email request.')
+    let didPost = await postEmailForm();
+    didPost === 201 ? setExistsInDatabase(true) : setExistsInDatabase(false);
+    // window.location.reload();
     return
   }
 
@@ -69,7 +69,7 @@ const EmailToggle = () => {
       })
       .then(res => {
         res.status === 201 ? alert('Email preferences updated.') : alert('There was an error processing your request.')
-        return
+        return res.status
       })
       .catch(err => {
         console.log(err)

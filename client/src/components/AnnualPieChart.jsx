@@ -8,22 +8,24 @@ import { Pie } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top',
-    },
-    title: {
-      display: true,
-      text: 'Total Annual Spending',
-    },
-  },
-};
-
 const AnnualPieChart = ({ data }) => {
   const { q1, q2, q3, q4 } = data;
   const totalUnspent = q1.delta + q2.delta + q3.delta + q4.delta
+  const totalSpent = q1.obligations + q2.obligations + q3.obligations + q4.obligations
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: `Total Annual Spending: $${totalSpent}`,
+      },
+    },
+  };
+
   const display = {
     labels: ['Q1', 'Q2', 'Q3', 'Q4', 'Unspent Allocations'],
     datasets: [
