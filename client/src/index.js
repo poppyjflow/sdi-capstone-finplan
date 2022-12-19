@@ -19,9 +19,11 @@ import UserHome from './routes/UserHome';
 import loginAction from './actions/loginAction';
 import registerAction from './actions/registerAction';
 import CreateRequest from './routes/CreateRequest';
-import  Settings  from './routes/Settings';
+import Settings from './routes/Settings';
 import loadOrgs from './loaders/loadOrgs';
 import NewReqAction from './actions/NewReqAction';
+import Profile from './routes/Profile';
+import loadUserData from './loaders/loadUserData';
 
 
 const router = createBrowserRouter([
@@ -54,6 +56,7 @@ const router = createBrowserRouter([
           {
             path: '/main',
             element: <UserHome />,
+            action: NewReqAction,
           },
           {
             path: '/new-request',
@@ -65,6 +68,11 @@ const router = createBrowserRouter([
             path: '/settings',
             element: <Settings />,
             loader: loadOrgs,
+          },
+          {
+            path: '/profile',
+            element: <Profile />,
+            loader: loadUserData,
           },
         ]
       },

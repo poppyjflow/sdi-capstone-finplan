@@ -1,7 +1,7 @@
 const { getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js')
 const express = require('express');
 const cors = require('cors');
-// const morgan = require('morgan');
+const morgan = require('morgan');
 const { randomBytes } = require('node:crypto');
 
 const env = process.env.NODE_ENV || 'development';
@@ -11,12 +11,16 @@ const app = express();
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+const formatNum = (num) => {
+  return num.replaceAll(',', '');
+}
+
 app.use(cors({
   origin: true,
   credentials: true
 }));
 app.use(express.json());
-// app.use(morgan('tiny'));
+app.use(morgan('tiny'));
 
 app.get('/requests', (req, res) => {
   knex({ reqs: 'requests' })
@@ -40,10 +44,43 @@ app.get('/email_notifications/:id', (req, res) => {
   getWithID('notifications', 'org_id', id, res);
 });
 
-//GET ALL ORGS
+
 app.get('/orgs', (req, res) => {
   knex('orgs')
     .select('*')
+    .then((result) => res.status(201).json(result))
+})
+
+app.get('/majcoms', (req, res) => {
+  knex('orgs')
+    .select('*')
+    .whereNull('majcom')
+    .then((result) => res.status(201).json(result))
+})
+
+app.get('/:majcom/wings', (req, res) => {
+  const { majcom } = req.params;
+  knex('orgs')
+    .select('*')
+    .where('majcom', majcom)
+    .whereNull('wing')
+    .then((result) => res.status(201).json(result))
+})
+
+app.get('/:wing/groups', (req, res) => {
+  const { wing } = req.params;
+  knex('orgs')
+    .select('*')
+    .whereNull('group')
+    .where('wing', wing)
+    .then((result) => res.status(201).json(result))
+})
+
+app.get('/:group/squadrons', (req, res) => {
+  const { group } = req.params;
+  knex('orgs')
+    .select('*')
+    .where('group', group)
     .then((result) => res.status(201).json(result))
 })
 
@@ -54,29 +91,13 @@ app.get('/users', (req, res) => {
 
 app.get('/users/:id', (req, res) => {
   const { id } = req.params;
-  getWithID('users', 'id', id, res);
+  knex('users')
+    .select('id', 'org', 'branch', 'rank', 'l_name', 'f_name', 'email', 'is_admin')
+    .where('id', id)
+    .then((result) => res.status(201).send(result))
 });
 
-app.patch('/requests/:id', (req, res) => {
-  const { id } = req.params;
-  const { body } = req;
-  knex('requests')
-    .where('id', '=', `${id}`)
-    .update({
-      user: `${body.user}`,
-      quarter: `${body.quarter}`,
-      priority: `${body.priority}`,
-      cost: `${body.cost}`,
-      request_code: `${body.requestCode}`,
-      request_title: `${body.descTitle}`,
-      description: `${body.descDetails}`,
-    })
-    .then(() => res.status(201).json('Request has been successfully updated.'))
-    .catch(err => {
-      console.log(err);
-      res.status(400).json('There was a problem processing your request.');
-    });
-});
+
 
 app.patch('/users/:id', (req, res) => {
   const { id } = req.params;
@@ -106,23 +127,44 @@ app.post('/requests', (req, res) => {
     priority,
     reqCode,
     reqDate,
-    cost,
+    requested,
     title,
     description,
-    impact,
   } = req.body;
 
   knex('requests')
     .insert({
       user: user,
-      req_date: reqDate,
       org: org,
+      req_date: reqDate,
       priority: priority,
-      cost: cost,
+      requested: formatNum(requested),
       req_code: reqCode,
       req_title: title,
       description: description,
-      req_impact: impact,
+    })
+    .then(() => res.status(201).json('Request successfully created.'))
+    .catch(err => {
+      console.log(err);
+      res.status(400).json('There was an error posting to the database.');
+    });
+});
+
+app.put('/requests/:id', (req, res) => {
+  const { org, reqCode, reqDate, priority, allocated, requested, obligated, title, description, } = req.body;
+  const { id } = req.params;
+  knex('requests')
+    .where('id', id)
+    .update({
+      org: org,
+      req_code: reqCode,
+      req_date: reqDate,
+      priority: priority,
+      requested: requested,
+      allocated: allocated,
+      obligated: obligated,
+      req_title: title,
+      description: description,
     })
     .then(() => res.status(201).json('Request successfully created.'))
     .catch(err => {

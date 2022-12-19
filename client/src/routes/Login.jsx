@@ -12,7 +12,6 @@ const Login = () => {
   console.log('action data: ', test);
 
   useEffect(() => {
-    console.log('login use effect', user);
     if (test) {
       setUser(test);
     }

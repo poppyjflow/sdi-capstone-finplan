@@ -3,10 +3,16 @@ import { useEffect } from 'react';
 import { Outlet, useNavigate, useOutletContext } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import { useState } from 'react';
+import Toolbar from '@mui/material/Toolbar';
+import Divider from '@mui/material/Divider';
 
 const ProtectedRoutes = () => {
   const [user, setUser] = useOutletContext();
+  const [drawerWidth, setDrawerWidth] = useState(200);
 
+  const navProps = { width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }
   console.log('Protected Routes context obj', user);
   const navigate = useNavigate();
 
@@ -15,17 +21,34 @@ const ProtectedRoutes = () => {
   }, [user]);
 
   return (
-    <Box className='page'>
-      <Navbar />
+    <Box className='page' display='flex'>
+      <Navbar navProps={navProps} />
+      <Drawer
+        sx={{
+          width: `${drawerWidth}px`,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: `${drawerWidth}px`,
+            boxSizing: 'border-box',
+          },
+        }}
+        variant="permanent"
+        anchor="left"
+      >
+        <Toolbar />
+        <Divider />
+      </Drawer>
       <Box
+        component='main'
+        flexGrow={1}
         className='content'
-        position='absolute'
-        left='10%'
-        right='10%'
+        width='100%'
         display='flex'
         flexDirection='column'
         justifyContent='center'
+        p={3}
       >
+        <Toolbar />
         <Outlet context={[user, setUser]} />
       </Box>
       <Box
