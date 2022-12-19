@@ -23,7 +23,7 @@ const getBannerData = async (res, org_id, year_fy) => {
 
   // get FY funding data from REQUESTS tbl.
   await knex('requests')
-    .select('req_date', 'cost', 'allocated_funds', 'spent_funds')
+    .select('req_date', 'requested', 'allocated', 'obligated')
     .where('org', org_id)
     .whereBetween('req_date', [from, to])
     .then(result => {
@@ -41,30 +41,30 @@ const getBannerData = async (res, org_id, year_fy) => {
         case 10:
         case 11:
         case 9:
-          totalRequestsQ1 += j.cost;
-          totalAllocationsQ1 += j.allocated_funds;
-          totalObligationsQ1 += j.spent_funds;
+          totalRequestsQ1 += j.requested;
+          totalAllocationsQ1 += j.allocated;
+          totalObligationsQ1 += j.obligated;
           break;
         case 1:
         case 2:
         case 0:
-          totalRequestsQ2 += j.cost;
-          totalAllocationsQ2 += j.allocated_funds;
-          totalObligationsQ2 += j.spent_funds;
+          totalRequestsQ2 += j.requested;
+          totalAllocationsQ2 += j.allocated;
+          totalObligationsQ2 += j.obligated;
           break;
         case 4:
         case 5:
         case 3:
-          totalRequestsQ3 += j.cost;
-          totalAllocationsQ3 += j.allocated_funds;
-          totalObligationsQ3 += j.spent_funds;
+          totalRequestsQ3 += j.requested;
+          totalAllocationsQ3 += j.allocated;
+          totalObligationsQ3 += j.obligated;
           break;
         case 7:
         case 8:
         case 6:
-          totalRequestsQ4 += j.cost;
-          totalAllocationsQ4 += j.allocated_funds;
-          totalObligationsQ4 += j.spent_funds;
+          totalRequestsQ4 += j.requested;
+          totalAllocationsQ4 += j.allocated;
+          totalObligationsQ4 += j.obligated;
           break;
         default:
           console.log(`Invalid Month field in DB: ${reqDate.getMonth()}`);

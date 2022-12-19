@@ -6,12 +6,9 @@ exports.up = function (knex) {
   return knex.schema.createTable('orgs', table => {
     table.increments('id');
     table.string('name');
-    table.integer('group').nullable();
-    table.integer('wing').nullable();
-    table.integer('majcom').nullable();
-    // table.integer('group').nullable().references('id').inTable('orgs').onDelete('CASCADE');
-    // table.integer('wing').nullable().references('id').inTable('orgs').onDelete('CASCADE');
-    // table.integer('majcom').nullable().references('id').inTable('orgs').onDelete('CASCADE');
+    table.integer('group').nullable().references('id').inTable('orgs').onDelete('CASCADE');
+    table.integer('wing').nullable().references('id').inTable('orgs').onDelete('CASCADE');
+    table.integer('majcom').nullable().references('id').inTable('orgs').onDelete('CASCADE');
   });
 };
 

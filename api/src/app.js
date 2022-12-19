@@ -273,7 +273,7 @@ app.get('requests/user/:id', async (req, res) => {
 });
 
 // This spools-up the data for the summary banner at the top of the grid page.
-app.get('/banner', async (req, res) => {
+app.post('/banner', async (req, res) => {
   const { org_id, year_fy } = req.body;
   getBannerData(res, org_id, year_fy);
 });
