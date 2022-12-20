@@ -8,6 +8,7 @@ import EmailToggle from '../components/EmailToggle';
 import { Button } from '@mui/material';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { Switch }from '@mui/material';
+import DeleteUser from '../components/DeleteUser';
 
 
 const Settings = () => {
@@ -23,10 +24,6 @@ const Settings = () => {
     navigate('/');
     setUser({ auth: '', user: '' });
   };
-
-  const handleDelete = () => {
-    return
-  }
 
   return (
     <Box height='100%'>
@@ -70,18 +67,7 @@ const Settings = () => {
     </Card>
 
     <EditUserForm />
-
-    <Card sx={{ maxWidth: '100%', marginTop: '2em' }}>
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            Delete Account
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Send a request to have your account deleted.
-          </Typography>
-          <Button onClick={handleDelete} variant='contained' color='error' sx={{marginTop: '1em'}}>Delete</Button>
-        </CardContent>
-    </Card>
+    <DeleteUser props={{user, handleLogout}}/>
 
     <Card sx={{ maxWidth: '100%', marginTop: '2em' }}>
         <CardContent>

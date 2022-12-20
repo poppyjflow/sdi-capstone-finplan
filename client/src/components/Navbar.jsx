@@ -60,6 +60,12 @@ const Navbar = ({ navProps }) => {
           <IconButton onClick={handleHome} sx={{ p: 0 }}>
             <CottageOutlinedIcon sx={{fontSize: 45, marginLeft: '-0.16em'}} />
           </IconButton>
+          <Box sx={{ flexGrow: 4, display: 'flex', justifyContent: 'center' }}>
+          <h3>FINPLAN Tool</h3>
+          </Box>
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+          Welcome {user.user} !
+          </Box>
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'right' }}>
           <InfoModal />
           </Box>
