@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
@@ -18,11 +18,13 @@ import InputAdornment from '@mui/material/InputAdornment';
 const RequestForm = () => {
   const navigate = useNavigate();
   const [user] = useOutletContext();
+  const [userOrgID, setUserOrgID] = useState(null)
   const [org, setOrg] = useState('');
   const [pri, setPri] = useState('');
   const [reqCode, setReqCode] = useState('');
   const orgArray = useLoaderData();
 
+  console.log(userOrgID)
   const handleOrgUpdate = (e) => {
     e.preventDefault();
     setOrg(e.target.value);
@@ -52,6 +54,16 @@ const RequestForm = () => {
     />
   );
 
+  useEffect(() => {
+    fetch(`http://localhost:8080/users/${user.id}`)
+    .then(res=>res.json())
+    .then(res => setUserOrgID(res[0].org))
+    .catch(err => {
+      console.log(err);
+      alert('There was an error accessing your organization.')
+    })
+  }, [user])
+
   return (
     <Box
       maxWidth='60%'
@@ -65,16 +77,25 @@ const RequestForm = () => {
                 variant='filled'
                 fullWidth
                 select
+                required
                 label='Organization'
                 value={org}
                 onChange={handleOrgUpdate}
               >
                 <MenuItem value=''><em>None</em></MenuItem>
-                {orgArray?.map(({ name, id }) => (
-                  <MenuItem key={id} value={id}>
-                    {name}
-                  </MenuItem>
-                ))}
+                {userOrgID ?
+                  orgArray?.map(({ name, id }) => {
+                    if(id === userOrgID){
+                      return(
+                        <MenuItem key={id} value={id}>
+                          {name}
+                        </MenuItem>
+                      )
+                    }
+                  })
+                :
+                  <MenuItem value=''>No organizations found.</MenuItem>
+                }
               </TextField>
             </Grid2>
             <Grid2 xs={2}>
