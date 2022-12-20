@@ -1,14 +1,32 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import Switch from '@mui/material/Switch';
 import EditUserForm from '../components/EditUserForm';
 import EmailToggle from '../components/EmailToggle';
+import { Button } from '@mui/material';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import { Switch }from '@mui/material';
 
 
 const Settings = () => {
+  const navigate = useNavigate()
+  const [user, setUser] = useOutletContext();
+
+  const handleNavigation = () => {
+    navigate('/profile')
+    return
+  }
+  const handleLogout = () => {
+    sessionStorage.clear();
+    navigate('/');
+    setUser({ auth: '', user: '' });
+  };
+
+  const handleDelete = () => {
+    return
+  }
 
   return (
     <Box height='100%'>
@@ -19,22 +37,63 @@ const Settings = () => {
         </Typography>
       </CardContent>
     </Card>
+
+    <Card sx={{ maxWidth: '100%', marginTop: '2em' }}>
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          Dark Mode
+        </Typography>
+            <div>
+               <Switch
+              checked
+              disabled
+              color='secondary'/>
+            </div>
+        <Typography variant="body2" color="text.secondary" sx={{}}>
+           Dark mode is enabled.
+        </Typography>
+      </CardContent>
+    </Card>
+
+    <EmailToggle />
+
     <Card sx={{ maxWidth: '100%', marginTop: '2em' }}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Enable Dark Mode
+            Change Organization
           </Typography>
-          <Switch
-          defaultChecked
-          disabled
-          color='secondary'/>
           <Typography variant="body2" color="text.secondary">
-            Dark mode is toggled on.
+            Send a request to have your organization changed.
           </Typography>
+          <Button onClick={handleNavigation} variant='contained' color='error' sx={{marginTop: '1em'}}>Edit</Button>
         </CardContent>
     </Card>
-    <EmailToggle />
+
     <EditUserForm />
+
+    <Card sx={{ maxWidth: '100%', marginTop: '2em' }}>
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            Delete Account
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Send a request to have your account deleted.
+          </Typography>
+          <Button onClick={handleDelete} variant='contained' color='error' sx={{marginTop: '1em'}}>Delete</Button>
+        </CardContent>
+    </Card>
+
+    <Card sx={{ maxWidth: '100%', marginTop: '2em' }}>
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            Logout
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Terminate user session.
+          </Typography>
+          <Button onClick={handleLogout} variant='contained' color='error' sx={{marginTop: '1em'}}>Logout</Button>
+        </CardContent>
+    </Card>
     </Box>
   );
 };

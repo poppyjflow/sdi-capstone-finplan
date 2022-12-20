@@ -7,12 +7,13 @@ import Drawer from '@mui/material/Drawer';
 import { useState } from 'react';
 import Toolbar from '@mui/material/Toolbar';
 import Divider from '@mui/material/Divider';
+import SideDrawer from '../components/SideDrawer';
 
 const ProtectedRoutes = () => {
   const [user, setUser] = useOutletContext();
-  const [drawerWidth, setDrawerWidth] = useState(200);
+  const [drawerWidth, setDrawerWidth] = useState(80);
 
-  const navProps = { width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }
+  const navProps = { width: `100%`, ml: `${drawerWidth}px` }
   console.log('Protected Routes context obj', user);
   const navigate = useNavigate();
 
@@ -23,21 +24,7 @@ const ProtectedRoutes = () => {
   return (
     <Box className='page' display='flex'>
       <Navbar navProps={navProps} />
-      <Drawer
-        sx={{
-          width: `${drawerWidth}px`,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: `${drawerWidth}px`,
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="permanent"
-        anchor="left"
-      >
-        <Toolbar />
-        <Divider />
-      </Drawer>
+      <SideDrawer />
       <Box
         component='main'
         flexGrow={1}
