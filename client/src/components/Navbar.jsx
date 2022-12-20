@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import CottageOutlinedIcon from '@mui/icons-material/CottageOutlined';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import InfoModal from './InfoModal';
 
 const Navbar = ({ navProps }) => {
   const [user, setUser] = useOutletContext();
@@ -58,7 +59,8 @@ const Navbar = ({ navProps }) => {
           <IconButton onClick={handleHome} sx={{ p: 0 }}>
             <CottageOutlinedIcon fontSize='large' />
           </IconButton>
-          <Box sx={{ flexGrow: 1, display: 'flex' }}>
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'right' }}>
+          <InfoModal />
           </Box>
           <Box>
             <Tooltip title="Open settings">

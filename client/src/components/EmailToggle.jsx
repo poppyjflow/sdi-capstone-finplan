@@ -49,7 +49,6 @@ const EmailToggle = () => {
     }
     let didPost = await postEmailForm();
     didPost === 201 ? setExistsInDatabase(true) : setExistsInDatabase(false);
-    // window.location.reload();
     return
   }
 
