@@ -13,7 +13,6 @@ const ProtectedRoutes = () => {
   const [drawerWidth, setDrawerWidth] = useState(200);
 
   const navProps = { width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }
-  console.log('Protected Routes context obj', user);
   const navigate = useNavigate();
 
   useEffect(() => {

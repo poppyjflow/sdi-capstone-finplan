@@ -17,13 +17,13 @@ const Profile = () => {
   const [selectedMajcom, setSelectedMajcom] = useState(null);
   const [wingOpen, setWingOpen] = useState(false);
   const [wings, setWings] = useState([]);
-  const [selectedWing, setSelectedWing] = useState(-1);
+  const [selectedWing, setSelectedWing] = useState(null);
   const [groupOpen, setGroupOpen] = useState(false);
   const [groups, setGroups] = useState([]);
-  const [selectedGroup, setSelectedGroup] = useState(-1);
+  const [selectedGroup, setSelectedGroup] = useState(null);
   const [sqOpen, setSqOpen] = useState(false);
   const [squadrons, setSquadrons] = useState([]);
-  const [selectedSquadron, setSelectedSquadrons] = useState(-1);
+  const [selectedSquadron, setSelectedSquadrons] = useState(null);
   const [user] = useOutletContext();
   const test = useLoaderData();
 
@@ -31,13 +31,6 @@ const Profile = () => {
   const loadingW = wingOpen && wings.length === 0;
   const loadingG = groupOpen && groups.length === 0;
   const loadingS = sqOpen && squadrons.length === 0;
-
-  const handleEvent = (e) => {
-    e.preventDefault();
-    console.log('On change: ', e);
-    console.log('text: ', e.target.textContent)
-    setSelectedMajcom(e.target.textContent);
-  }
 
   useEffect(() => {
     let active = true;
@@ -63,9 +56,11 @@ const Profile = () => {
     if (!loadingW) return;
     (async () => {
       if (active) {
-        const res = await axios.get(`http://localhost:8080/${selectedMajcom}/wings`)
+        const res = await axios.get(`http://localhost:8080/${selectedMajcom.id}/wings`)
         console.log(res.data)
-        setWings([...res.data]);
+        setWings([...res.data.map(org => {
+          return { label: org.name, id: org.id }
+        })]);
       }
     })();
     return () => active = false;
@@ -74,6 +69,46 @@ const Profile = () => {
   useEffect(() => {
     if (!wingOpen) setWings([]);
   }, [wingOpen]);
+
+  useEffect(() => {
+    let active = true;
+    if (!loadingG) return;
+    (async () => {
+      if (active) {
+        const res = await axios.get(`http://localhost:8080/${selectedWing.id}/groups`)
+        console.log(res.data)
+        setGroups([...res.data.map(org => {
+          return { label: org.name, id: org.id }
+        })]);
+      }
+    })();
+    return () => active = false;
+  }, [loadingG, selectedWing]);
+
+  useEffect(() => {
+    if (!groupOpen) setGroups([]);
+  }, [groupOpen]);
+
+
+  useEffect(() => {
+    let active = true;
+    if (!loadingS) return;
+    (async () => {
+      if (active) {
+        const res = await axios.get(`http://localhost:8080/${selectedGroup.id}/squadrons`)
+        console.log(res.data)
+        setSquadrons([...res.data.map(org => {
+          return { label: org.name, id: org.id }
+        })]);
+      }
+    })();
+    return () => active = false;
+  }, [loadingS, selectedGroup]);
+
+  useEffect(() => {
+    if (!sqOpen) setSquadrons([]);
+  }, [sqOpen]);
+
 
   return (
     <Box
@@ -86,6 +121,11 @@ const Profile = () => {
           <Grid2 container spacing={2} p={2}>
             <Grid2 xs={3}>
               <Autocomplete
+                value={selectedMajcom}
+                onChange={(event, newValue) => {
+                  console.log(newValue)
+                  setSelectedMajcom(newValue);
+                }}
                 open={majcomOpen}
                 onOpen={() => {
                   setMajcomOpen(true);
@@ -95,10 +135,7 @@ const Profile = () => {
 
                 }}
                 label='Majcom'
-                onChange={handleEvent}
-                isOptionEqualToValue={(option, value) => {
-                  return option.title === value.title
-                }}
+                isOptionEqualToValue={(option, value) => option.title === value.title}
                 options={majcoms}
                 loading={loadingM}
                 renderInput={(params) => (
@@ -122,6 +159,11 @@ const Profile = () => {
             </Grid2>
             <Grid2 xs={3}>
               <Autocomplete
+                value={selectedWing}
+                onChange={(event, newValue) => {
+                  console.log(newValue)
+                  setSelectedWing(newValue);
+                }}
                 disabled={(selectedMajcom ? false : true)}
                 open={wingOpen}
                 onOpen={() => {
@@ -153,23 +195,83 @@ const Profile = () => {
               </Autocomplete>
             </Grid2>
             <Grid2 xs={3}>
-              <TextField
-                name='group'
-                variant='filled'
-                fullWidth
+              <Autocomplete
+                disabled={(selectedWing ? false : true)}
+                value={selectedGroup}
+                onChange={(event, newValue) => {
+                  console.log(newValue)
+                  setSelectedGroup(newValue);
+                }}
+                open={groupOpen}
+                onOpen={() => {
+                  setGroupOpen(true);
+                }}
+                onClose={() => {
+                  setGroupOpen(false);
+
+                }}
                 label='Group'
+                isOptionEqualToValue={(option, value) => option.title === value.title}
+                options={groups}
+                loading={loadingG}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    name='group'
+                    label='Group'
+                    InputProps={{
+                      ...params.InputProps,
+                      endAdornment: (
+                        <>
+                          {loadingG ? <CircularProgress color="inherit" size={20} /> : null}
+                          {params.InputProps.endAdornment}
+                        </>
+                      ),
+                    }}
+                  />
+                )}
               >
-              </TextField>
+              </Autocomplete>
 
             </Grid2>
             <Grid2 xs={3}>
-              <TextField
-                name='sq'
-                variant='filled'
-                fullWidth
+              <Autocomplete
+                disabled={(selectedGroup ? false : true)}
+                value={selectedSquadron}
+                onChange={(event, newValue) => {
+                  console.log(newValue)
+                  setSelectedSquadrons(newValue);
+                }}
+                open={sqOpen}
+                onOpen={() => {
+                  setSqOpen(true);
+                }}
+                onClose={() => {
+                  setSqOpen(false);
+
+                }}
                 label='Squadron'
+                isOptionEqualToValue={(option, value) => option.title === value.title}
+                options={squadrons}
+                loading={loadingS}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    name='squadron'
+                    label='Squadron'
+                    InputProps={{
+                      ...params.InputProps,
+                      endAdornment: (
+                        <>
+                          {loadingS ? <CircularProgress color="inherit" size={20} /> : null}
+                          {params.InputProps.endAdornment}
+                        </>
+                      ),
+                    }}
+                  />
+                )}
               >
-              </TextField>
+              </Autocomplete>
             </Grid2>
             <Grid2 xs={2}>
 
