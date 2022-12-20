@@ -17,6 +17,7 @@ const ProtectedRoutes = () => {
 
   useEffect(() => {
     if (!user.auth) navigate('/');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (

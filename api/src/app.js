@@ -97,20 +97,30 @@ app.get('/users/:id', (req, res) => {
     .then((result) => res.status(201).send(result))
 });
 
-
-
-app.patch('/users/:id', (req, res) => {
+app.get('/orgs/:id', (req, res) => {
   const { id } = req.params;
-  const { body } = req;
+  knex('orgs')
+    .join('orgs', 'orgs.id',)
+    .select('*')
+    .where('id', id)
+    .then((result) => res.status(201).send(result))
+});
+
+
+
+
+app.put('/users/:id', (req, res) => {
+  const { id } = req.params;
+  const { org, branch, rank, firstName, lastName, email } = req.body;
   knex('users')
-    .where('id', '=', `${id}`)
+    .where('id', id)
     .update({
-      rank: `${body.rank}`,
-      f_name: `${body.firstname}`,
-      l_name: `${body.lastname}`,
-      org: `${body.org}`,
-      email: `${body.email}`,
-      branch: `${body.branch}`
+      org: org,
+      branch: branch,
+      rank: rank,
+      l_name: lastName,
+      f_name: firstName,
+      email: email,
     })
     .then(() => res.status(201).json('User has been successfully updated.'))
     .catch(err => {

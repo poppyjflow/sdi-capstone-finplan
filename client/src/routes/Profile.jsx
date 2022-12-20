@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { useLoaderData, useOutletContext, Form } from "react-router-dom";
+import { useOutletContext, Form, useRouteLoaderData } from "react-router-dom";
 import Paper from '@mui/material/Paper';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import Box from '@mui/material/Box';
@@ -10,8 +10,9 @@ import axios from "axios";
 import CircularProgress from '@mui/material/CircularProgress';
 import Autocomplete from "@mui/material/Autocomplete";
 
-
 const Profile = () => {
+  const user = useRouteLoaderData('protected');
+  // const [userOrg] = (user.org);
   const [majcomOpen, setMajcomOpen] = useState(false);
   const [majcoms, setMajcoms] = useState([]);
   const [selectedMajcom, setSelectedMajcom] = useState(null);
@@ -24,13 +25,16 @@ const Profile = () => {
   const [sqOpen, setSqOpen] = useState(false);
   const [squadrons, setSquadrons] = useState([]);
   const [selectedSquadron, setSelectedSquadrons] = useState(null);
-  const [user] = useOutletContext();
-  const test = useLoaderData();
+
 
   const loadingM = majcomOpen && majcoms.length === 0;
   const loadingW = wingOpen && wings.length === 0;
   const loadingG = groupOpen && groups.length === 0;
   const loadingS = sqOpen && squadrons.length === 0;
+
+  // useEffect(() => {
+
+  // }, [userOrg])
 
   useEffect(() => {
     let active = true;
@@ -38,7 +42,6 @@ const Profile = () => {
     (async () => {
       if (active) {
         const res = await axios.get('http://localhost:8080/majcoms')
-        console.log(res.data)
         setMajcoms([...res.data.map(org => {
           return { label: org.name, id: org.id }
         })]);
@@ -57,7 +60,6 @@ const Profile = () => {
     (async () => {
       if (active) {
         const res = await axios.get(`http://localhost:8080/${selectedMajcom.id}/wings`)
-        console.log(res.data)
         setWings([...res.data.map(org => {
           return { label: org.name, id: org.id }
         })]);
@@ -76,7 +78,6 @@ const Profile = () => {
     (async () => {
       if (active) {
         const res = await axios.get(`http://localhost:8080/${selectedWing.id}/groups`)
-        console.log(res.data)
         setGroups([...res.data.map(org => {
           return { label: org.name, id: org.id }
         })]);
@@ -96,7 +97,6 @@ const Profile = () => {
     (async () => {
       if (active) {
         const res = await axios.get(`http://localhost:8080/${selectedGroup.id}/squadrons`)
-        console.log(res.data)
         setSquadrons([...res.data.map(org => {
           return { label: org.name, id: org.id }
         })]);
@@ -117,13 +117,12 @@ const Profile = () => {
       maxWidth='90%'
     >
       <Paper>
-        <Form method='post' action='/new-request'>
+        <Form method='post' action='/profile'>
           <Grid2 container spacing={2} p={2}>
             <Grid2 xs={3}>
               <Autocomplete
                 value={selectedMajcom}
                 onChange={(event, newValue) => {
-                  console.log(newValue)
                   setSelectedMajcom(newValue);
                 }}
                 open={majcomOpen}
@@ -161,7 +160,6 @@ const Profile = () => {
               <Autocomplete
                 value={selectedWing}
                 onChange={(event, newValue) => {
-                  console.log(newValue)
                   setSelectedWing(newValue);
                 }}
                 disabled={(selectedMajcom ? false : true)}
@@ -199,7 +197,6 @@ const Profile = () => {
                 disabled={(selectedWing ? false : true)}
                 value={selectedGroup}
                 onChange={(event, newValue) => {
-                  console.log(newValue)
                   setSelectedGroup(newValue);
                 }}
                 open={groupOpen}
@@ -239,7 +236,6 @@ const Profile = () => {
                 disabled={(selectedGroup ? false : true)}
                 value={selectedSquadron}
                 onChange={(event, newValue) => {
-                  console.log(newValue)
                   setSelectedSquadrons(newValue);
                 }}
                 open={sqOpen}
@@ -274,25 +270,49 @@ const Profile = () => {
               </Autocomplete>
             </Grid2>
             <Grid2 xs={2}>
-
-            </Grid2>
-            <Grid2 xs={12}>
               <TextField
-                name='title'
+                disabled
+                name='branch'
+                value={user.branch}
                 variant='filled'
                 fullWidth
-                label='Title'
-                multiline
+                label='Branch'
               />
             </Grid2>
-            <Grid2 xs={12}>
+            <Grid2 xs={2}>
               <TextField
-                name='description'
+                name='rank'
+                value={user.rank}
                 variant='filled'
                 fullWidth
-                label='Description'
-                multiline
-                minRows={3}
+                label='Rank'
+              />
+            </Grid2>
+            <Grid2 xs={2}>
+              <TextField
+                name='lastName'
+                value={user.l_name}
+                variant='filled'
+                fullWidth
+                label='Last Name'
+              />
+            </Grid2>
+            <Grid2 xs={2}>
+              <TextField
+                name='firstName'
+                value={user.f_name}
+                variant='filled'
+                fullWidth
+                label='First Name'
+              />
+            </Grid2>
+            <Grid2 xs={4}>
+              <TextField
+                name='email'
+                variant='filled'
+                fullWidth
+                label='Email'
+                value={user.email}
               />
             </Grid2>
             <Grid2 xs={10}>
@@ -304,6 +324,7 @@ const Profile = () => {
             </Grid2>
           </Grid2>
           <input type='hidden' name='user' value={user.id} />
+          <input type='hidden' name='org' value={(selectedSquadron?.id || selectedGroup?.id || selectedWing?.id || selectedMajcom?.id || '')} />
         </Form>
       </Paper>
     </Box >

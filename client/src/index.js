@@ -25,6 +25,7 @@ import NewReqAction from './actions/NewReqAction';
 import Profile from './routes/Profile';
 import loadUserData from './loaders/loadUserData';
 import SummaryView from './routes/SummaryView';
+import editUserAction from './actions/editUserAction';
 
 
 const router = createBrowserRouter([
@@ -53,6 +54,8 @@ const router = createBrowserRouter([
       },
       {
         element: <ProtectedRoutes />,
+        id: 'protected',
+        loader: loadUserData,
         children: [
           {
             path: '/main',
@@ -73,7 +76,7 @@ const router = createBrowserRouter([
           {
             path: '/profile',
             element: <Profile />,
-            loader: loadUserData,
+            action: editUserAction,
           },
           {
             path: '/summary',
