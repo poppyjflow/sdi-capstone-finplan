@@ -14,7 +14,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 const Profile = () => {
   const [majcomOpen, setMajcomOpen] = useState(false);
   const [majcoms, setMajcoms] = useState([]);
-  const [selectedMajcom, setSelectedMajcom] = useState(-1);
+  const [selectedMajcom, setSelectedMajcom] = useState(null);
   const [wingOpen, setWingOpen] = useState(false);
   const [wings, setWings] = useState([]);
   const [selectedWing, setSelectedWing] = useState(-1);
@@ -31,6 +31,13 @@ const Profile = () => {
   const loadingW = wingOpen && wings.length === 0;
   const loadingG = groupOpen && groups.length === 0;
   const loadingS = sqOpen && squadrons.length === 0;
+
+  const handleEvent = (e) => {
+    e.preventDefault();
+    console.log('On change: ', e);
+    console.log('text: ', e.target.textContent)
+    setSelectedMajcom(e.target.textContent);
+  }
 
   useEffect(() => {
     let active = true;
@@ -88,6 +95,10 @@ const Profile = () => {
 
                 }}
                 label='Majcom'
+                onChange={handleEvent}
+                isOptionEqualToValue={(option, value) => {
+                  return option.title === value.title
+                }}
                 options={majcoms}
                 loading={loadingM}
                 renderInput={(params) => (
@@ -111,6 +122,7 @@ const Profile = () => {
             </Grid2>
             <Grid2 xs={3}>
               <Autocomplete
+                disabled={(selectedMajcom ? false : true)}
                 open={wingOpen}
                 onOpen={() => {
                   setWingOpen(true);
@@ -125,7 +137,7 @@ const Profile = () => {
                   <TextField
                     {...params}
                     name='wing'
-                    label='Wings'
+                    label='Wing'
                     InputProps={{
                       ...params.InputProps,
                       endAdornment: (

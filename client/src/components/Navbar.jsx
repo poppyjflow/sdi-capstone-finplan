@@ -40,6 +40,12 @@ const Navbar = ({ navProps }) => {
     handleCloseUserMenu()
   }
 
+  const handleProfile = () => {
+    navigate('/profile');
+    handleCloseUserMenu()
+  }
+
+
   return (
     <>
       <AppBar
@@ -77,6 +83,9 @@ const Navbar = ({ navProps }) => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
+              <MenuItem onClick={handleProfile}>
+                <Typography textAlign="center">Profile</Typography>
+              </MenuItem>
               <MenuItem onClick={handleLogout}>
                 <Typography textAlign="center">Logout</Typography>
               </MenuItem>
