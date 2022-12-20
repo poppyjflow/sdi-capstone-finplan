@@ -19,7 +19,7 @@ const getBannerData = async (res, org_id, year_fy) => {
     .select('name')
     .where('id', '=', org_id)
     .then(result => { org_name = result[0].name; })
-    .catch(err => { res.status(400).json(err); });
+    .catch(err => err);
 
   // get FY funding data from REQUESTS tbl.
   await knex('requests')
