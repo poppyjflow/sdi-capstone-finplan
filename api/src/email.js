@@ -18,7 +18,7 @@ function periodicRequest() {
          await knex('users')
             .innerJoin('notifications', 'users.org', '=', 'notifications.org_id')
 
-            .select('users.id','users.email','users.org')
+            .select('users.id','users.email','users.org','users.f_name','users.l_name','notifications.due_date')
             .then(info => {
                 console.log(info)
                 return info
@@ -28,13 +28,13 @@ function periodicRequest() {
         
         for (let user of selectedInfo){
             console.log("setting options")
-            let option = mailOptionSetter(user.email)
+            let option = mailOptionSetter(user.email, user.f_name, user.l_name, user.due_date)
 
             console.log('sending email')
             sendMail(option)
         }
         
-    }, 5000); //5 sec
+    }, 30000); //30 sec
   }
 
 // execute the function 
@@ -45,19 +45,19 @@ let transporter = nodemailer.createTransport({
     host: "smtp.mailtrap.io",
     port: 2525,
     auth: {
-        user: "37115e15387fa4",
-        pass: "701762a8ca2d3d"
+        user: "b082f876051d90",
+        pass: "9b4c6c4c265a5e"
     }
 });
 
 // set text and email address
-function mailOptionSetter(endUserEmail) {
+function mailOptionSetter(endUserEmail,endUserFirstName, endUserLastName, dueDate) {
     let mailOptions = {
-        from: '"System Admin" <from@example.com>',
+        from: '"System Admin" <from@admin.com>',
         to: `${endUserEmail}`,
         subject: 'reminder',
-        text: 'Hello, please check your budget request 😉 ',
-        html: '<b>Hey Hello! </b><br> please check your budget request 😉'
+        text: `Hello ${endUserFirstName}, please check your budget request 😉 `,
+        html: `<b> Hello ${endUserFirstName} ${endUserLastName}! </b><br> Just sending a friendly reminder regarding the upcoming budget request which is due ${dueDate} 😉`
     };
     return mailOptions
 }
