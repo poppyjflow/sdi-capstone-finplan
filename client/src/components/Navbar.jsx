@@ -52,12 +52,13 @@ const Navbar = ({ navProps }) => {
           overflow: 'hidden',
           width: navProps.width,
           ml: navProps.ml,
+          zIndex: (theme) => theme.zIndex.drawer + 1
         }}
         position='fixed'
       >
         <ToolBar>
           <IconButton onClick={handleHome} sx={{ p: 0 }}>
-            <CottageOutlinedIcon fontSize='large' />
+            <CottageOutlinedIcon sx={{fontSize: 45, marginLeft: '-0.16em'}} />
           </IconButton>
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'right' }}>
           <InfoModal />

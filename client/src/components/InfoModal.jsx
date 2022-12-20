@@ -25,7 +25,7 @@ export default function InfoModal() {
   return (
     <div>
       <IconButton onClick={handleOpen} aria-label="information">
-        <InfoIcon />
+        <InfoIcon sx={{fontSize: 35}}/>
       </IconButton>
       <Modal
         open={open}
@@ -34,8 +34,8 @@ export default function InfoModal() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <h1>FinPlan Tips</h1>
+          <Typography id="modal-modal-description" sx={{ mt: 2, color: 'lightgray'}}>
+            <h1 style={{marginTop: '-0.8em'}}>FinPlan Tips</h1>
     <ol>
         <li>
             The submitted FinPlans may include the following with detailed justification narrative:

@@ -196,7 +196,9 @@ const UserHome = () => {
 
   return (
     <>
-    <Box sx={{marginBottom: '1em', background: 'gray', padding: '0.5em'}}><StatusBar /></Box>
+    <Box sx={{marginBottom: '1em', background: 'gray', padding: '0.5em'}}>
+      <StatusBar />
+    </Box>
     <Box
       className='grid'
       height='80vh'
