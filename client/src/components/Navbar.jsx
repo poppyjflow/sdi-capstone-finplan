@@ -45,6 +45,10 @@ const Navbar = ({ navProps }) => {
     handleCloseUserMenu()
   }
 
+  const handleSummary = () => {
+    navigate('/summary');
+    handleCloseUserMenu()
+  }
 
   return (
     <>
@@ -86,11 +90,14 @@ const Navbar = ({ navProps }) => {
               <MenuItem onClick={handleProfile}>
                 <Typography textAlign="center">Profile</Typography>
               </MenuItem>
-              <MenuItem onClick={handleLogout}>
-                <Typography textAlign="center">Logout</Typography>
+              <MenuItem onClick={handleSummary}>
+                <Typography textAlign="center">Summary View</Typography>
               </MenuItem>
               <MenuItem onClick={handleSettings}>
                 <Typography textAlign="center">Settings</Typography>
+              </MenuItem>
+              <MenuItem onClick={handleLogout}>
+                <Typography textAlign="center">Logout</Typography>
               </MenuItem>
             </Menu>
           </Box>
