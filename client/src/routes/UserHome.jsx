@@ -10,6 +10,7 @@ import {
   GridToolbarDensitySelector,
   GridToolbarExport,
 } from '@mui/x-data-grid';
+import StatusBar from '../components/StatusBar';
 
 const getUserFullName = ({ row }) => `${row.f_name || ''} ${row.l_name || ''}`;
 
@@ -54,7 +55,7 @@ const UserHome = () => {
           <Box
             width={percentage}
             borderRadius='8px'
-            bgcolor={percentage > .5 ? '#115e0a' : '#ff0008'}
+            bgcolor={percentage === 1 ? '#115e0a' : '#ff0008'}
           >
             {`$${row.obligated} / $${row.allocated}`}
           </Box>
@@ -194,6 +195,8 @@ const UserHome = () => {
   };
 
   return (
+    <>
+    <Box sx={{marginBottom: '1em', background: 'gray', padding: '0.5em'}}><StatusBar /></Box>
     <Box
       className='grid'
       height='80vh'
@@ -206,6 +209,7 @@ const UserHome = () => {
         columns={columns}
       />
     </Box>
+    </>
   );
 };
 

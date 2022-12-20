@@ -9,7 +9,7 @@ const BannerButton = ({ action }) => {
 
   const image =
   {
-    url: '/images/northfolk.jpg',
+    url: 'https://i0.wp.com/dabarlaw.com/wp-content/uploads/2020/01/united-states-flag-wallpaper-pictures-hd-50579-52271-hd-wallpapers.jpg?ssl=1',
     title: 'Enter',
     width: '100%',
   };

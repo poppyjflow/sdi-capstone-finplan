@@ -76,9 +76,9 @@ const SummaryView = () => {
             <Grid container
             spacing={3}
             justifyContent="space-between"
-            sx={{marginBottom: '5em'}}
+            sx={{marginBottom: '5em', marginLeft: '0em', width: '100%'}}
             >
-              <Grid item xs={2}>
+              <Grid container xs={2} justifyContent='center'>
               <Card sx={{width: '14.5em', height: '6em'}}>
                 <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
@@ -99,7 +99,7 @@ const SummaryView = () => {
                 </CardContent>
               </Card>
               </Grid>
-              <Grid item xs={2}>
+              <Grid container xs={2} justifyContent='center'>
                 <Card sx={{width: '15em', height: '8em'}}>
                 <CardContent>
                   <Typography gutterBottom variant="h8" component="div">
@@ -124,7 +124,7 @@ const SummaryView = () => {
                 </Card>
               </Grid>
               </Grid>
-              <Grid container spacing={3}>
+              <Grid container spacing={3} sx={{width: '100%', marginLeft: '0em'}}>
               <Grid item xs={8} sx={{marginBottom: '1em'}}>
                 <QuarterlyBarChart data={yearData}/>
               </Grid>
