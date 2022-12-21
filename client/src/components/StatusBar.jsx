@@ -36,7 +36,7 @@ export default function StatusBar({ updated, setUpdated }) {
 
   useEffect(() => {
     let orgYear = {
-      org_id: 1,
+      org_id: org,
       year_fy: year
     }
     fetch('http://localhost:8080/banner', {

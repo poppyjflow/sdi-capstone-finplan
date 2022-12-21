@@ -4,6 +4,10 @@ import DataTable from '../components/DataTable';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
+import IconButton from '@mui/material/IconButton';
+import PreviewIcon from '@mui/icons-material/Preview';
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import DetailsDialog from '../components/DetailsDialog';
 import {
   GridToolbarContainer,
   GridToolbarFilterButton,
@@ -25,7 +29,7 @@ const getFiscalQuarter = ({ row }) => {
   let formattedDate;
   for (const quarter in quarters) {
     if (quarters[quarter].includes(result.getMonth())) {
-      if (quarters.Q1.includes(result.getMonth)) {
+      if (quarters.Q1.includes(result.getMonth())) {
         return `${quarter} ${result.getFullYear() + 1}`;
       }
       formattedDate = `${quarter} ${result.getFullYear()}`;
@@ -40,11 +44,20 @@ const quarterSort = (v1, v2) => {
   return (`${val1[1]}.${val1[0][1]}` - `${val2[1]}.${val2[0][1]}`);
 }
 
-
-
 const UserHome = () => {
   const [user] = useOutletContext();
   const [updated, setUpdated] = useState(false);
+  const [openDetails, setOpenDetails] = useState(false);
+  const [details, setDetails] = useState({});
+
+  const handleClickOpen = (title, body) => {
+    setDetails({ title: title, body: body });
+    setOpenDetails(true);
+  };
+
+  const handleClose = () => {
+    setOpenDetails(false);
+  };
 
   const navigate = useNavigate();
 
@@ -52,6 +65,24 @@ const UserHome = () => {
     e.preventDefault();
     navigate('/new-request');
   };
+
+  const RenderDetails = (props) => {
+    const { row } = props;
+    return (
+      <Grid2 container spacing={.5} alignItems='center'>
+        <Grid2 xs={10} overflow={'hidden'} textOverflow='ellipsis'>
+          <strong>{row.req_title}</strong>
+        </Grid2>
+        <Grid2 xs={2}>
+          <IconButton
+            onClick={(e) => handleClickOpen(row.req_title, row.description)}
+          >
+            <PreviewIcon />
+          </IconButton>
+        </Grid2>
+      </Grid2>
+    )
+  }
 
   const renderDelta = ({ row }) => {
     if (row.allocated && row.obligated) {
@@ -134,7 +165,8 @@ const UserHome = () => {
       flex: .35,
       headerAlign: 'center',
       align: 'center',
-      editable: true,
+      editable: false,
+      renderCell: RenderDetails,
     },
     {
       field: 'requested',
@@ -222,6 +254,7 @@ const UserHome = () => {
           user={user}
           columns={columns}
         />
+        <DetailsDialog details={details} isOpen={openDetails} close={handleClose} />
       </Box>
     </>
   );
