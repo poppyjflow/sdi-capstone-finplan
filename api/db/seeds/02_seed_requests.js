@@ -3,7 +3,7 @@ exports.seed = async function (knex) {
   await knex('requests').del();
   await knex('requests').insert([
     {
-      user: 1,
+      user: 2,
       req_date: '2022-11-16',
       org: 138,
       priority: 'ME',
@@ -16,7 +16,7 @@ exports.seed = async function (knex) {
       obligated: 240000,
     },
     {
-      user: 1,
+      user: 2,
       req_date: '2022-11-19',
       org: 138,
       priority: 'MC',
@@ -29,7 +29,7 @@ exports.seed = async function (knex) {
       obligated: 204860,
     },
     {
-      user: 1,
+      user: 2,
       req_date: '2023-02-14',
       org: 138,
       priority: 'ME',
@@ -42,7 +42,7 @@ exports.seed = async function (knex) {
       obligated: 30000,
     },
     {
-      user: 1,
+      user: 2,
       req_date: '2023-07-28',
       org: 138,
       priority: 'MEn',
@@ -55,7 +55,7 @@ exports.seed = async function (knex) {
       obligated: 4000,
     },
     {
-      user: 1,
+      user: 2,
       req_date: '2023-04-09',
       org: 138,
       priority: 'MC',
@@ -67,7 +67,7 @@ exports.seed = async function (knex) {
       allocated: 240000,
       obligated: 120000,
     },    {
-      user: 1,
+      user: 2,
       req_date: '2022-02-14',
       org: 138,
       priority: 'ME',
@@ -80,7 +80,7 @@ exports.seed = async function (knex) {
       obligated: 120000,
     },
     {
-      user: 1,
+      user: 2,
       req_date: '2022-07-28',
       org: 138,
       priority: 'MEn',
@@ -93,7 +93,7 @@ exports.seed = async function (knex) {
       obligated: 10000,
     },
     {
-      user: 1,
+      user: 2,
       req_date: '2021-12-09',
       org: 138,
       priority: 'MC',
