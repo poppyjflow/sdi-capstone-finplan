@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import DataTable from '../components/DataTable';
 import Box from '@mui/material/Box';
@@ -39,6 +39,8 @@ const quarterSort = (v1, v2) => {
   const val2 = v2.split(' ');
   return (`${val1[1]}.${val1[0][1]}` - `${val2[1]}.${val2[0][1]}`);
 }
+
+
 
 const UserHome = () => {
   const [user] = useOutletContext();
@@ -199,21 +201,25 @@ const UserHome = () => {
 
   return (
     <>
-    <Box sx={{marginBottom: '1em', background: 'gray', padding: '0.5em'}}>
-      <StatusBar />
-    </Box>
-    <Box
-      className='grid'
-      height='80vh'
-      width={1}
-      flexDirection='column'
-    >
-      <DataTable
-        itemBar={ItemToolBar}
-        user={user}
-        columns={columns}
-      />
-    </Box>
+      <Box
+        p={2}
+        mb={1}
+      >
+        <StatusBar />
+      </Box>
+      <Box
+        className='grid'
+        height='100%'
+        display='flex'
+        width={1}
+        flexDirection='column'
+      >
+        <DataTable
+          itemBar={ItemToolBar}
+          user={user}
+          columns={columns}
+        />
+      </Box>
     </>
   );
 };
