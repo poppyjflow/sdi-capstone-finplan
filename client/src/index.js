@@ -36,6 +36,7 @@ const router = createBrowserRouter([
       },
       {
         element: <PublicRoutes />,
+        
         children: [
           {
             path: '/login',
@@ -51,14 +52,21 @@ const router = createBrowserRouter([
       },
       {
         element: <ProtectedRoutes />,
+<<<<<<< HEAD
         id: 'protected',
+=======
+>>>>>>> 48f9cd4 (status bar update)
         loader: loadUserData,
         children: [
           {
             path: '/main',
             element: <UserHome />,
             action: NewReqAction,
+<<<<<<< HEAD
             loader: loadUserData
+=======
+            loader: loadUserData,
+>>>>>>> 48f9cd4 (status bar update)
           },
           {
             path: '/new-request',

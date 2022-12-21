@@ -83,7 +83,7 @@ const CustomNoRowsOverlay = () => {
   );
 };
 
-const DataTable = ({ columns, user, itemBar }) => {
+const DataTable = ({ columns, user, itemBar, updated, setUpdated }) => {
   const [tableData, setTableData] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [openModal, setOpenModal] = useState(false);
@@ -150,6 +150,7 @@ const DataTable = ({ columns, user, itemBar }) => {
       return (row.id === newRow.id ? updatedRow : row);
     }));
     submit(newRow, { method: 'put', action: '/main' });
+    setUpdated(!updated)
     return updatedRow;
   };
 
