@@ -130,6 +130,7 @@ const Register = () => {
       justifyContent='center'
     >
       <Box
+        className='form-wrapper'
         borderRadius='8px'
         border='1px solid'
         borderColor='primary.main'

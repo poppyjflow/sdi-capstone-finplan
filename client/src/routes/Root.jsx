@@ -12,25 +12,8 @@ const Root = () => {
   };
 
   return (
-    <Box
-      height='100vh'
-    >
-      <Box className='banner'>
-        <BannerButton action={handleEnter} />
-      </Box>
-      <footer className='footer'
-        style={{
-          position: 'absolute',
-          bottom: '5%',
-          left: '30%',
-          right: '30%',
-          display: 'flex',
-          textAlign: 'center',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-        }}
-      >
-      </footer>
+    <Box className='banner'>
+      <BannerButton action={handleEnter} />
     </Box>
   );
 };
