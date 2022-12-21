@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import DataTable from '../components/DataTable';
 import Box from '@mui/material/Box';
@@ -42,6 +42,7 @@ const quarterSort = (v1, v2) => {
 
 const UserHome = () => {
   const [user] = useOutletContext();
+  const [updated, setUpdated] = useState(false);
 
   const navigate = useNavigate();
 
@@ -199,8 +200,8 @@ const UserHome = () => {
 
   return (
     <>
-    <Box sx={{marginBottom: '1em', background: 'gray', padding: '0.5em'}}>
-      <StatusBar />
+    <Box sx={{marginBottom: '1em', background: 'gray', padding: '0.5em', borderRadius: '5px'}}>
+      <StatusBar updated={updated} setUpdated={setUpdated}/>
     </Box>
     <Box
       className='grid'
@@ -209,6 +210,8 @@ const UserHome = () => {
       flexDirection='column'
     >
       <DataTable
+      updated={updated}
+      setUpdated={setUpdated}
         itemBar={ItemToolBar}
         user={user}
         columns={columns}
