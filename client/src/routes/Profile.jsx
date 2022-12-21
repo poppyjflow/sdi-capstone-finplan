@@ -113,7 +113,9 @@ const Profile = () => {
   const orgBox = () => {
     return (
       <TextField
-        label='Organization'
+        disabled
+        fullWidth
+        label='Current Organization'
         value={userOrg}
       />
     );
@@ -327,7 +329,10 @@ const Profile = () => {
             <Grid2 xs={10}>
               {orgBox()}
             </Grid2>
-            <Grid2 xs={2}>
+            <Grid2
+              xs={2}
+              sx={{ display: 'flex', alignItems: 'flex-end' }}
+            >
               <Button fullWidth variant='contained' color='secondary' type='submit'>
                 Submit
               </Button>
