@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useSubmit } from 'react-router-dom';
+import { Paper } from '@mui/material';
 
 const StyledGridOverlay = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -195,52 +196,55 @@ const DataTable = ({ columns, user, itemBar }) => {
 
   return (
     <>
-      {/* <DetailsModal isOpen={openModal} setIsOpen={setOpenModal} data={data} /> */}
-      <DataGrid
-        sx={{
-          boxShadow: 2,
-          border: 2,
-          borderColor: '#3464eb',
-          bgcolor: '#888888',
-          '& .MuiDataGrid-cell:hover': {
-            color: 'primary.main',
-          },
-          '& .MuiSvgIcon-root': {
-            color: 'primary.main',
-          }
-        }}
-        components={{
-          NoRowsOverlay: CustomNoRowsOverlay,
-          Toolbar: itemBar,
-        }}
-        initialState={{
-          sorting: {
-            sortModel: [{ field: 'fiscal_quarter', sort: 'asc' }]
-          },
-          columns: {
-            columnVisibilityModel: {
-              id: false,
-              l_name: false,
-              f_name: false,
-              req_date: false,
-              requestee: false,
+      <Paper
+        sx={{ height: "100%" }}
+      >
+        {/* <DetailsModal isOpen={openModal} setIsOpen={setOpenModal} data={data} /> */}
+        <DataGrid
+          sx={{
+            boxShadow: 2,
+            border: 2,
+            borderColor: 'secondary.main',
+            '& .MuiDataGrid-cell:hover': {
+              color: 'primary.main',
             },
-          }
-        }}
-        disableColumnMenu
-        rows={tableData}
-        columns={[...columns, ...userActions]}
-        editMode='row'
-        rowModesModel={rowModesModel}
-        onRowModesModelChange={(newModel) => setRowModesModel(newModel)}
-        onRowEditStart={handleRowEditStart}
-        onRowEditStop={handleRowEditStop}
-        processRowUpdate={processRowUpdate}
-        onRowClick={handleRowClick}
-        columnBuffer={2}
-        columnThreshold={2}
-        experimentalFeatures={{ newEditingApi: true }}
-      />
+            '& .MuiSvgIcon-root': {
+              color: 'primary.main',
+            }
+          }}
+          components={{
+            NoRowsOverlay: CustomNoRowsOverlay,
+            Toolbar: itemBar,
+          }}
+          initialState={{
+            sorting: {
+              sortModel: [{ field: 'fiscal_quarter', sort: 'asc' }]
+            },
+            columns: {
+              columnVisibilityModel: {
+                id: false,
+                l_name: false,
+                f_name: false,
+                req_date: false,
+                requestee: false,
+              },
+            }
+          }}
+          disableColumnMenu
+          rows={tableData}
+          columns={[...columns, ...userActions]}
+          editMode='row'
+          rowModesModel={rowModesModel}
+          onRowModesModelChange={(newModel) => setRowModesModel(newModel)}
+          onRowEditStart={handleRowEditStart}
+          onRowEditStop={handleRowEditStop}
+          processRowUpdate={processRowUpdate}
+          onRowClick={handleRowClick}
+          columnBuffer={2}
+          columnThreshold={2}
+          experimentalFeatures={{ newEditingApi: true }}
+        />
+      </Paper>
     </>
   );
 };

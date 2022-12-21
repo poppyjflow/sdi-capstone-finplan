@@ -92,8 +92,9 @@ app.get('/users', (req, res) => {
 app.get('/users/:id', (req, res) => {
   const { id } = req.params;
   knex('users')
-    .select('id', 'org', 'branch', 'rank', 'l_name', 'f_name', 'email', 'is_admin')
-    .where('id', id)
+    .join('orgs', 'orgs.id', 'users.org')
+    .select('users.id as user_id', 'orgs.name as org', 'org as org_id', 'branch', 'rank', 'l_name', 'f_name', 'email', 'is_admin')
+    .where('users.id', id)
     .then((result) => res.status(201).send(result))
 });
 

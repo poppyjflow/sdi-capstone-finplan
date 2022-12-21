@@ -9,10 +9,11 @@ import Button from '@mui/material/Button';
 import axios from "axios";
 import CircularProgress from '@mui/material/CircularProgress';
 import Autocomplete from "@mui/material/Autocomplete";
+import { MenuItem } from "@mui/material";
 
 const Profile = () => {
   const user = useRouteLoaderData('protected');
-  // const [userOrg] = (user.org);
+  const [userOrg, setUserOrg] = useState(user.org || null);
   const [majcomOpen, setMajcomOpen] = useState(false);
   const [majcoms, setMajcoms] = useState([]);
   const [selectedMajcom, setSelectedMajcom] = useState(null);
@@ -109,6 +110,14 @@ const Profile = () => {
     if (!sqOpen) setSquadrons([]);
   }, [sqOpen]);
 
+  const orgBox = () => {
+    return (
+      <TextField
+        label='Organization'
+        value={userOrg}
+      />
+    );
+  };
 
   return (
     <Box
@@ -316,6 +325,7 @@ const Profile = () => {
               />
             </Grid2>
             <Grid2 xs={10}>
+              {orgBox()}
             </Grid2>
             <Grid2 xs={2}>
               <Button fullWidth variant='contained' color='secondary' type='submit'>
