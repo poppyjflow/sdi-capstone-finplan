@@ -23,8 +23,7 @@ export default function StatusBar({ updated, setUpdated }) {
   const [allData, setAllData] = useState(null)
   const [totals, setTotals] = useState(null)
   const [reconciled, setReconciled] = useState(null)
-  // let data = {unit: "50th BX", dueDate: "Nov 5th 2021", status: "green",
-  //             requestNum: 7, allocation: 734432, obligation: 54430}
+  console.log(totals)
 
   useEffect(() => {
     if (totals) {
@@ -36,6 +35,7 @@ export default function StatusBar({ updated, setUpdated }) {
 
   useEffect(() => {
     let orgYear = {
+      org_id: org,
       org_id: org,
       year_fy: year
     }
