@@ -44,6 +44,7 @@ const quarterSort = (v1, v2) => {
 
 const UserHome = () => {
   const [user] = useOutletContext();
+  const [updated, setUpdated] = useState(false);
 
   const navigate = useNavigate();
 
@@ -205,7 +206,7 @@ const UserHome = () => {
         p={2}
         mb={1}
       >
-        <StatusBar />
+        <StatusBar updated={updated} setUpdated={setUpdated} />
       </Box>
       <Box
         className='grid'
@@ -215,6 +216,8 @@ const UserHome = () => {
         flexDirection='column'
       >
         <DataTable
+          updated={updated}
+          setUpdated={setUpdated}
           itemBar={ItemToolBar}
           user={user}
           columns={columns}

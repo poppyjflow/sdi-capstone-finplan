@@ -36,6 +36,7 @@ const router = createBrowserRouter([
       },
       {
         element: <PublicRoutes />,
+        
         children: [
           {
             path: '/login',
