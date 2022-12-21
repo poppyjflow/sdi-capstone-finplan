@@ -90,6 +90,7 @@ const DataTable = ({ columns, user, itemBar }) => {
   const [data, setData] = useState({});
   const submit = useSubmit();
   const userProfile = useLoaderData();
+  console.log(userProfile)
 
   const handleRowClick = ({ id, row, columns }) => {
     setData({ id: id, row: row, columns: columns });
@@ -98,7 +99,7 @@ const DataTable = ({ columns, user, itemBar }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await axios.get(`http://localhost:8080/requests/${userProfile[0].org}`);
+      const res = await axios.get(`http://localhost:8080/requests/${userProfile.org_id}`);
       setTableData(res.data);
     };
     if (user.auth) fetchData();

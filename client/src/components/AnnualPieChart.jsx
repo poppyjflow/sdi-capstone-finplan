@@ -22,6 +22,9 @@ const AnnualPieChart = ({ data }) => {
       title: {
         display: true,
         text: `Total Annual Spending: $${totalSpent}`,
+        font: {
+          size: 20
+        }
       },
     },
   };

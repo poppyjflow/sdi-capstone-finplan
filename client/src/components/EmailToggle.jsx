@@ -93,7 +93,7 @@ const EmailToggle = () => {
           firstname: user[0].f_name,
           lastname: user[0].l_name,
           branch: user[0].branch,
-          org: user[0].org,
+          org: user[0].org_id,
           email: user[0].email
         })
         return

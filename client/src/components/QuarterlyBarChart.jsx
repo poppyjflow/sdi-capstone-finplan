@@ -22,6 +22,7 @@ ChartJS.register(
 
 export const options = {
   responsive: true,
+
   plugins: {
     legend: {
       position: 'top',
@@ -29,6 +30,9 @@ export const options = {
     title: {
       display: true,
       text: 'Spending by Quarter',
+      font: {
+        size: 20
+      }
     },
   },
 };
