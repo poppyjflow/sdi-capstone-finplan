@@ -12,13 +12,14 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import CottageOutlinedIcon from '@mui/icons-material/CottageOutlined';
 import { useTheme } from '@mui/material/styles';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext, useRouteLoaderData } from 'react-router-dom';
 import { useContext } from 'react';
 import { ColorModeContext } from '../layouts/AuthWrapper';
 import InfoModal from './InfoModal';
 
 
 const Navbar = ({ navProps }) => {
+  const userData = useRouteLoaderData('protected');
   const [user, setUser] = useOutletContext();
   const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate();
@@ -78,7 +79,7 @@ const Navbar = ({ navProps }) => {
           <h3>FINPLAN Tool</h3>
           </Box>
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-          Welcome {user.user} !
+          Welcome {userData.f_name} !
           </Box>
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'right' }}>
             <IconButton sx={{ ml: 1}} onClick={colorMode.toggleColorMode} color="inherit">

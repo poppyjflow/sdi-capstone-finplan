@@ -25,7 +25,7 @@ const getFiscalQuarter = ({ row }) => {
   let formattedDate;
   for (const quarter in quarters) {
     if (quarters[quarter].includes(result.getMonth())) {
-      if (quarters.Q1.includes(result.getMonth)) {
+      if (quarters.Q1.includes(result.getMonth())) {
         return `${quarter} ${result.getFullYear() + 1}`;
       }
       formattedDate = `${quarter} ${result.getFullYear()}`;
