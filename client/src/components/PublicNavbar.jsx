@@ -32,6 +32,9 @@ const PublicNavbar = () => {
     <>
       <AppBar
         sx={{
+          '& .MuiButton-contained': {
+            bgcolor: 'secondary.main'
+          },
           overflow: 'hidden',
           mb: 2,
         }}
