@@ -17,7 +17,6 @@ import InputLabel from '@mui/material/InputLabel';
 
 const EditUserForm = () => {
   const branches = ['USAF', 'USSF', 'USA', 'USMC', 'USN', 'USCG', 'CIV'];
-  // const orgArray = useLoaderData();
   const [branch, setBranch] = useState('');
   const [rank, setRank]= useState('');
   const [user, setUser] = useOutletContext();
@@ -62,10 +61,6 @@ const EditUserForm = () => {
     return;
   }
 
-  // const convertOrg = () => {
-
-  // }
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -79,7 +74,6 @@ const EditUserForm = () => {
     e.preventDefault()
     let foundError = false;
     for( let formField in userFormData){
-      // console.log(userFormData[formField].error)
       if(userFormData[formField].error === true){
         foundError = true;
         return
@@ -110,7 +104,6 @@ const EditUserForm = () => {
           error: false
         }
       }))
-    // console.log(userFormData)
   }
 
   const handleBranchChange = (e) => {
@@ -178,7 +171,7 @@ const EditUserForm = () => {
         firstname: userFormData.firstname.value,
         lastname: userFormData.lastname.value,
         branch: userFormData.branch.value,
-        org: userFormData.org.value,
+        // org: userFormData.org.value,
         email: userFormData.email.value,
       })
     }
@@ -194,7 +187,7 @@ const EditUserForm = () => {
             Change Account Information
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{marginBottom:'1em'}}>
-            Edit personal info.
+            Edit personal data.
           </Typography>
           <Button variant="contained" color='error' onClick={handleClickOpen}>Edit</Button>
         </CardContent>
@@ -248,7 +241,7 @@ const EditUserForm = () => {
               variant="standard"
               onChange={handleFormChange}
             />
-            <TextField
+            {/* <TextField
               autoFocus
               name='org'
               value={userFormData.org.value}
@@ -261,12 +254,13 @@ const EditUserForm = () => {
               fullWidth
               variant="standard"
                onChange={handleFormChange}
-            />
+            /> */}
             <FormControl fullWidth sx={{marginTop: '0.5em'}}>
                 <InputLabel id='branch'>Branch</InputLabel>
                 <Select
                   // disabled={!branches.includes(branch)}
                   labelId='branch'
+                  disabled
                   name="branch"
                   fullWidth
                   value={userFormData.branch.value}
@@ -280,7 +274,7 @@ const EditUserForm = () => {
             <FormControl fullWidth sx={{marginTop: '0.5em'}}>
                 <InputLabel id='rank'>Rank</InputLabel>
                 <Select
-                  disabled={!branches.includes(branch)}
+                  disabled
                   labelId='rank'
                   name="rank"
                   fullWidth

@@ -1,4 +1,5 @@
-const { getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js')
+const {  getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js');
+const { getBannerData } = require('./banner.js');
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -22,11 +23,13 @@ app.use(cors({
 app.use(express.json());
 app.use(morgan('tiny'));
 
-app.get('/requests', (req, res) => {
+app.get('/requests/:orgId', (req, res) => {
+  const { orgId } = req.params;
   knex({ reqs: 'requests' })
     .join('users', 'users.id', 'user')
     .join('orgs', 'reqs.org', 'orgs.id')
     .select('reqs.*', 'users.l_name', 'users.f_name', 'orgs.name as org_name')
+    .where('reqs.org', '=', orgId)
     .then((result) => {
       res.status(201).json(result)
     })
@@ -49,6 +52,11 @@ app.get('/orgs', (req, res) => {
   knex('orgs')
     .select('*')
     .then((result) => res.status(201).json(result))
+})
+
+app.get('/orgs/:id', (req, res) => {
+  const { id } = req.params;
+  getWithID('orgs', 'id', id, res);
 })
 
 app.get('/majcoms', (req, res) => {
@@ -250,8 +258,7 @@ app.post('/email_notifications', (req, res) => {
       .insert({
         org_id: `${org_id}`,
         frequency: `${frequency}`,
-        due_date: `${due_date}`
-
+        due_date: `${due_date}`,
       })
       .then(() => res.status(201).json('Creation successful.'));
   }
@@ -283,6 +290,12 @@ app.get('requests/user/:id', async (req, res) => {
     });
 });
 
+// This spools-up the data for the summary banner at the top of the grid page.
+app.post('/banner', async (req, res) => {
+  const { org_id, year_fy } = req.body;
+  console.log(req.body)
+  getBannerData(res, org_id, year_fy);
+});
 
 //DELETE A SPECIFIC REQUEST
 app.delete('/requests/:id', (req, res) => {

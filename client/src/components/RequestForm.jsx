@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { Form, useLoaderData, useOutletContext } from 'react-router-dom';
+import { Form, useLoaderData, useOutletContext, useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import { NumericFormat } from 'react-number-format';
 import MenuItem from '@mui/material/MenuItem';
@@ -16,6 +16,7 @@ import ListItemText from '@mui/material/ListItemText';
 import InputAdornment from '@mui/material/InputAdornment';
 
 const RequestForm = () => {
+  const navigate = useNavigate();
   const [user] = useOutletContext();
   const [org, setOrg] = useState('');
   const [pri, setPri] = useState('');
@@ -169,6 +170,9 @@ const RequestForm = () => {
               />
             </Grid2>
             <Grid2 xs={10}>
+            <Button sx={{width: '10em'}}onClick={() => navigate('/main')} variant='contained' color='error'>
+                Cancel
+              </Button>
             </Grid2>
             <Grid2 xs={2}>
               <Button fullWidth variant='contained' color='secondary' type='submit'>

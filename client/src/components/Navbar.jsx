@@ -15,6 +15,8 @@ import { useTheme } from '@mui/material/styles';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useContext } from 'react';
 import { ColorModeContext } from '../layouts/AuthWrapper';
+import InfoModal from './InfoModal';
+
 
 const Navbar = ({ navProps }) => {
   const [user, setUser] = useOutletContext();
@@ -64,14 +66,22 @@ const Navbar = ({ navProps }) => {
           overflow: 'hidden',
           width: navProps.width,
           ml: navProps.ml,
+          zIndex: (theme) => theme.zIndex.drawer + 1
         }}
         position='fixed'
       >
         <ToolBar>
           <IconButton onClick={handleHome} sx={{ p: 0 }}>
-            <CottageOutlinedIcon fontSize='large' />
+            <CottageOutlinedIcon sx={{fontSize: 45, marginLeft: '-0.16em'}} />
           </IconButton>
-          <Box sx={{ flexGrow: 1, display: 'flex' }}>
+          <Box sx={{ flexGrow: 4, display: 'flex', justifyContent: 'center' }}>
+          <h3>FINPLAN Tool</h3>
+          </Box>
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+          Welcome {user.user} !
+          </Box>
+          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'right' }}>
+          <InfoModal />
           </Box>
           <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
             {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}

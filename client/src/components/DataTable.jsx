@@ -14,8 +14,9 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { useSubmit } from 'react-router-dom';
 import { Paper } from '@mui/material';
+import { useSubmit, useLoaderData } from 'react-router-dom';
+
 
 const StyledGridOverlay = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -88,6 +89,7 @@ const DataTable = ({ columns, user, itemBar }) => {
   const [openModal, setOpenModal] = useState(false);
   const [data, setData] = useState({});
   const submit = useSubmit();
+  const userProfile = useLoaderData();
 
   const handleRowClick = ({ id, row, columns }) => {
     setData({ id: id, row: row, columns: columns });
@@ -96,8 +98,7 @@ const DataTable = ({ columns, user, itemBar }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await axios.get('http://localhost:8080/requests');
-      console.log(res.data);
+      const res = await axios.get(`http://localhost:8080/requests/${userProfile[0].org}`);
       setTableData(res.data);
     };
     if (user.auth) fetchData();
