@@ -1,5 +1,4 @@
-import { createTheme } from '@mui/material/styles';
-import { cyan, pink, amber, grey } from '@mui/material/colors';
+import { cyan, pink, grey } from '@mui/material/colors';
 
 // const RootTheme = createTheme({
 //   palette: {
@@ -45,7 +44,7 @@ const RootTheme = (mode) => ({
         secondary: {
           main: pink['A400'],
         },
-        divider: pink['A400'],
+        divider: grey['900'],
         text: {
           primary: grey[900],
           secondary: grey[800],
