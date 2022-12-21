@@ -8,13 +8,20 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import CottageOutlinedIcon from '@mui/icons-material/CottageOutlined';
+import { useTheme } from '@mui/material/styles';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useContext } from 'react';
+import { ColorModeContext } from '../layouts/AuthWrapper';
 
 const Navbar = ({ navProps }) => {
   const [user, setUser] = useOutletContext();
   const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate();
+  const colorMode = useContext(ColorModeContext);
+  const theme = useTheme();
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -39,6 +46,12 @@ const Navbar = ({ navProps }) => {
     navigate('/settings');
     handleCloseUserMenu()
   }
+
+  const handleProfile = () => {
+    navigate('/profile');
+    handleCloseUserMenu()
+  }
+
   const handleSummary = () => {
     navigate('/summary');
     handleCloseUserMenu()
@@ -60,10 +73,13 @@ const Navbar = ({ navProps }) => {
           </IconButton>
           <Box sx={{ flexGrow: 1, display: 'flex' }}>
           </Box>
+          <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
           <Box>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar sx={{ color: '#32a852', bgcolor: 'secondary' }} >{user.user[0]?.toUpperCase()}</Avatar>
+                <Avatar sx={{ color: 'primary.main', bgcolor: 'secondary' }} >{user.user[0]?.toUpperCase()}</Avatar>
               </IconButton>
             </Tooltip>
             <Menu
@@ -81,6 +97,9 @@ const Navbar = ({ navProps }) => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
+              <MenuItem onClick={handleProfile}>
+                <Typography textAlign="center">Profile</Typography>
+              </MenuItem>
               <MenuItem onClick={handleSummary}>
                 <Typography textAlign="center">Summary View</Typography>
               </MenuItem>

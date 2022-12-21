@@ -1,21 +1,15 @@
 import React from 'react';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import { useOutletContext, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import BannerButton from '../components/BannerButton';
 
 const Root = () => {
-  // const [user] = useOutletContext();
-
   const navigate = useNavigate();
 
   const handleEnter = (e) => {
     e.preventDefault();
     navigate('/login');
   };
-
-  // console.log('Root context obj: ', user);
 
   return (
     <Box
