@@ -200,13 +200,8 @@ const UserHome = () => {
 
   return (
     <>
-<<<<<<< HEAD
-    <Box sx={{marginBottom: '1em', background: 'gray', padding: '0.5em'}}>
-      <StatusBar />
-=======
     <Box sx={{marginBottom: '1em', background: 'gray', padding: '0.5em', borderRadius: '5px'}}>
       <StatusBar updated={updated} setUpdated={setUpdated}/>
->>>>>>> 48f9cd4 (status bar update)
     </Box>
     <Box
       className='grid'

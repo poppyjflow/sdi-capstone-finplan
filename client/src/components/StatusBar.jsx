@@ -18,13 +18,13 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function StatusBar({updated, setUpdated}) {
   const user = useLoaderData()
-  const org = user[0].org
+  const org = user.org_id
   const year = 2023
   const [allData, setAllData] = useState(null)
   const [totals, setTotals] = useState(null)
   const [reconciled, setReconciled] = useState(null)
-  let data = {unit: "50th BX", dueDate: "Nov 5th 2021", status: "green",
-              requestNum: 7, allocation: 734432, obligation: 54430}
+  // let data = {unit: "50th BX", dueDate: "Nov 5th 2021", status: "green",
+  //             requestNum: 7, allocation: 734432, obligation: 54430}
 
   useEffect (() => {
     if(totals){
@@ -64,7 +64,7 @@ export default function StatusBar({updated, setUpdated}) {
     <>
     {allData ? 
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container alignItems='baseline' spacing={.8}>
+        <Grid container alignItems='center' spacing={.8}>
           <Grid item xs={3}>
           <Stack spacing={2.5}>
           <Item>Unit: {allData.org_name} </Item>
