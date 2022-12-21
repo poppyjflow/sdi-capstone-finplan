@@ -4,6 +4,7 @@ import { redirect } from 'react-router-dom';
 const registerAction = async ({ request }) => {
 
   const {
+    org,
     branch,
     rank,
     firstName,
@@ -15,6 +16,7 @@ const registerAction = async ({ request }) => {
   console.log(`${branch}\n${rank}\n${firstName}\n${lastName}\n${email}\n${password}`);
   axios.post('http://localhost:8080/users',
     {
+      org: org,
       branch: branch,
       rank: rank,
       firstName: firstName,
