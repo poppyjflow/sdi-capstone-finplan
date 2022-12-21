@@ -1,4 +1,4 @@
-const {  getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js');
+const { getRequest, getWithID, deleteRequest, checkUsername, getUserhash, getUsername, getID } = require('./queryHelpers.js');
 const { getBannerData } = require('./banner.js');
 const express = require('express');
 const cors = require('cors');
@@ -100,9 +100,9 @@ app.get('/users', (req, res) => {
 app.get('/users/:id', (req, res) => {
   const { id } = req.params;
   knex('users')
+    .where('users.id', id)
     .join('orgs', 'orgs.id', 'users.org')
     .select('users.id as user_id', 'orgs.name as org', 'org as org_id', 'branch', 'rank', 'l_name', 'f_name', 'email', 'is_admin')
-    .where('users.id', id)
     .then((result) => res.status(201).send(result))
 });
 
