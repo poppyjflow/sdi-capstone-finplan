@@ -16,6 +16,8 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { Paper } from '@mui/material';
 import { useSubmit, useLoaderData } from 'react-router-dom';
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
 
 
 const StyledGridOverlay = styled('div')(({ theme }) => ({
@@ -83,19 +85,12 @@ const CustomNoRowsOverlay = () => {
   );
 };
 
-const DataTable = ({ columns, user, itemBar }) => {
+const DataTable = ({ columns, user, itemBar, }) => {
   const [tableData, setTableData] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
-  const [openModal, setOpenModal] = useState(false);
-  const [data, setData] = useState({});
   const submit = useSubmit();
   const userProfile = useLoaderData();
   console.log(userProfile)
-
-  const handleRowClick = ({ id, row, columns }) => {
-    setData({ id: id, row: row, columns: columns });
-    setOpenModal(!openModal);
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -197,57 +192,54 @@ const DataTable = ({ columns, user, itemBar }) => {
   ];
 
   return (
-    <>
-      <Paper
-        sx={{ height: "100%" }}
-      >
-        {/* <DetailsModal isOpen={openModal} setIsOpen={setOpenModal} data={data} /> */}
-        <DataGrid
-          sx={{
-            boxShadow: 2,
-            border: 2,
-            borderColor: 'secondary.main',
-            '& .MuiDataGrid-cell:hover': {
-              color: 'primary.main',
+    <Box
+      component={Paper}
+      flexGrow={1}
+    >
+      <DataGrid
+        sx={{
+          boxShadow: 2,
+          border: 2,
+          borderColor: 'secondary.main',
+          '& .MuiDataGrid-cell:hover': {
+            color: 'primary.main',
+          },
+          '& .MuiSvgIcon-root': {
+            color: 'primary.main',
+          }
+        }}
+        components={{
+          NoRowsOverlay: CustomNoRowsOverlay,
+          Toolbar: itemBar,
+        }}
+        initialState={{
+          sorting: {
+            sortModel: [{ field: 'fiscal_quarter', sort: 'asc' }]
+          },
+          columns: {
+            columnVisibilityModel: {
+              id: false,
+              l_name: false,
+              f_name: false,
+              req_date: false,
+              requestee: false,
             },
-            '& .MuiSvgIcon-root': {
-              color: 'primary.main',
-            }
-          }}
-          components={{
-            NoRowsOverlay: CustomNoRowsOverlay,
-            Toolbar: itemBar,
-          }}
-          initialState={{
-            sorting: {
-              sortModel: [{ field: 'fiscal_quarter', sort: 'asc' }]
-            },
-            columns: {
-              columnVisibilityModel: {
-                id: false,
-                l_name: false,
-                f_name: false,
-                req_date: false,
-                requestee: false,
-              },
-            }
-          }}
-          disableColumnMenu
-          rows={tableData}
-          columns={[...columns, ...userActions]}
-          editMode='row'
-          rowModesModel={rowModesModel}
-          onRowModesModelChange={(newModel) => setRowModesModel(newModel)}
-          onRowEditStart={handleRowEditStart}
-          onRowEditStop={handleRowEditStop}
-          processRowUpdate={processRowUpdate}
-          onRowClick={handleRowClick}
-          columnBuffer={2}
-          columnThreshold={2}
-          experimentalFeatures={{ newEditingApi: true }}
-        />
-      </Paper>
-    </>
+          }
+        }}
+        disableColumnMenu
+        rows={tableData}
+        columns={[...columns, ...userActions]}
+        editMode='row'
+        rowModesModel={rowModesModel}
+        onRowModesModelChange={(newModel) => setRowModesModel(newModel)}
+        onRowEditStart={handleRowEditStart}
+        onRowEditStop={handleRowEditStop}
+        processRowUpdate={processRowUpdate}
+        columnBuffer={2}
+        columnThreshold={2}
+        experimentalFeatures={{ newEditingApi: true }}
+      />
+    </Box>
   );
 };
 

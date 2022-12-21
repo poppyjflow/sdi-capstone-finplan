@@ -15,124 +15,130 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function StatusBar() {
-  let data = {unit: "50th BX", dueDate: "Nov 5th 2021", status: "green",
-              requestNum: 7, allocation: 734432, obligation: 54430}
+  let data = {
+    unit: "50th BX", dueDate: "Nov 5th 2021", status: "green",
+    requestNum: 7, allocation: 734432, obligation: 54430
+  }
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box
+      component={Paper}
+      flexGrow={1}
+      p={2}
+    >
       <Grid container spacing={.8}>
         <Grid item xs={3}>
-        <Stack spacing={2}>
-        <Item>Unit: {data.unit} </Item>
-        <Item>Submission Due Date: {data.dueDate}</Item>
-        <Item>Status: <span style={{color: data.status === "green" ? "green" : "red"}}>{data.status}</span> </Item>
-      </Stack>
+          <Stack spacing={2}>
+            <Item>Unit: {data.unit} </Item>
+            <Item>Submission Due Date: {data.dueDate}</Item>
+            <Item>Status: <span style={{ color: data.status === "green" ? "green" : "red" }}>{data.status}</span> </Item>
+          </Stack>
         </Grid>
 
         <Grid item xs={3}>
-        <Stack spacing={.3}>
-        <Item>Total Requests: ${data.requestNum}</Item>
-        <Item>Total Allocation: ${data.allocation}</Item>
-        <Item>Total Obligations: ${data.obligation}</Item>
-        <Item>Delta: ${data.allocation - data.obligation}</Item>
-      </Stack>
+          <Stack spacing={.3}>
+            <Item>Total Requests: ${data.requestNum}</Item>
+            <Item>Total Allocation: ${data.allocation}</Item>
+            <Item>Total Obligations: ${data.obligation}</Item>
+            <Item>Delta: ${data.allocation - data.obligation}</Item>
+          </Stack>
 
         </Grid>
         <Grid item xs={6}>
 
-        <Stack spacing={.6}>
-        <Grid container spacing={.2}>
-        <Grid item xs={2}>
+          <Stack spacing={.6}>
+            <Grid container spacing={.2}>
+              <Grid item xs={2}>
 
-        </Grid>
-        <Grid item xs={2.5}>
-          Requests
-        </Grid>
-        <Grid item xs={2.5}>
-          Allocations
-        </Grid>
-        <Grid item xs={2.5}>
-          Obligations
-        </Grid>
+              </Grid>
+              <Grid item xs={2.5}>
+                Requests
+              </Grid>
+              <Grid item xs={2.5}>
+                Allocations
+              </Grid>
+              <Grid item xs={2.5}>
+                Obligations
+              </Grid>
 
-        <Grid item xs={2.5}>
-          Delta
-        </Grid>
+              <Grid item xs={2.5}>
+                Delta
+              </Grid>
 
-        <Grid item xs={2}>
-        Q1
-        </Grid>
-        <Grid item xs={2.5}>
-          $
-        </Grid>
-        <Grid item xs={2.5}>
-          $
-        </Grid>
-        <Grid item xs={2.5}>
-          $
-        </Grid>
-        <Grid item xs={2.5}>
-          $
-        </Grid>
+              <Grid item xs={2}>
+                Q1
+              </Grid>
+              <Grid item xs={2.5}>
+                $
+              </Grid>
+              <Grid item xs={2.5}>
+                $
+              </Grid>
+              <Grid item xs={2.5}>
+                $
+              </Grid>
+              <Grid item xs={2.5}>
+                $
+              </Grid>
 
-        <Grid item xs={2}>
-        Q2
-        </Grid>
-        <Grid item xs={2.5}>
-          $
-        </Grid>
-        <Grid item xs={2.5}>
-         $
-        </Grid>
-        <Grid item xs={2.5}>
-          $
-        </Grid>
-        <Grid item xs={2.5}>
-          $
-        </Grid>
+              <Grid item xs={2}>
+                Q2
+              </Grid>
+              <Grid item xs={2.5}>
+                $
+              </Grid>
+              <Grid item xs={2.5}>
+                $
+              </Grid>
+              <Grid item xs={2.5}>
+                $
+              </Grid>
+              <Grid item xs={2.5}>
+                $
+              </Grid>
 
-        <Grid item xs={2}>
-        Q3
-        </Grid>
-        <Grid item xs={2.5}>
-          $
-        </Grid>
-        <Grid item xs={2.5}>
-          $
-        </Grid>
-        <Grid item xs={2.5}>
-          $
-        </Grid>
-        <Grid item xs={2.5}>
-          $
-        </Grid>
+              <Grid item xs={2}>
+                Q3
+              </Grid>
+              <Grid item xs={2.5}>
+                $
+              </Grid>
+              <Grid item xs={2.5}>
+                $
+              </Grid>
+              <Grid item xs={2.5}>
+                $
+              </Grid>
+              <Grid item xs={2.5}>
+                $
+              </Grid>
 
-        <Grid item xs={2}>
-        Q4
-        </Grid>
-        <Grid item xs={2.5}>
-          $
-        </Grid>
-        <Grid item xs={2.5}>
-          $
-        </Grid>
-        <Grid item xs={2.5}>
-          $
-        </Grid>
-        <Grid item xs={2.5}>
-          $
-        </Grid>
-
-
-          </Grid>
+              <Grid item xs={2}>
+                Q4
+              </Grid>
+              <Grid item xs={2.5}>
+                $
+              </Grid>
+              <Grid item xs={2.5}>
+                $
+              </Grid>
+              <Grid item xs={2.5}>
+                $
+              </Grid>
+              <Grid item xs={2.5}>
+                $
+              </Grid>
 
 
+            </Grid>
 
 
 
-      </Stack>
+
+
+          </Stack>
 
         </Grid>
-        </Grid>
+      </Grid>
     </Box>
   );
 }

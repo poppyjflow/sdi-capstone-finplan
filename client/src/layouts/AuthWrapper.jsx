@@ -1,4 +1,4 @@
-import React, { useState, createContext, useMemo } from 'react';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
 import useSessionStorage from '../hooks/useSessionStorage';
 import { ThemeProvider } from '@mui/material/styles';
@@ -6,36 +6,18 @@ import RootTheme from '../css/RootTheme';
 import { createTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 
-const ColorModeContext = createContext({ toggleColorMode: () => { } });
-
 const AuthWrapper = () => {
-  const [mode, setMode] = useState('dark');
   const [user, setUser] = useSessionStorage('user', { auth: '', user: '' });
 
-  const colorMode = useMemo(
-    () => ({
-      // The dark mode switch would invoke this method
-      toggleColorMode: () => {
-        setMode((prevMode) =>
-          prevMode === 'light' ? 'dark' : 'light',
-        );
-      },
-    }),
-    [],
-  );
-
-  const theme = React.useMemo(() => createTheme(RootTheme(mode)), [mode]);
+  const theme = createTheme(RootTheme('dark'));
 
   return (
-    <ColorModeContext.Provider value={colorMode} >
-      <ThemeProvider theme={theme} >
-        <Box className='auth' height='stretch' width='100%' bgcolor='background.default'>
-          <Outlet context={[user, setUser,]} />
-        </Box>
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+    <ThemeProvider theme={theme} >
+      <Box className='auth' height='stretch' width='100%' bgcolor='background.default'>
+        <Outlet context={[user, setUser,]} />
+      </Box>
+    </ThemeProvider>
   );
 };
 
 export default AuthWrapper;
-export { ColorModeContext };

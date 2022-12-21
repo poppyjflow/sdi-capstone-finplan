@@ -26,17 +26,6 @@ const PublicRoutes = () => {
       >
         <Outlet context={[user, setUser]} />
       </Box>
-      <Box
-        width='100%'
-        component='footer'
-        height='fit-content'
-        position='absolute'
-        bottom='0%'
-        display='flex'
-        textAlign='center'
-        justifyContent='center'
-      >
-      </Box>
     </Box>
   );
 
