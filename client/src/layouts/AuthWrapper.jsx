@@ -29,7 +29,7 @@ const AuthWrapper = () => {
   return (
     <ColorModeContext.Provider value={colorMode} >
       <ThemeProvider theme={theme} >
-        <Box height='100vh' width='100%' bgcolor='background.default'>
+        <Box height='inherit' width='100%' bgcolor='background.default'>
           <Outlet context={[user, setUser,]} />
         </Box>
       </ThemeProvider>
