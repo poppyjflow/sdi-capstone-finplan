@@ -57,7 +57,7 @@ const RequestForm = () => {
   useEffect(() => {
     fetch(`http://localhost:8080/users/${user.id}`)
     .then(res=>res.json())
-    .then(res => setUserOrgID(res[0].org))
+    .then(res => setUserOrgID(res[0].org_id))
     .catch(err => {
       console.log(err);
       alert('There was an error accessing your organization.')

@@ -71,7 +71,7 @@ const Navbar = ({ navProps }) => {
         position='fixed'
       >
         <ToolBar>
-          <IconButton onClick={handleHome} sx={{ p: 0 }}>
+          <IconButton onClick={handleHome} sx={{ p: 0}}>
             <CottageOutlinedIcon sx={{fontSize: 45, marginLeft: '-0.16em'}} />
           </IconButton>
           <Box sx={{ flexGrow: 4, display: 'flex', justifyContent: 'center' }}>
@@ -81,11 +81,11 @@ const Navbar = ({ navProps }) => {
           Welcome {user.user} !
           </Box>
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'right' }}>
+            <IconButton sx={{ ml: 1}} onClick={colorMode.toggleColorMode} color="inherit">
+              {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
           <InfoModal />
           </Box>
-          <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
-            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-          </IconButton>
           <Box>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

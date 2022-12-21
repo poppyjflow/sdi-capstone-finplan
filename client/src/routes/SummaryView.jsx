@@ -12,11 +12,11 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 const SummaryView = () => {
+  const user = useLoaderData();
   const [yearData, setYearData] = useState(null)
   const [year, setYear] = useState(2023)
-  const [orgName, setOrgName] = useState('')
-  const user = useLoaderData();
-  const org = user[0].org
+  const [orgName, setOrgName] = useState(user.org)
+  const org = user.org_id
 
   const handleYearChange = (event) => {
     setYear(event.target.value)
@@ -53,19 +53,6 @@ const SummaryView = () => {
       alert('There was a problem accessing request data.')
     })
   }, [year, org])
-
-  useEffect(() => {
-    if(org){
-      fetch(`http://localhost:8080/orgs/${org}`)
-      .then(res => res.json())
-      .then(res => setOrgName(res[0].name))
-      .catch(err => {
-        console.log(err)
-        alert('There was an error retrieving your organization info.')
-      })
-    }
-    return
-  }, [org])
 
     return(
       <>
