@@ -35,23 +35,6 @@ const Settings = () => {
       </CardContent>
     </Card>
 
-    <Card sx={{ maxWidth: '100%', marginTop: '2em' }}>
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          Dark Mode
-        </Typography>
-            <div>
-               <Switch
-              checked
-              disabled
-              color='secondary'/>
-            </div>
-        <Typography variant="body2" color="text.secondary" sx={{}}>
-           Dark mode is enabled.
-        </Typography>
-      </CardContent>
-    </Card>
-
     <EmailToggle />
 
     <Card sx={{ maxWidth: '100%', marginTop: '2em' }}>

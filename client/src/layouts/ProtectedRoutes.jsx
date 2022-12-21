@@ -12,7 +12,7 @@ import SideDrawer from '../components/SideDrawer';
 const ProtectedRoutes = () => {
   const [user, setUser] = useOutletContext();
   const [drawerWidth, setDrawerWidth] = useState(80);
-  const navProps = { width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }
+  const navProps = { width: '100%', ml: `${drawerWidth}px` }
   const navigate = useNavigate();
 
   useEffect(() => {
