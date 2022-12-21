@@ -14,7 +14,7 @@ import CottageOutlinedIcon from '@mui/icons-material/CottageOutlined';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useContext } from 'react';
-import { ColorModeContext } from '../layouts/AuthWrapper';
+import { ColorModeContext } from '../layouts/ProtectedRoutes';
 import InfoModal from './InfoModal';
 
 
@@ -71,20 +71,20 @@ const Navbar = ({ navProps }) => {
         position='fixed'
       >
         <ToolBar>
-          <IconButton onClick={handleHome} sx={{ p: 0}}>
-            <CottageOutlinedIcon sx={{fontSize: 45, marginLeft: '-0.16em'}} />
+          <IconButton onClick={handleHome} sx={{ p: 0 }}>
+            <CottageOutlinedIcon sx={{ fontSize: 45, marginLeft: '-0.16em' }} />
           </IconButton>
           <Box sx={{ flexGrow: 4, display: 'flex', justifyContent: 'center' }}>
-          <h3>FINPLAN Tool</h3>
+            <h3>FINPLAN Tool</h3>
           </Box>
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-          Welcome {user.user} !
+            Welcome {user.user} !
           </Box>
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'right' }}>
-            <IconButton sx={{ ml: 1}} onClick={colorMode.toggleColorMode} color="inherit">
+            <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
               {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
-          <InfoModal />
+            <InfoModal />
           </Box>
           <Box>
             <Tooltip title="Open settings">

@@ -25,7 +25,7 @@ export default function InfoModal() {
   return (
     <div>
       <IconButton onClick={handleOpen} aria-label="information">
-        <InfoIcon sx={{fontSize: 35}}/>
+        <InfoIcon sx={{ fontSize: 35 }} />
       </IconButton>
       <Modal
         open={open}
@@ -34,73 +34,73 @@ export default function InfoModal() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-description" sx={{ mt: 2, color: 'lightgray'}}>
-            <h1 style={{marginTop: '-0.8em'}}>FinPlan Tips</h1>
-    <ol>
-        <li>
-            The submitted FinPlans may include the following with detailed justification narrative:
+          <Typography id="modal-modal-description" sx={{ mt: 2, color: 'lightgray' }}>
+            <h1 style={{ marginTop: '-0.8em' }}>FinPlan Tips</h1>
             <ol>
-                <li>
+              <li>
+                The submitted FinPlans may include the following with detailed justification narrative:
+                <ol>
+                  <li>
                     Entries accounting for technical refresh of SIPRnet, JWICS and associated IT equipment
                     (units are expected to replace 1/3 of inventory annually to meet three-year refresh requirement)
-                </li>
-                <li>
+                  </li>
+                  <li>
                     Base-managed Contracts (MIP Mission only)
-                </li>
-                <li>
+                  </li>
+                  <li>
                     Furniture
-                </li>
-                <li>
+                  </li>
+                  <li>
                     Fuel (Non Flying Hours)
-                </li>
-            </ol>
-        </li>
-        <li>
-            O&M FinPlans will not include:
-            <ol>
-                <li>
+                  </li>
+                </ol>
+              </li>
+              <li>
+                O&M FinPlans will not include:
+                <ol>
+                  <li>
                     Reimbursements for  prior year requirements
-                </li>
-                <li>
+                  </li>
+                  <li>
                     JWICS service funded by ISR (Please coordinate with Mr. Tommy Bertrand)
-                </li>
-                <li>
+                  </li>
+                  <li>
                     Weapon System computers and equipment
-                </li>
-                <li>
+                  </li>
+                  <li>
                     Weapon System Sustainment
-                </li>
-                <li>
+                  </li>
+                  <li>
                     BOS Funding
-                </li>
-                <li>
+                  </li>
+                  <li>
                     UTC Equipment
-                </li>
-                <li>
+                  </li>
+                  <li>
                     DOMOPS
-                </li>
+                  </li>
+                </ol>
+              </li>
             </ol>
-        </li>
-    </ol>
-    **Please note:
-    <ol>
-        <li>
-            Approval of requirements listed in the FinPlans does not constitute
-            full guarantee of funding in a given fiscal year. Execution year funding levels
-            are limited to final appropriations and availability of funds. Timeline subject to
-            change based on FM‘s schedule and guidance.
-        </li>
-        <li>
-            Base Operating Support (BOS) transitioned out of MIP/MIP-like portfolio in FY 20.
-            Therefore, personnel movement out of the MIP portfolio needs to be factored into the X-plan submitted to FM.
-        </li>
-        <li>
-            SRM Requests require A4/7 approval via DD Form 1391. Please provide a copy
-        </li>
-        <li>
-            IT Requests require a CIPS Number.
-        </li>
-    </ol>
+            **Please note:
+            <ol>
+              <li>
+                Approval of requirements listed in the FinPlans does not constitute
+                full guarantee of funding in a given fiscal year. Execution year funding levels
+                are limited to final appropriations and availability of funds. Timeline subject to
+                change based on FM's schedule and guidance.
+              </li>
+              <li>
+                Base Operating Support (BOS) transitioned out of MIP/MIP-like portfolio in FY 20.
+                Therefore, personnel movement out of the MIP portfolio needs to be factored into the X-plan submitted to FM.
+              </li>
+              <li>
+                SRM Requests require A4/7 approval via DD Form 1391. Please provide a copy
+              </li>
+              <li>
+                IT Requests require a CIPS Number.
+              </li>
+            </ol>
           </Typography>
         </Box>
       </Modal>
