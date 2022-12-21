@@ -12,13 +12,12 @@ import SideDrawer from '../components/SideDrawer';
 const ProtectedRoutes = () => {
   const [user, setUser] = useOutletContext();
   const [drawerWidth, setDrawerWidth] = useState(80);
-
-  const navProps = { width: `100%`, ml: `${drawerWidth}px` }
-  console.log('Protected Routes context obj', user);
+  const navProps = { width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!user.auth) navigate('/');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (

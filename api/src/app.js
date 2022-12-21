@@ -100,25 +100,36 @@ app.get('/users', (req, res) => {
 app.get('/users/:id', (req, res) => {
   const { id } = req.params;
   knex('users')
-    .select('id', 'org', 'branch', 'rank', 'l_name', 'f_name', 'email', 'is_admin')
+    .join('orgs', 'orgs.id', 'users.org')
+    .select('users.id as user_id', 'orgs.name as org', 'org as org_id', 'branch', 'rank', 'l_name', 'f_name', 'email', 'is_admin')
+    .where('users.id', id)
+    .then((result) => res.status(201).send(result))
+});
+
+app.get('/orgs/:id', (req, res) => {
+  const { id } = req.params;
+  knex('orgs')
+    .join('orgs', 'orgs.id',)
+    .select('*')
     .where('id', id)
     .then((result) => res.status(201).send(result))
 });
 
 
 
-app.patch('/users/:id', (req, res) => {
+
+app.put('/users/:id', (req, res) => {
   const { id } = req.params;
-  const { body } = req;
+  const { org, branch, rank, firstName, lastName, email } = req.body;
   knex('users')
-    .where('id', '=', `${id}`)
+    .where('id', id)
     .update({
-      rank: `${body.rank}`,
-      f_name: `${body.firstname}`,
-      l_name: `${body.lastname}`,
-      org: `${body.org}`,
-      email: `${body.email}`,
-      branch: `${body.branch}`
+      org: org,
+      branch: branch,
+      rank: rank,
+      l_name: lastName,
+      f_name: firstName,
+      email: email,
     })
     .then(() => res.status(201).json('User has been successfully updated.'))
     .catch(err => {

@@ -1,5 +1,37 @@
 const aetc = [
   {
+    name: '2nd Air Force',
+    majcom: 2,
+  },
+  {
+    name: '17th Training Wing',
+    majcom: 2,
+  },
+  {
+    name: '37th Training Wing',
+    majcom: 2,
+  },
+  {
+    name: '81st Training Wing',
+    majcom: 2,
+  },
+  {
+    name: '82d Training Wing',
+    majcom: 2,
+  },
+  {
+    name: '602d Training Group Provisional',
+    majcom: 2,
+  },
+  {
+    name: 'Special Warfare Training Wing',
+    majcom: 2,
+  },
+  {
+    name: '19th Air Force',
+    majcom: 2,
+  },
+  {
     name: '12th Flying Training Wing',
     majcom: 2,
   },
@@ -8,19 +40,7 @@ const aetc = [
     majcom: 2,
   },
   {
-    name: '17th Training Wing',
-    majcom: 2,
-  },
-  {
     name: '33d Fighter Wing',
-    majcom: 2,
-  },
-  {
-    name: '37th Training Wing',
-    majcom: 2,
-  },
-  {
-    name: '42nd Air Base Wing',
     majcom: 2,
   },
   {
@@ -28,7 +48,7 @@ const aetc = [
     majcom: 2,
   },
   {
-    name: '49th Wing',
+    name: '49th Flying Training Wing',
     majcom: 2,
   },
   {
@@ -40,10 +60,6 @@ const aetc = [
     majcom: 2,
   },
   {
-    name: '59th Medical Wing',
-    majcom: 2,
-  },
-  {
     name: '71st Flying Training Wing',
     majcom: 2,
   },
@@ -52,23 +68,39 @@ const aetc = [
     majcom: 2,
   },
   {
-    name: '81st Training Wing',
-    majcom: 2,
-  },
-  {
     name: '97th Air Mobility Wing',
     majcom: 2,
   },
   {
-    name: '314th Airlift Wing',
+    name: '314th Air Mobility Wing',
     majcom: 2,
   },
   {
-    name: '502d Air Base Wing',
+    name: '42nd Air Base Wing',
     majcom: 2,
   },
   {
-    name: '336th Training Group',
+    name: 'Air University',
+    majcom: 2,
+  },
+  {
+    name: '360th Recruiting Group',
+    majcom: 2,
+  },
+  {
+    name: '369th Recruiting Group',
+    majcom: 2,
+  },
+  {
+    name: '372nd Recruiting Group',
+    majcom: 2,
+  },
+  {
+    name: '502nd Air Base Wing',
+    majcom: 2,
+  },
+  {
+    name: '59th Medical Wing',
     majcom: 2,
   },
 ];
