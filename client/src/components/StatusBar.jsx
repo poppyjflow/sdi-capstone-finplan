@@ -23,8 +23,7 @@ export default function StatusBar({updated, setUpdated}) {
   const [allData, setAllData] = useState(null)
   const [totals, setTotals] = useState(null)
   const [reconciled, setReconciled] = useState(null)
-  // let data = {unit: "50th BX", dueDate: "Nov 5th 2021", status: "green",
-  //             requestNum: 7, allocation: 734432, obligation: 54430}
+ console.log(totals)
 
   useEffect (() => {
     if(totals){
@@ -36,7 +35,7 @@ export default function StatusBar({updated, setUpdated}) {
 
   useEffect(() => {
     let orgYear = {
-      org_id: 1,
+      org_id: org,
       year_fy: year
     }
     fetch('http://localhost:8080/banner', {
@@ -62,17 +61,17 @@ export default function StatusBar({updated, setUpdated}) {
 
   return (
     <>
-    {allData ? 
+    {allData ?
       <Box sx={{ flexGrow: 1 }}>
         <Grid container alignItems='center' spacing={.8}>
           <Grid item xs={3}>
           <Stack spacing={2.5}>
           <Item>Unit: {allData.org_name} </Item>
           <Item>Submission Due Date: {allData.due_date}</Item>
-          <Item>Status: {reconciled ? 
-            <span style={{color: 'green'}}>Reconciled</span> 
-          : 
-            <span style={{color: 'red'}}>Needs Reconciled</span> 
+          <Item>Status: {reconciled ?
+            <span style={{color: 'green'}}>Reconciled</span>
+          :
+            <span style={{color: 'red'}}>Needs Reconciled</span>
           }
             </Item>
         </Stack>
@@ -190,7 +189,7 @@ export default function StatusBar({updated, setUpdated}) {
           </Grid>
           <Grid item xs={2.5}>
           <Item>
-            $ {allData.q3.allocations - allData.q3.obligations} 
+            $ {allData.q3.allocations - allData.q3.obligations}
             </Item>
           </Grid>
 
@@ -216,7 +215,7 @@ export default function StatusBar({updated, setUpdated}) {
           </Grid>
           <Grid item xs={2.5}>
           <Item>
-            $ {allData.q4.allocations - allData.q4.obligations} 
+            $ {allData.q4.allocations - allData.q4.obligations}
           </Item>
           </Grid>
 
@@ -232,7 +231,7 @@ export default function StatusBar({updated, setUpdated}) {
           </Grid>
           </Grid>
       </Box>
-    : 
+    :
     <p>Data is loading...</p>
     }
     </>

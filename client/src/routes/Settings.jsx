@@ -49,7 +49,7 @@ const Settings = () => {
         </CardContent>
     </Card>
 
-    <EditUserForm />
+    {/* <EditUserForm /> */}
     <DeleteUser props={{user, handleLogout}}/>
 
     <Card sx={{ maxWidth: '100%', marginTop: '2em' }}>

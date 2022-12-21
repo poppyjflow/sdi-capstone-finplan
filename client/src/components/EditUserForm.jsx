@@ -120,7 +120,7 @@ const EditUserForm = () => {
 
   const postUserForm = () => {
     fetch(`http://localhost:8080/users/${user.id}`, {
-      method: 'PATCH',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
