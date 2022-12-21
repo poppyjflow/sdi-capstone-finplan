@@ -58,6 +58,7 @@ const router = createBrowserRouter([
             path: '/main',
             element: <UserHome />,
             action: NewReqAction,
+            loader: loadUserData,
           },
           {
             path: '/new-request',

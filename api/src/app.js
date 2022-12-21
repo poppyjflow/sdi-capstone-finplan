@@ -23,11 +23,13 @@ app.use(cors({
 app.use(express.json());
 app.use(morgan('tiny'));
 
-app.get('/requests', (req, res) => {
+app.get('/requests/:orgId', (req, res) => {
+  const { orgId } = req.params;
   knex({ reqs: 'requests' })
     .join('users', 'users.id', 'user')
     .join('orgs', 'reqs.org', 'orgs.id')
     .select('reqs.*', 'users.l_name', 'users.f_name', 'orgs.name as org_name')
+    .where('reqs.org', '=', orgId)
     .then((result) => {
       res.status(201).json(result)
     })
