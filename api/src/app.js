@@ -149,6 +149,7 @@ app.post('/requests', (req, res) => {
     requested,
     title,
     description,
+    justification,
   } = req.body;
 
   knex('requests')
@@ -161,6 +162,7 @@ app.post('/requests', (req, res) => {
       req_code: reqCode,
       req_title: title,
       description: description,
+      justification: justification,
     })
     .then(() => res.status(201).json('Request successfully created.'))
     .catch(err => {
@@ -170,7 +172,7 @@ app.post('/requests', (req, res) => {
 });
 
 app.put('/requests/:id', (req, res) => {
-  const { org, reqCode, reqDate, priority, allocated, requested, obligated, title, description, } = req.body;
+  const { org, reqCode, reqDate, priority, allocated, requested, obligated, title, description, justification, } = req.body;
   const { id } = req.params;
   knex('requests')
     .where('id', id)
@@ -184,6 +186,25 @@ app.put('/requests/:id', (req, res) => {
       obligated: obligated,
       req_title: title,
       description: description,
+      justification: justification,
+    })
+    .then(() => res.status(201).json('Request successfully created.'))
+    .catch(err => {
+      console.log(err);
+      res.status(400).json('There was an error posting to the database.');
+    });
+});
+
+app.put('/requestdetails/:id', (req, res) => {
+  const { req_title, description, justification } = req.body;
+  const { id } = req.params;
+console.log(`API title: ${req_title}, desc: ${description}, justification: ${justification}, ID: ${id}`)
+  knex('requests')
+    .where('id', id)
+    .update({
+      req_title: req_title,
+      description: description,
+      justification: justification
     })
     .then(() => res.status(201).json('Request successfully created.'))
     .catch(err => {

@@ -50,8 +50,8 @@ const UserHome = () => {
   const [openDetails, setOpenDetails] = useState(false);
   const [details, setDetails] = useState({});
 
-  const handleClickOpen = (title, body) => {
-    setDetails({ title: title, body: body });
+  const handleClickOpen = (id, title, body, justification) => {
+    setDetails({ id: id, title: title, body: body, justification: justification });
     setOpenDetails(true);
   };
 
@@ -75,7 +75,7 @@ const UserHome = () => {
         </Grid2>
         <Grid2 xs={2}>
           <IconButton
-            onClick={(e) => handleClickOpen(row.req_title, row.description)}
+            onClick={(e) => handleClickOpen(row.id, row.req_title, row.description, row.justification)}
           >
             <PreviewIcon />
           </IconButton>

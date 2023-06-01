@@ -4,7 +4,7 @@ import { redirect } from 'react-router-dom';
 const NewReqAction = async ({ request }) => {
 
   if (request.method === 'POST') {
-    const { user, org, priority, reqCode, reqDate, requested, title, description, }
+    const { user, org, priority, reqCode, reqDate, requested, title, description, justification, }
       = Object.fromEntries(await request?.formData());
     axios.post('http://localhost:8080/requests', {
       user: user,
@@ -15,11 +15,12 @@ const NewReqAction = async ({ request }) => {
       requested: requested,
       title: title,
       description: description,
+      justification: justification,
     });
     return redirect('/main');
   }
   else if (request.method === 'PUT') {
-    const { id, reqCode, priority, reqDate, requested, allocated, obligated, title, description, }
+    const { id, reqCode, priority, reqDate, requested, allocated, obligated, title, description, justification, }
       = Object.fromEntries(await request?.formData());
     axios.put((`http://localhost:8080/requests/${id}`), {
       reqCode: reqCode,
@@ -30,6 +31,7 @@ const NewReqAction = async ({ request }) => {
       obligated: obligated,
       title: title,
       description: description,
+      justification: justification,
     });
     return null;
   }

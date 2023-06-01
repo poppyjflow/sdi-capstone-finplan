@@ -12,6 +12,7 @@ exports.up = function (knex) {
     table.string('req_code');
     table.string('req_title');
     table.string('description');
+    table.string('justification');
     table.integer('requested').nullable().defaultTo(0);
     table.boolean('req_granted').defaultTo(false);
     table.integer('allocated').nullable().defaultTo(0);

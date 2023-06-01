@@ -9,6 +9,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import ClearIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
+// DF left off here
+//import PreviewIcon from '@mui/icons-material/Preview';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
@@ -137,6 +139,7 @@ const DataTable = ({ columns, user, itemBar, updated, setUpdated }) => {
     }
   };
 
+  // DF steal me!
   const processRowUpdate = (newRow) => {
     console.log('New Row', newRow);
     const updatedRow = { ...newRow, isNew: false };
@@ -175,6 +178,13 @@ const DataTable = ({ columns, user, itemBar, updated, setUpdated }) => {
         }
 
         return [
+          // DF left off here
+          // <GridActionsCellItem
+          //   key={`${id}.viewQs`}
+          //   icon={<PreviewIcon />}
+          //   label="Quarter Data"
+          //   onClick={handleClick(id)}
+          // />,
           <GridActionsCellItem
             key={`${id}.edit`}
             icon={<EditIcon />}
