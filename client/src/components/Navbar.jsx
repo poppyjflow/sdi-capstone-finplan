@@ -79,7 +79,7 @@ const Navbar = ({ navProps }) => {
             <h3>FINPLAN Tool</h3>
           </Box>
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
-            Welcome {userData.f_name} !
+            {userData.rank} {userData.f_name} {userData.l_name}, {userData.org}
           </Box>
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'right' }}>
             <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">

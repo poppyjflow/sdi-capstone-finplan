@@ -6,8 +6,10 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
 import PreviewIcon from '@mui/icons-material/Preview';
+import ViewListIcon from '@mui/icons-material/ViewList';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import DetailsDialog from '../components/DetailsDialog';
+import QuartersDialog from '../components/QuartersDialog';
 import {
   GridToolbarContainer,
   GridToolbarFilterButton,
@@ -49,14 +51,25 @@ const UserHome = () => {
   const [updated, setUpdated] = useState(false);
   const [openDetails, setOpenDetails] = useState(false);
   const [details, setDetails] = useState({});
+   const [openQtrDetails, setOpenQtrDetails] = useState(false);
+   const [q1, setQ1] = useState({requested: 11111,allocated: 222222,obligated: 3333333});
 
   const handleClickOpen = (id, title, body, justification) => {
     setDetails({ id: id, title: title, body: body, justification: justification });
     setOpenDetails(true);
   };
 
+  const handleQtrClickOpen = (id, q1, ) => {
+    setQ1({ id: id, requested: q1.requested, allocated: q1.allocated, obligated: q1.obligated });
+    setOpenQtrDetails(true);
+  };
+
   const handleClose = () => {
     setOpenDetails(false);
+  };
+
+  const handleQtrClose = () => {
+    setOpenQtrDetails(false);
   };
 
   const navigate = useNavigate();
@@ -84,6 +97,21 @@ const UserHome = () => {
     )
   }
 
+  const RenderQuarters = (props) => {
+    const { row } = props;
+    return (
+      <Grid2 container spacing={.5} alignItems='center'>
+        <Grid2 xs={'auto'}>
+          <IconButton
+            onClick={(e) => handleQtrClickOpen(row.id, q1)}
+          >
+            <ViewListIcon />
+          </IconButton>
+        </Grid2>
+      </Grid2>
+    )
+  }
+
   const renderDelta = ({ row }) => {
     if (row.allocated && row.obligated) {
       const percentage = row.obligated / row.allocated;
@@ -103,9 +131,10 @@ const UserHome = () => {
   };
 
   const columns = [
-    {
-      field: 'id'
-    },
+    // {
+    //   field: 'id',
+    //   display: 'false'
+    // },
     {
       field: 'req_date',
     },
@@ -120,27 +149,27 @@ const UserHome = () => {
       valueGetter: getFiscalQuarter,
       sortComparator: quarterSort,
     },
-    {
-      field: 'org_name',
-      headerName: 'Org',
-      flex: .25,
-      headerAlign: 'center',
-      align: 'center',
-    },
-    {
-      field: 'l_name',
-    },
-    {
-      field: 'f_name',
-    },
-    {
-      field: 'requestee',
-      headerName: 'Submitted By',
-      flex: .2,
-      headerAlign: 'center',
-      align: 'center',
-      valueGetter: getUserFullName,
-    },
+    // {
+    //   field: 'org_name',
+    //   headerName: 'Org',
+    //   flex: .25,
+    //   headerAlign: 'center',
+    //   align: 'center',
+    // },
+    // {
+    //   field: 'l_name',
+    // },
+    // {
+    //   field: 'f_name',
+    // },
+    // {
+    //   field: 'requestee',
+    //   headerName: 'Submitted By',
+    //   flex: .2,
+    //   headerAlign: 'center',
+    //   align: 'center',
+    //   valueGetter: getUserFullName,
+    // },
     {
       field: 'priority',
       description: 'Priority codes',
@@ -198,15 +227,24 @@ const UserHome = () => {
       align: 'center',
       editable: true,
     },
+    // {
+    //   field: 'delta',
+    //   headerName: 'Delta',
+    //   minWidth: 145,
+    //   flex: .2,
+    //   headerAlign: 'center',
+    //   align: 'center',
+    //   editable: false,
+    //   renderCell: renderDelta,
+    // },
     {
-      field: 'delta',
-      headerName: 'Delta',
-      minWidth: 145,
-      flex: .2,
+      field: 'qtrs',
+      headerName: 'Qtrs',
+      flex: .1,
       headerAlign: 'center',
       align: 'center',
       editable: false,
-      renderCell: renderDelta,
+      renderCell: RenderQuarters,
     },
   ];
 
@@ -255,6 +293,7 @@ const UserHome = () => {
           columns={columns}
         />
         <DetailsDialog details={details} isOpen={openDetails} close={handleClose} />
+        <QuartersDialog q1={q1} isOpen={openQtrDetails} close={handleQtrClose} />
       </Box>
     </>
   );

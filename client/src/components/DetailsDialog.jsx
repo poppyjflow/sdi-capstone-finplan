@@ -15,16 +15,16 @@ const DetailsDialog = ({ details, isOpen, close }) => {
   const [reqTitle, setReqTitle] = useState(details.title);
   const [reqDesc, setReqDesc] = useState(details.body);
   const [reqJustification, setReqJustification] = useState(details.justification);
-  console.log(`close = ${close}`)
-  console.log(`ID = ${details.id}`)
-  console.log(`reqTitle = ${reqTitle}`)
-  console.log(`reqDesc = ${reqDesc}`)
+  console.log(`close = ${close}`);
+  console.log(`ID = ${details.id}`);
+  console.log(`reqTitle = ${reqTitle}`);
+  console.log(`reqDesc = ${reqDesc}`);
   const handleSaveAndClose = () => {
     console.log(`handleSaveAndClose()`);
     NewReqDetailAction(actionType, details.id, reqTitle, reqDesc, reqJustification);
     close();
-    window.location.reload(true)
-    }
+    window.location.reload(true);
+  };
 
   return (
     <Dialog open={isOpen} onClose={close}>
@@ -37,9 +37,7 @@ const DetailsDialog = ({ details, isOpen, close }) => {
           type="text"
           fullWidth
           defaultValue={details.title}
-        //          value={detailsTitle || ''}
-        //                    onChange={event => onChangeHandler(event)}
-                 onChange={e => setReqTitle(e.target.value)}
+          onChange={e => setReqTitle(e.target.value)}
         />
         <TextField
           margin="dense"
@@ -48,8 +46,8 @@ const DetailsDialog = ({ details, isOpen, close }) => {
           type="text"
           fullWidth
           defaultValue={details.body}
-         onChange={e => setReqDesc(e.target.value)}
-          />
+          onChange={e => setReqDesc(e.target.value)}
+        />
         <TextField
           margin="dense"
           id="justification"
@@ -57,15 +55,12 @@ const DetailsDialog = ({ details, isOpen, close }) => {
           type="text"
           fullWidth
           defaultValue={details.justification}
-         onChange={e => setReqJustification(e.target.value)}
-          />
-        {/* <DialogContentText>
-          {details.body}
-        </DialogContentText> */}
+          onChange={e => setReqJustification(e.target.value)}
+        />
       </DialogContent>
       <DialogActions>
-      <Button variant='contained' size='small' color='secondary' onClick={close} autoFocus >Close</Button>
-      <Button variant='contained' size='small' color='primary' onClick={(e) => handleSaveAndClose(e.target.value)} autoFocus >Save & Close</Button>
+        <Button variant='contained' size='small' color='secondary' onClick={close} autoFocus >Close</Button>
+        <Button variant='contained' size='small' color='primary' onClick={(e) => handleSaveAndClose(e.target.value)} autoFocus >Save & Close</Button>
       </DialogActions>
     </Dialog>
   );
@@ -78,19 +73,3 @@ DetailsDialog.propTypes = {
 };
 
 export default DetailsDialog;
-
-/*
-  return (
-    <Dialog open={isOpen} onClose={close}>
-      <DialogTitle>{details.title}</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          {details.body}
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button variant='contained' size='small' color='secondary' onClick={close} autoFocus >Close</Button>
-      </DialogActions>
-    </Dialog>
-  )
-*/

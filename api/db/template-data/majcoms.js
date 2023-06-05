@@ -26,5 +26,8 @@ const majcoms = [
   {
     name: 'United States Air Forces in Europe - Air Forces Africa',
   },
+  {
+    name: 'Air National Guard',
+  },
 ]
 exports.majcoms = majcoms;

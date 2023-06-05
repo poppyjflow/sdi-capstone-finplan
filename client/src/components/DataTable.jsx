@@ -9,8 +9,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import ClearIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
-// DF left off here
-//import PreviewIcon from '@mui/icons-material/Preview';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
@@ -90,9 +88,11 @@ const CustomNoRowsOverlay = () => {
 const DataTable = ({ columns, user, itemBar, updated, setUpdated }) => {
   const [tableData, setTableData] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
+  // const [openQtrDetails, setOpenQtrDetails] = useState(false);
+  // const [q1, setQ1] = useState({requested: 1,allocated: 2, obligated: 3});
   const submit = useSubmit();
   const userProfile = useLoaderData();
-  console.log(userProfile)
+  console.log(userProfile);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -110,6 +110,15 @@ const DataTable = ({ columns, user, itemBar, updated, setUpdated }) => {
   const handleRowEditStop = (params, e) => {
     e.defaultMuiPrevented = true;
     e.preventDefault();
+  };
+
+  const handlePreviewClick = (id, title, body, justification) => {
+    // setDetails({ id: id, title: title, body: body, justification: justification });
+    // setOpenDetails(true);
+
+    // setQ1({ id: id, requested: 100, allocated: 200, obligated: 300 });
+    // setOpenQtrDetails(true);
+
   };
 
   const handleEditClick = (id) => () => {
@@ -139,7 +148,6 @@ const DataTable = ({ columns, user, itemBar, updated, setUpdated }) => {
     }
   };
 
-  // DF steal me!
   const processRowUpdate = (newRow) => {
     console.log('New Row', newRow);
     const updatedRow = { ...newRow, isNew: false };
@@ -148,7 +156,7 @@ const DataTable = ({ columns, user, itemBar, updated, setUpdated }) => {
       return (row.id === newRow.id ? updatedRow : row);
     }));
     submit(newRow, { method: 'put', action: '/main' });
-    setUpdated(!updated)
+    setUpdated(!updated);
     return updatedRow;
   };
 
@@ -156,7 +164,7 @@ const DataTable = ({ columns, user, itemBar, updated, setUpdated }) => {
     {
       field: 'actions',
       type: 'actions',
-      width: 70,
+      width: 100,
       cellClassName: 'actions',
       getActions: ({ id }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
@@ -178,12 +186,11 @@ const DataTable = ({ columns, user, itemBar, updated, setUpdated }) => {
         }
 
         return [
-          // DF left off here
           // <GridActionsCellItem
-          //   key={`${id}.viewQs`}
-          //   icon={<PreviewIcon />}
-          //   label="Quarter Data"
-          //   onClick={handleClick(id)}
+          //   key={`${id}.edit`}
+          //   icon={<ViewListIcon />}
+          //   label="Preview"
+          //   onClick={handlePreviewClick(id)}
           // />,
           <GridActionsCellItem
             key={`${id}.edit`}
@@ -228,7 +235,7 @@ const DataTable = ({ columns, user, itemBar, updated, setUpdated }) => {
             sortModel: [{ field: 'fiscal_quarter', sort: 'asc' }]
           },
           columns: {
-            columnVisibilityModel: {
+            columnVisibil0ityModel: {
               id: false,
               l_name: false,
               f_name: false,

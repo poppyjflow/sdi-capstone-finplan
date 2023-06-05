@@ -35,6 +35,32 @@ app.get('/requests/:orgId', (req, res) => {
     })
 })
 
+app.get('/fiscal_years/:orgId', (req, res) => {
+  console.log(`OrgID = ${req.params}`);
+  const { orgId } = req.params;
+  console.log(`OrgID2 = ${orgId}`);
+  knex('requests').orderBy('req_date')
+  .select('req_date')
+  .where('org', orgId)
+  .limit(1)
+  .then((result) => {
+    var oldestDate = new Date(result[0].req_date);
+//    var oldestDate = result[0].req_date;
+    console.log(`oldestDate: ${oldestDate}`)
+    if ((oldestDate.getMonth() === 10) || (oldestDate.getMonth() === 11) || (oldestDate.getMonth() === 12)) {
+      result[0].req_date = (oldestDate.getFullYear() + 1)
+    } else {
+      result[0].req_date = oldestDate.getFullYear()
+    }
+    console.log(`result = ${JSON.stringify(result[0])}`)
+    res.status(201).json(result[0])
+  })
+  .catch(err => {
+    console.log(`org: ${orgId}, ${err}`);
+    res.status(400).json('There was a problem updating the user.');
+  });
+});
+
 //GET REQUEST w/ ID
 app.get('/requests/:id', (req, res) => {
   const { id } = req.params;

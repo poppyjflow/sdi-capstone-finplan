@@ -31,6 +31,16 @@ exports.seed = async function (knex) {
       password: '$2b$10$xH12sd9kv4G6VfiF7DfTOeClhddnrbwnMyPNOO9aXOS6CB5ra/oo2',
       email: 'sel@grp3.com',
       is_admin: true,
+    },
+    {
+      org: 156,
+      branch: 'USAF',
+      rank: '1stLt',
+      l_name: 'Sanchez',
+      f_name: 'Rick',
+      password: '$2b$10$S1gPdU737oEspI3R0RfoOOS/VLRINfvet4546YD9TXmZi8jiA.IyK',
+      email: 'sq_cc@us.af.mil',
+      is_admin: true,
     }
   ]
   )
