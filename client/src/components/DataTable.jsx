@@ -97,6 +97,14 @@ const DataTable = ({ columns, user, itemBar, updated, setUpdated }) => {
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get(`http://localhost:8080/requests/${userProfile.org_id}`);
+
+      // Calculate annual requests/allocations/obligations per-row based on the quarterly data.  Fornow this actually overrides the DB values for these three columns, which should remain = 0.
+      for(const j in res.data) {
+        res.data[j].requested = res.data[j].q1requested + res.data[j].q2requested + res.data[j].q3requested + res.data[j].q4requested;
+        res.data[j].allocated = res.data[j].q1allocated + res.data[j].q2allocated + res.data[j].q3allocated + res.data[j].q4allocated;
+        res.data[j].obligated = res.data[j].q1obligated + res.data[j].q2obligated + res.data[j].q3obligated + res.data[j].q4obligated;
+      }
+
       setTableData(res.data);
     };
     if (user.auth) fetchData();

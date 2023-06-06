@@ -17,6 +17,18 @@ exports.up = function (knex) {
     table.boolean('req_granted').defaultTo(false);
     table.integer('allocated').nullable().defaultTo(0);
     table.integer('obligated').nullable().defaultTo(0);
+    table.integer('q1requested').nullable().defaultTo(0);
+    table.integer('q1allocated').nullable().defaultTo(0);
+    table.integer('q1obligated').nullable().defaultTo(0);
+    table.integer('q2requested').nullable().defaultTo(0);
+    table.integer('q2allocated').nullable().defaultTo(0);
+    table.integer('q2obligated').nullable().defaultTo(0);
+    table.integer('q3requested').nullable().defaultTo(0);
+    table.integer('q3allocated').nullable().defaultTo(0);
+    table.integer('q3obligated').nullable().defaultTo(0);
+    table.integer('q4requested').nullable().defaultTo(0);
+    table.integer('q4allocated').nullable().defaultTo(0);
+    table.integer('q4obligated').nullable().defaultTo(0);
   });
 };
 

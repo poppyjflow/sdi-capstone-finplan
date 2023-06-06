@@ -51,16 +51,24 @@ const UserHome = () => {
   const [updated, setUpdated] = useState(false);
   const [openDetails, setOpenDetails] = useState(false);
   const [details, setDetails] = useState({});
+  const [title, setTitle] = useState({});
    const [openQtrDetails, setOpenQtrDetails] = useState(false);
-   const [q1, setQ1] = useState({requested: 11111,allocated: 222222,obligated: 3333333});
+   const [q1, setQ1] = useState({});
+   const [q2, setQ2] = useState({});
+   const [q3, setQ3] = useState({});
+   const [q4, setQ4] = useState({});
 
   const handleClickOpen = (id, title, body, justification) => {
     setDetails({ id: id, title: title, body: body, justification: justification });
     setOpenDetails(true);
   };
 
-  const handleQtrClickOpen = (id, q1, ) => {
-    setQ1({ id: id, requested: q1.requested, allocated: q1.allocated, obligated: q1.obligated });
+  const handleQtrClickOpen = (row) => {
+    setTitle({title: row.req_title})
+    setQ1({ id: row.id, requested: row.q1requested, allocated: row.q1allocated, obligated: row.q1obligated });
+    setQ2({ id: row.id, requested: row.q2requested, allocated: row.q2allocated, obligated: row.q2obligated });
+    setQ3({ id: row.id, requested: row.q3requested, allocated: row.q3allocated, obligated: row.q3obligated });
+    setQ4({ id: row.id, requested: row.q4requested, allocated: row.q4allocated, obligated: row.q4obligated });
     setOpenQtrDetails(true);
   };
 
@@ -103,7 +111,7 @@ const UserHome = () => {
       <Grid2 container spacing={.5} alignItems='center'>
         <Grid2 xs={'auto'}>
           <IconButton
-            onClick={(e) => handleQtrClickOpen(row.id, q1)}
+            onClick={(e) => handleQtrClickOpen(row)}
           >
             <ViewListIcon />
           </IconButton>
@@ -149,27 +157,6 @@ const UserHome = () => {
       valueGetter: getFiscalQuarter,
       sortComparator: quarterSort,
     },
-    // {
-    //   field: 'org_name',
-    //   headerName: 'Org',
-    //   flex: .25,
-    //   headerAlign: 'center',
-    //   align: 'center',
-    // },
-    // {
-    //   field: 'l_name',
-    // },
-    // {
-    //   field: 'f_name',
-    // },
-    // {
-    //   field: 'requestee',
-    //   headerName: 'Submitted By',
-    //   flex: .2,
-    //   headerAlign: 'center',
-    //   align: 'center',
-    //   valueGetter: getUserFullName,
-    // },
     {
       field: 'priority',
       description: 'Priority codes',
@@ -206,6 +193,7 @@ const UserHome = () => {
       align: 'center',
       editable: true,
       type: 'number',
+//      renderCell: RenderRequested,
     },
     {
       type: 'number',
@@ -227,16 +215,6 @@ const UserHome = () => {
       align: 'center',
       editable: true,
     },
-    // {
-    //   field: 'delta',
-    //   headerName: 'Delta',
-    //   minWidth: 145,
-    //   flex: .2,
-    //   headerAlign: 'center',
-    //   align: 'center',
-    //   editable: false,
-    //   renderCell: renderDelta,
-    // },
     {
       field: 'qtrs',
       headerName: 'Qtrs',
@@ -293,7 +271,7 @@ const UserHome = () => {
           columns={columns}
         />
         <DetailsDialog details={details} isOpen={openDetails} close={handleClose} />
-        <QuartersDialog q1={q1} isOpen={openQtrDetails} close={handleQtrClose} />
+        <QuartersDialog title={title} q1={q1} q2={q2} q3={q3} q4={q4} isOpen={openQtrDetails} close={handleQtrClose} />
       </Box>
     </>
   );

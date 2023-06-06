@@ -239,6 +239,36 @@ console.log(`API title: ${req_title}, desc: ${description}, justification: ${jus
     });
 });
 
+app.put('/requestquarterlies/:id', (req, res) => {
+  const { q1Requested, q1Allocated, q1Obligated,
+    q2Requested, q2Allocated, q2Obligated,
+    q3Requested, q3Allocated, q3Obligated,
+    q4Requested, q4Allocated, q4Obligated } = req.body;
+  const { id } = req.params;
+//console.log(`API title: ${req_title}, desc: ${description}, justification: ${justification}, ID: ${id}`)
+  knex('requests')
+    .where('id', id)
+    .update({
+      q1requested: q1Requested,
+      q1allocated: q1Allocated,
+      q1obligated: q1Obligated,
+      q2requested: q2Requested,
+      q2allocated: q2Allocated,
+      q2obligated: q2Obligated,
+      q3requested: q3Requested,
+      q3allocated: q3Allocated,
+      q3obligated: q3Obligated,
+      q4requested: q4Requested,
+      q4allocated: q4Allocated,
+      q4obligated: q4Obligated,
+    })
+    .then(() => res.status(201).json('Request successfully created.'))
+    .catch(err => {
+      console.log(err);
+      res.status(400).json('There was an error posting to the database.');
+    });
+});
+
 //LOGIN
 app.post('/login', async (req, res) => {
   const { email } = req.body;
