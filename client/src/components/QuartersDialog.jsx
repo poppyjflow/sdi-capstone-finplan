@@ -11,39 +11,40 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import InputAdornment from '@mui/material/InputAdornment';
 import NewQuarterliesAction from '../actions/NewQuarterliesAction';
+import NumericFormatCustom from './NumericFormatCustom';
 
 const actionType = 'PUT';
 
 // This puts the commas in each number.
-const NumericFormatCustom = React.forwardRef(function NumericFormatCustom(
-  props,
-  ref,
-) {
-  const { onChange, ...other } = props;
+// const NumericFormatCustom = React.forwardRef(function NumericFormatCustom(
+//   props,
+//   ref,
+// ) {
+//   const { onChange, ...other } = props;
 
-  return (
-    <NumericFormat
-      {...other}
-      getInputRef={ref}
-      onValueChange={(values) => {
-        onChange({
-          target: {
-            name: props.name,
-            value: values.value,
-          },
-        });
-      }}
-      thousandSeparator
-      valueIsNumericString
-    // prefix="$"
-    />
-  );
-});
+//   return (
+//     <NumericFormat
+//       {...other}
+//       getInputRef={ref}
+//       onValueChange={(values) => {
+//         onChange({
+//           target: {
+//             name: props.name,
+//             value: values.value,
+//           },
+//         });
+//       }}
+//       thousandSeparator
+//       valueIsNumericString
+//     // prefix="$"
+//     />
+//   );
+// });
 
-NumericFormatCustom.propTypes = {
-  name: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-};
+// NumericFormatCustom.propTypes = {
+//   name: PropTypes.string.isRequired,
+//   onChange: PropTypes.func.isRequired,
+// };
 
 // const renderDelta = ({ row }) => {
 //   if (row.allocated && row.obligated) {
@@ -77,11 +78,7 @@ const QuartersDialog = ({ title, q1, q2, q3, q4, isOpen, close }) => {
   const [q4Allocated, setQ4Allocated] = useState(q4.allocated);
   const [q4Obligated, setQ4Obligated] = useState(q4.obligated);
 
-  console.log(`close = ${close}`);
-  console.log(`Q1 ID = ${q1.id}`);
-  console.log(`requested = ${q1Requested}`);
   const handleSaveAndClose = () => {
-    console.log(`handleSaveAndClose()`);
     NewQuarterliesAction(actionType, q1.id,
       q1Requested, q1Allocated, q1Obligated,
       q2Requested, q2Allocated, q2Obligated,
@@ -98,8 +95,6 @@ const QuartersDialog = ({ title, q1, q2, q3, q4, isOpen, close }) => {
   if (q2.allocated && q2.obligated) { const percentage = q2.obligated / q2.allocated; }
   if (q3.allocated && q3.obligated) { const percentage = q3.obligated / q3.allocated; }
   if (q4.allocated && q4.obligated) { const percentage = q4.obligated / q4.allocated; }
-
-  //console.log(`querterly id: ${row.id}`)
 
   return (
     <Dialog open={isOpen} onClose={close}>

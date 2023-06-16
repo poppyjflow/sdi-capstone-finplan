@@ -13,11 +13,13 @@ import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { useContext } from 'react';
 import axios from 'axios';
 import { Paper } from '@mui/material';
 import { useSubmit, useLoaderData } from 'react-router-dom';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
+import { FYContext } from '../layouts/ProtectedRoutes';
 
 
 const StyledGridOverlay = styled('div')(({ theme }) => ({
@@ -92,23 +94,34 @@ const DataTable = ({ columns, user, itemBar, updated, setUpdated }) => {
   // const [q1, setQ1] = useState({requested: 1,allocated: 2, obligated: 3});
   const submit = useSubmit();
   const userProfile = useLoaderData();
-  console.log(userProfile);
+  const [fy, setFY] = useContext(FYContext);
 
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get(`http://localhost:8080/requests/${userProfile.org_id}`);
 
       // Calculate annual requests/allocations/obligations per-row based on the quarterly data.  Fornow this actually overrides the DB values for these three columns, which should remain = 0.
-      for(const j in res.data) {
-        res.data[j].requested = res.data[j].q1requested + res.data[j].q2requested + res.data[j].q3requested + res.data[j].q4requested;
-        res.data[j].allocated = res.data[j].q1allocated + res.data[j].q2allocated + res.data[j].q3allocated + res.data[j].q4allocated;
-        res.data[j].obligated = res.data[j].q1obligated + res.data[j].q2obligated + res.data[j].q3obligated + res.data[j].q4obligated;
+      const fyData = [];
+      var ctr = 1;
+      for (const j in res.data) {
+        // Though we queried for all Requests for an org, we really only want to display Requests for the FY specified in the dropdown.
+        if (res.data[j].fy.toString() === fy.value.toString()) {
+          res.data[j].requested = res.data[j].q1requested + res.data[j].q2requested + res.data[j].q3requested + res.data[j].q4requested;
+          res.data[j].allocated = res.data[j].q1allocated + res.data[j].q2allocated + res.data[j].q3allocated + res.data[j].q4allocated;
+          res.data[j].obligated = res.data[j].q1obligated + res.data[j].q2obligated + res.data[j].q3obligated + res.data[j].q4obligated;
+
+//          res.data[j].requested = "$ " + res.data[j].requested;
+
+          fyData.push(res.data[j]);
+        }
       }
 
-      setTableData(res.data);
+      setTableData(fyData);
+      // setTableData(res.data);
     };
-    if (user.auth) fetchData();
-  }, [user.auth]);
+    if (user.auth) fetchData(); else console.log(`NOPE!`);
+  }, [fy.value]);
+  //}, [user.auth]);
 
   const handleRowEditStart = (params, e) => {
     e.defaultMuiPrevented = true;
@@ -118,15 +131,6 @@ const DataTable = ({ columns, user, itemBar, updated, setUpdated }) => {
   const handleRowEditStop = (params, e) => {
     e.defaultMuiPrevented = true;
     e.preventDefault();
-  };
-
-  const handlePreviewClick = (id, title, body, justification) => {
-    // setDetails({ id: id, title: title, body: body, justification: justification });
-    // setOpenDetails(true);
-
-    // setQ1({ id: id, requested: 100, allocated: 200, obligated: 300 });
-    // setOpenQtrDetails(true);
-
   };
 
   const handleEditClick = (id) => () => {
@@ -157,7 +161,6 @@ const DataTable = ({ columns, user, itemBar, updated, setUpdated }) => {
   };
 
   const processRowUpdate = (newRow) => {
-    console.log('New Row', newRow);
     const updatedRow = { ...newRow, isNew: false };
     setTableData(tableData.map((row) => {
       if (row.id === newRow.id) console.log('Old row data', row);
@@ -194,12 +197,6 @@ const DataTable = ({ columns, user, itemBar, updated, setUpdated }) => {
         }
 
         return [
-          // <GridActionsCellItem
-          //   key={`${id}.edit`}
-          //   icon={<ViewListIcon />}
-          //   label="Preview"
-          //   onClick={handlePreviewClick(id)}
-          // />,
           <GridActionsCellItem
             key={`${id}.edit`}
             icon={<EditIcon />}

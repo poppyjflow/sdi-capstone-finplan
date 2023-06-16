@@ -4,19 +4,23 @@ import { redirect } from 'react-router-dom';
 const NewReqAction = async ({ request }) => {
 
   if (request.method === 'POST') {
-    const { user, org, priority, reqCode, reqDate, requested, title, description, justification, }
+    const { user, org, priority, reqCode, fy, requested, title, description, justification, }
       = Object.fromEntries(await request?.formData());
-    axios.post('http://localhost:8080/requests', {
+    await axios.post('http://localhost:8080/requests', {
       user: user,
       org: org,
       reqCode: reqCode,
       priority: priority,
-      reqDate: reqDate,
+      fy: fy,
       requested: requested,
       title: title,
       description: description,
       justification: justification,
     });
+
+    // Reloads the webpage to trigger a DB pull.
+    window.location.reload(true);
+
     return redirect('/main');
   }
   else if (request.method === 'PUT') {

@@ -18,12 +18,12 @@ code {
 }
 
 .content {
-  height: calc(100% - 122px);
-  height: -o-calc(100% - 122px);
+  height: calc(95%);
+  height: -o-calc(95%);
   /* opera */
-  height: -webkit-calc(100% - 122px);
+  height: -webkit-calc(95%);
   /* google, safari */
-  height: -moz-calc(100% - 122px);
+  height: -moz-calc(95%);
   /* firefox */
 }
 

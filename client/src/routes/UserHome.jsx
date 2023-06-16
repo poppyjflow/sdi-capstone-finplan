@@ -10,6 +10,10 @@ import ViewListIcon from '@mui/icons-material/ViewList';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import DetailsDialog from '../components/DetailsDialog';
 import QuartersDialog from '../components/QuartersDialog';
+import NumericFormatCustom from '../components/NumericFormatCustom';
+import InputAdornment from '@mui/material/InputAdornment';
+import DownloadIcon from '@mui/icons-material/Download';
+
 import {
   GridToolbarContainer,
   GridToolbarFilterButton,
@@ -44,7 +48,7 @@ const quarterSort = (v1, v2) => {
   const val1 = v1.split(' ');
   const val2 = v2.split(' ');
   return (`${val1[1]}.${val1[0][1]}` - `${val2[1]}.${val2[0][1]}`);
-}
+};
 
 const UserHome = () => {
   const [user] = useOutletContext();
@@ -52,11 +56,11 @@ const UserHome = () => {
   const [openDetails, setOpenDetails] = useState(false);
   const [details, setDetails] = useState({});
   const [title, setTitle] = useState({});
-   const [openQtrDetails, setOpenQtrDetails] = useState(false);
-   const [q1, setQ1] = useState({});
-   const [q2, setQ2] = useState({});
-   const [q3, setQ3] = useState({});
-   const [q4, setQ4] = useState({});
+  const [openQtrDetails, setOpenQtrDetails] = useState(false);
+  const [q1, setQ1] = useState({});
+  const [q2, setQ2] = useState({});
+  const [q3, setQ3] = useState({});
+  const [q4, setQ4] = useState({});
 
   const handleClickOpen = (id, title, body, justification) => {
     setDetails({ id: id, title: title, body: body, justification: justification });
@@ -64,7 +68,7 @@ const UserHome = () => {
   };
 
   const handleQtrClickOpen = (row) => {
-    setTitle({title: row.req_title})
+    setTitle({ title: row.req_title });
     setQ1({ id: row.id, requested: row.q1requested, allocated: row.q1allocated, obligated: row.q1obligated });
     setQ2({ id: row.id, requested: row.q2requested, allocated: row.q2allocated, obligated: row.q2obligated });
     setQ3({ id: row.id, requested: row.q3requested, allocated: row.q3allocated, obligated: row.q3obligated });
@@ -102,8 +106,8 @@ const UserHome = () => {
           </IconButton>
         </Grid2>
       </Grid2>
-    )
-  }
+    );
+  };
 
   const RenderQuarters = (props) => {
     const { row } = props;
@@ -117,23 +121,27 @@ const UserHome = () => {
           </IconButton>
         </Grid2>
       </Grid2>
-    )
-  }
+    );
+  };
 
-  const renderDelta = ({ row }) => {
+  const RenderObligatedCellColor = ({ row }) => {
     if (row.allocated && row.obligated) {
-      const percentage = row.obligated / row.allocated;
-      return (
-        <Box border='2px solid' borderRadius='8px'>
-          <Box
-            width={percentage}
-            borderRadius='8px'
-            bgcolor={percentage === 1 ? '#115e0a' : '#ff0008'}
-          >
-            {`$${row.obligated} / $${row.allocated}`}
-          </Box>
-        </Box>
-      )
+      const delta = row.allocated - row.obligated
+        return (
+             <Box
+        //     width={100}
+        //     alignItems='center'
+        //     justifyContent='center'
+        //     bgcolor={delta <= 0 ? '#115e0a' : '#800000'}
+        //     InputProps={{
+        //         startAdornment: <InputAdornment position="start">$</InputAdornment>,
+        //       inputComponent: NumericFormatCustom,
+        //     }}
+         >
+              {`$ ${row.obligated}`}
+</Box>
+        );
+
     }
     return null;
   };
@@ -143,19 +151,28 @@ const UserHome = () => {
     //   field: 'id',
     //   display: 'false'
     // },
+    // {
+    //   field: 'req_date',
+    // },
+    // {
+    //   field: 'fiscal_quarter',
+    //   editable: false,
+    //   maxWidth: 80,
+    //   description: 'Fiscal quarter / year',
+    //   headerName: 'FQ',
+    //   headerAlign: 'center',
+    //   align: 'center',
+    //   valueGetter: getFiscalQuarter,
+    //   sortComparator: quarterSort,
+    // },
     {
-      field: 'req_date',
-    },
-    {
-      field: 'fiscal_quarter',
-      editable: false,
-      maxWidth: 80,
-      description: 'Fiscal quarter / year',
-      headerName: 'FQ',
+      field: 'fy',
+      description: 'Fiscal Year',
+      headerName: 'Fiscal Year',
+      flex: .1,
       headerAlign: 'center',
       align: 'center',
-      valueGetter: getFiscalQuarter,
-      sortComparator: quarterSort,
+      editable: true,
     },
     {
       field: 'priority',
@@ -185,6 +202,7 @@ const UserHome = () => {
       renderCell: RenderDetails,
     },
     {
+      type: 'number',
       field: 'requested',
       description: 'Requested funding',
       headerName: 'Requested',
@@ -192,9 +210,9 @@ const UserHome = () => {
       headerAlign: 'center',
       align: 'center',
       editable: true,
-      type: 'number',
-//      renderCell: RenderRequested,
-    },
+      //      renderCell: RenderRequested,
+//      renderCell: RenderObligatedCellColor,
+},
     {
       type: 'number',
       description: 'Allocated funding',
@@ -244,6 +262,7 @@ const UserHome = () => {
         <GridToolbarDensitySelector />
         <NewRequest />
         <GridToolbarExport />
+        <DownloadIcon />
       </GridToolbarContainer>
     );
   };
@@ -251,8 +270,8 @@ const UserHome = () => {
   return (
     <>
       <Box
-        p={2}
-        mb={1}
+        p={0}
+        mb={2}
       >
         <StatusBar updated={updated} setUpdated={setUpdated} />
       </Box>

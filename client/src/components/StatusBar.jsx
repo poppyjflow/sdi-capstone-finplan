@@ -11,6 +11,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { CardContent, Typography } from '@mui/material';
+import { useContext } from 'react';
+import { FYContext } from '../layouts/ProtectedRoutes';
+import NumericFormatCustom from '../components/NumericFormatCustom';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -22,26 +25,25 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function StatusBar({ updated, setUpdated }) {
   const user = useLoaderData();
-  const org = user.org_id;
-  const year = 2023;
+  const [org, setOrg] = useState(user.org_id);
+  //const year = 2023;
   const [allData, setAllData] = useState(null);
   const [totals, setTotals] = useState(null);
   const [reconciled, setReconciled] = useState(null);
-  const [fyList, setFYList] = useState([{id: 1, name: ' '}]);
+  const [fyList, setFYList] = useState([{ id: ' ', value: ' ' }]);
   const [fySelected, setFYSelected] = useState(null);
   // Grabs current year from today's date for default value.
-  const [fyDisplayed, setFYDisplayed] = useState(() => {
-    var tempArr = Date().split(" ");
-    return {id: 0, name: parseInt(tempArr[3]) + 1};
-  });
-  var q1Percent = null;
-  var q2Percent = null;
-  var q3Percent = null;
-  var q4Percent = null;
+  const [fyDisplayed, setFYDisplayed] = useContext(FYContext);
+  // const [fyDisplayed, setFYDisplayed] = useState(() => {
+  //   var tempArr = Date().split(" ");
+  //   return {id: parseInt(tempArr[3]) + 1, value: parseInt(tempArr[3]) + 1};
+  // });
+  var q1Delta = null;
+  var q2Delta = null;
+  var q3Delta = null;
+  var q4Delta = null;
 
-  var fyDropdownOptions = [];
-
-  console.log(totals);
+  // var fyDropdownOptions = [];
 
   useEffect(() => {
     if (totals) {
@@ -54,8 +56,7 @@ export default function StatusBar({ updated, setUpdated }) {
   useEffect(() => {
     let orgYear = {
       org_id: org,
-      org_id: org,
-      year_fy: year
+      year_fy: fyDisplayed.value,
     };
     fetch('http://localhost:8080/banner', {
       method: 'POST',
@@ -76,75 +77,65 @@ export default function StatusBar({ updated, setUpdated }) {
         console.log(err);
         alert('There was a problem accessing request data.');
       });
-  }, [updated]);
+    return;
+  }, [fyDisplayed]);
+  //  }, [updated]);
 
-  useEffect(() => {
-    if (org) {
-      fetch(`http://localhost:8080/fiscal_years/${org}`
-      )
-        .then(res => res.json())
-        .then(res => {
-          if (res) {
-            console.log(`res: ${JSON.stringify(res)}`);
-            console.log(`res.date: ${JSON.stringify(res.req_date)}`);
+  // useEffect(() => {
+  //   if (org) {
+  //     fetch(`http://localhost:8080/fiscal_years/${org}`
+  //     )
+  //       .then(res => res.json())
+  //       .then(res => {
+  //         if (res) {
 
-            //Game Plan: Populate the dropdown array with all FYs from the oldest record in the DB to the current FY+1.
-            var currFY = 0;
-            setFYList([]); // re-initialize these.
-            fyDropdownOptions = [];
+  //           //Game Plan: Populate the dropdown array with all FYs from the oldest record in the DB to the current FY+1.
+  //           var currFY = 0;
+  //           setFYList([]); // re-initialize these.
+  //           fyDropdownOptions = [];
 
-            // Current year.
-            const currDate = Date();
-            console.log(`date string: ${currDate[3]}`);
-            var tempArr = currDate.split(" ");
-            console.log(`tempArr: ${tempArr[3]}`);
-            currFY = parseInt(tempArr[3]) + 1;
-            console.log(`currFY: ${currFY}`);
-            console.log(`3`);
+  //           // Current year.
+  //           const currDate = Date();
+  //           var tempArr = currDate.split(" ");
+  //           currFY = parseInt(tempArr[3]) + 1;
 
-            // Oldest year from DB.
-            const fyCounter = parseInt(res.req_date);
-            console.log(`4`);
+  //           // Oldest year from DB.
+  //           const fyCounter = parseInt(res.fy);
 
-            // Populate the dropdown.
-            var ctr = 0;
-            while (currFY - fyCounter >= 0) {
-              console.log(`5`);
-              fyDropdownOptions.push({id: ctr, name: currFY});
-              currFY--; ctr++;
-            }
+  //           // Populate the dropdown.
+  //           var ctr = 0;
+  //           while (currFY - fyCounter >= 0) {
+  //             fyDropdownOptions.push({ id: currFY, value: currFY });
+  //             currFY--; ctr++;
+  //           }
 
-            console.log(`fyDropdownOptions: ${fyDropdownOptions}`);
+  //           setFYList(fyDropdownOptions); // re-populate this.
+  //         }
+  //       })
+  //       .catch(err => {
+  //         console.log(err);
+  //         alert('StatusBar.jsx: There was an error processing your request.');
+  //       });
+  //   }
+  //   return;
+  // }, []);
 
-            setFYList(fyDropdownOptions); // re-populate this.
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          alert('There was an error processing your request.');
-        });
-    }
-  }, []);
-
-  const handleYearChange = (selection) => {
-    // setFYSelected(selection);
-    console.log(`target.value: ${selection.target.value}`)
-    setFYDisplayed({id: selection.target.value, name: selection.target.name});
-  }
+  // const handleYearChange = (selection) => {
+  //   // setFYSelected(selection);
+  //   setFYDisplayed({ id: selection.target.value, value: selection.target.value });
+  // };
 
   if (allData) {
     // Determine which percentage of available funds have been spent.
-    q1Percent = allData.q1.obligations / allData.q1.allocations;
-    q2Percent = allData.q2.obligations / allData.q2.allocations;
-    q3Percent = allData.q3.obligations / allData.q3.allocations;
-    q4Percent = allData.q4.obligations / allData.q4.allocations;
+    q1Delta = allData.q1.allocations - allData.q1.obligations;
+    q2Delta = allData.q2.allocations - allData.q2.obligations;
+    q3Delta = allData.q3.allocations - allData.q3.obligations;
+    q4Delta = allData.q4.allocations - allData.q4.obligations;
 
     // Populate dropdown array with Fiscal Year options by adding every FY from the oldest record to the current FY.
 
   }
 
-console.log(`fySelected: ${fySelected}`)
-  console.log(`fyDisplayed: ${JSON.stringify(fyDisplayed)}`)
   return (
     <>
       {allData ?
@@ -152,35 +143,14 @@ console.log(`fySelected: ${fySelected}`)
           component={Paper}
           flexGrow={1}
           p={2}
+          // inputprops={{
+          //   inputComponent: NumericFormatCustom,
+          // }}
         >
-          <Grid container alignItems='center' spacing={.8}>
-            <Grid item xs={3}>
+          <Grid container alignItems='flex-end' spacing={.8} padding={.1}>
+            {/* <Grid item xs={3}>
               <Stack spacing={2.5}>
-                <Item>
-                <FormControl fullWidth>
-                    <InputLabel id="fy_options">Fiscal Year</InputLabel>
-                    <Select
-                      labelId="Fiscal Year"
-                      id="Fiscal Year"
-                      value={fyDisplayed.id}
-                      defaultValue={fyDisplayed.id}
-                      label="Fiscal Year"
-                     onChange={handleYearChange}
-
-
-                    >
-
-                      {
-                        fyList.map((category) => {
-                          return <MenuItem key={category.id} value={category.id}>{category.name}</MenuItem>;
-                        })
-                      }
-
-
-
-                    </Select>
-                  </FormControl>
-                </Item>                <Item>Submission Due Date: {allData.due_date}</Item>
+                <Item>Submission Due Date: {allData.due_date}</Item>
                 <Item>Status: {reconciled ?
                   <span style={{ color: 'green' }}>Reconciled</span>
                   :
@@ -188,14 +158,54 @@ console.log(`fySelected: ${fySelected}`)
                 }
                 </Item>
               </Stack>
-            </Grid>
+            </Grid> */}
 
-            <Grid item xs={3}>
-              <Stack spacing={.9}>
-                <Item>Total Requests: ${totals ? totals.totalRequests : 0}</Item>
-                <Item>Total Allocation: ${totals ? totals.totalAllocation : 0}</Item>
-                <Item>Total Obligations: ${totals ? totals.totalObligations : 0}</Item>
-                <Item>Delta: ${totals ? totals.totalAllocation - totals.totalObligations : 0}</Item>
+            <Grid item xs={6}>
+              <Stack spacing={.6}>
+                {/* <Item>
+                <Grid width="25%"> */}
+                {/* <FormControl fullWidth>
+                  <InputLabel id="fy_options">Fiscal Year</InputLabel>
+                    <Select
+                      labelId="Fiscal Year"
+                      id="Fiscal Year"
+                      value={fyDisplayed.id}
+                      defaultValue={fyDisplayed.id}
+                      label="Fiscal Year"
+                      onChange={handleYearChange}
+                    >
+                      {
+                        fyList.map((category) => {
+                          return <MenuItem key={category.id} value={category.id}>{category.value}</MenuItem>;
+                        })
+                      }
+                    </Select>
+                </FormControl> */}
+                {/* </Grid>
+                               </Item> */}
+                <Item> <Box color={'cyan'} bgcolor={'charcoalgray'} align={'left'}>
+
+ANNUAL & QUARTERLY ROLLUPS
+</Box>
+</Item>
+<Item>
+
+Total Requests:  $ {totals ? totals.totalRequests.toLocaleString() : 0}
+{/* </Box> */}
+</Item>
+
+
+
+                <Item>Total Allocation:  $ {totals ? totals.totalAllocation.toLocaleString() : 0}</Item>
+                <Item>Total Obligations:  $ {totals ? totals.totalObligations.toLocaleString() : 0}</Item>
+                <Item>
+                  <Box border='2px solid' borderRadius='8px'>
+                    <Box
+                      borderRadius='8px'
+                      bgcolor={q4Delta <= 0 ? '#115e0a' : '#800000'}
+                    >
+                      Delta:  $ {totals ? (totals.totalAllocation - totals.totalObligations).toLocaleString() : 0}
+                    </Box></Box></Item>
               </Stack>
 
             </Grid>
@@ -211,9 +221,14 @@ console.log(`fySelected: ${fySelected}`)
                       Requests
                     </Item>
                   </Grid>
-                  <Grid item xs={5.0}>
+                  <Grid item xs={2.5}>
                     <Item>
-                      Obligations / Allocations
+                      Allocations
+                    </Item>
+                  </Grid>
+                  <Grid item xs={2.5}>
+                    <Item>
+                      Obligations
                     </Item>
                   </Grid>
 
@@ -230,25 +245,29 @@ console.log(`fySelected: ${fySelected}`)
                   </Grid>
                   <Grid item xs={2.5}>
                     <Item>
-                      $ {allData.q1.requests}
-                    </Item>
-                  </Grid>
-                  <Grid item xs={5}>
-                    <Item>
-                      <Box border='2px solid' borderRadius='8px'>
-                        <Box
-                          width={q1Percent}
-                          borderRadius='8px'
-                          bgcolor={q1Percent === 1 ? '#115e0a' : '#800000'}
-                        >
-                          {`$${allData.q1.obligations} / $${allData.q1.allocations}`}
-                        </Box>
-                      </Box>
+                      $ {allData.q1.requests.toLocaleString()}
                     </Item>
                   </Grid>
                   <Grid item xs={2.5}>
                     <Item>
-                      $ {allData.q1.allocations - allData.q1.obligations}
+                      {`$ ${allData.q1.allocations.toLocaleString()}`}
+                    </Item>
+                  </Grid>
+                  <Grid item xs={2.5}>
+                    <Item>
+                      {`$ ${allData.q1.obligations.toLocaleString()}`}
+                    </Item>
+                  </Grid>
+                  <Grid item xs={2.5}>
+                    <Item>
+                      <Box border='2px solid' borderRadius='8px'>
+                        <Box
+                          borderRadius='8px'
+                          bgcolor={q1Delta <= 0 ? '#115e0a' : '#800000'}
+                        >
+                          {`$ ${(allData.q1.allocations - allData.q1.obligations).toLocaleString()}`}
+                        </Box>
+                      </Box>
                     </Item>
                   </Grid>
 
@@ -259,37 +278,41 @@ console.log(`fySelected: ${fySelected}`)
                   </Grid>
                   <Grid item xs={2.5}>
                     <Item>
-                      $ {allData.q2.requests}
-                    </Item>
-                  </Grid>
-                  <Grid item xs={5}>
-                    <Item>
-                      <Box border='2px solid' borderRadius='8px'>
-                        <Box
-                          width={q2Percent}
-                          borderRadius='8px'
-                          bgcolor={q2Percent === 1 ? '#115e0a' : '#800000'}
-                        >
-                          {`$${allData.q2.obligations} / $${allData.q2.allocations}`}
-                        </Box>
-                      </Box>
+                      $ {allData.q2.requests.toLocaleString()}
                     </Item>
                   </Grid>
                   <Grid item xs={2.5}>
                     <Item>
-                      $ {allData.q2.allocations - allData.q2.obligations}
+                      {`$ ${allData.q2.allocations.toLocaleString()}`}
+                    </Item>
+                  </Grid>
+                  <Grid item xs={2.5}>
+                    <Item>
+                      {`$ ${allData.q2.obligations.toLocaleString()}`}
+                    </Item>
+                  </Grid>
+                  <Grid item xs={2.5}>
+                    <Item>
+                      <Box border='2px solid' borderRadius='8px'>
+                        <Box
+                          borderRadius='8px'
+                          bgcolor={q2Delta <= 0 ? '#115e0a' : '#800000'}
+                        >
+                          {`$ ${(allData.q2.allocations - allData.q2.obligations).toLocaleString()}`}
+                        </Box>
+                      </Box>
                     </Item>
                   </Grid>
 
                   {/* <Grid item xs={5}>
                     <Item>
-                      {q2Percent > .3
+                      {q2Delta > .3
                         ?
                         <Box border='2px solid' borderRadius='8px'>
                           <Box
-                            width={q2Percent}
+                            width={q2Delta}
                             borderRadius='8px'
-                            bgcolor={q2Percent === 1 ? '#115e0a' : '#800000'}
+                            bgcolor={q2Delta === 1 ? '#115e0a' : '#800000'}
                           >
                             {`$${allData.q2.obligations} / $${allData.q2.allocations}`}
                           </Box>
@@ -298,15 +321,15 @@ console.log(`fySelected: ${fySelected}`)
                         <Grid item xs={3}>
                         <Box border='2px solid' borderRadius='8px'>
                           <Box
-                            width={q2Percent}
+                            width={q2Delta}
                             borderRadius='8px'
-                            bgcolor={q2Percent === 1 ? '#115e0a' : '#800000'}
+                            bgcolor={q2Delta === 1 ? '#115e0a' : '#800000'}
                             >$
                           </Box>
                           <Box
-                            width={1 - q2Percent}
+                            width={1 - q2Delta}
                             borderRadius='8px'
-                            // bgcolor={q2Percent === 1 ? '#115e0a' : '#800000'}
+                            // bgcolor={q2Delta === 1 ? '#115e0a' : '#800000'}
                             display="flex"
                             justifyContent="flex-end"
                             alignItems="flex-end"
@@ -334,25 +357,29 @@ console.log(`fySelected: ${fySelected}`)
                   </Grid>
                   <Grid item xs={2.5}>
                     <Item>
-                      $ {allData.q3.requests}
-                    </Item>
-                  </Grid>
-                  <Grid item xs={5}>
-                    <Item>
-                      <Box border='2px solid' borderRadius='8px'>
-                        <Box
-                          width={q3Percent}
-                          borderRadius='8px'
-                          bgcolor={q3Percent === 1 ? '#115e0a' : '#800000'}
-                        >
-                          {`$${allData.q3.obligations} / $${allData.q3.allocations}`}
-                        </Box>
-                      </Box>
+                      $ {allData.q3.requests.toLocaleString()}
                     </Item>
                   </Grid>
                   <Grid item xs={2.5}>
                     <Item>
-                      $ {allData.q3.allocations - allData.q3.obligations}
+                      {`$ ${allData.q3.allocations.toLocaleString()}`}
+                    </Item>
+                  </Grid>
+                  <Grid item xs={2.5}>
+                    <Item>
+                      {`$ ${allData.q3.obligations.toLocaleString()}`}
+                    </Item>
+                  </Grid>
+                  <Grid item xs={2.5}>
+                    <Item>
+                      <Box border='2px solid' borderRadius='8px'>
+                        <Box
+                          borderRadius='8px'
+                          bgcolor={q3Delta <= 0 ? '#115e0a' : '#800000'}
+                        >
+                          {`$ ${(allData.q3.allocations - allData.q3.obligations).toLocaleString()}`}
+                        </Box>
+                      </Box>
                     </Item>
                   </Grid>
 
@@ -363,25 +390,29 @@ console.log(`fySelected: ${fySelected}`)
                   </Grid>
                   <Grid item xs={2.5}>
                     <Item>
-                      $ {allData.q4.requests}
-                    </Item>
-                  </Grid>
-                  <Grid item xs={5}>
-                    <Item>
-                      <Box border='2px solid' borderRadius='8px'>
-                        <Box
-                          width={q4Percent}
-                          borderRadius='8px'
-                          bgcolor={q4Percent === 1 ? '#115e0a' : '#800000'}
-                        >
-                          {`$${allData.q4.obligations} / $${allData.q4.allocations}`}
-                        </Box>
-                      </Box>
+                      $ {allData.q4.requests.toLocaleString()}
                     </Item>
                   </Grid>
                   <Grid item xs={2.5}>
                     <Item>
-                      $ {allData.q4.allocations - allData.q4.obligations}
+                      {`$ ${allData.q4.allocations.toLocaleString()}`}
+                    </Item>
+                  </Grid>
+                  <Grid item xs={2.5}>
+                    <Item>
+                      {`$ ${allData.q4.obligations.toLocaleString()}`}
+                    </Item>
+                  </Grid>
+                  <Grid item xs={2.5}>
+                    <Item>
+                      <Box border='2px solid' borderRadius='8px'>
+                        <Box
+                          borderRadius='8px'
+                          bgcolor={q4Delta <= 0 ? '#115e0a' : '#800000'}
+                        >
+                          {`$ ${(allData.q4.allocations - allData.q4.obligations).toLocaleString()}`}
+                        </Box>
+                      </Box>
                     </Item>
                   </Grid>
 

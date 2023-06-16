@@ -15,12 +15,7 @@ const DetailsDialog = ({ details, isOpen, close }) => {
   const [reqTitle, setReqTitle] = useState(details.title);
   const [reqDesc, setReqDesc] = useState(details.body);
   const [reqJustification, setReqJustification] = useState(details.justification);
-  console.log(`close = ${close}`);
-  console.log(`ID = ${details.id}`);
-  console.log(`reqTitle = ${reqTitle}`);
-  console.log(`reqDesc = ${reqDesc}`);
   const handleSaveAndClose = () => {
-    console.log(`handleSaveAndClose()`);
     NewReqDetailAction(actionType, details.id, reqTitle, reqDesc, reqJustification);
     close();
     window.location.reload(true);

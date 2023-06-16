@@ -14,6 +14,9 @@ const getBannerData = async (res, org_id, year_fy) => {
   let org_name = '';
   let returnObj = {};
 
+  console.log(`from: ${from}`)
+  console.log(`to: ${to}`)
+
   // get org_name from ORGS tbl.
   await knex('orgs')
     .select('name')
@@ -23,9 +26,9 @@ const getBannerData = async (res, org_id, year_fy) => {
 
   // get FY funding data from REQUESTS tbl.
   await knex('requests')
-    .select('req_date', 'requested', 'allocated', 'obligated')
+    .select('fy', 'q1requested', 'q1allocated', 'q1obligated', 'q2requested', 'q2allocated', 'q2obligated', 'q3requested', 'q3allocated', 'q3obligated', 'q4requested', 'q4allocated', 'q4obligated')
     .where('org', org_id)
-    .whereBetween('req_date', [from, to])
+    .whereBetween('fy', [from, to])
     .then(result => {
       qry = result;
     })
@@ -37,39 +40,18 @@ const getBannerData = async (res, org_id, year_fy) => {
   // split return data by quarter.
   try {
     for (const j of qry) {
-      const reqDate = new Date(j.req_date);
-      switch (reqDate.getMonth()) {
-        case 10:
-        case 11:
-        case 9:
-          totalRequestsQ1 += j.requested;
-          totalAllocationsQ1 += j.allocated;
-          totalObligationsQ1 += j.obligated;
-          break;
-        case 1:
-        case 2:
-        case 0:
-          totalRequestsQ2 += j.requested;
-          totalAllocationsQ2 += j.allocated;
-          totalObligationsQ2 += j.obligated;
-          break;
-        case 4:
-        case 5:
-        case 3:
-          totalRequestsQ3 += j.requested;
-          totalAllocationsQ3 += j.allocated;
-          totalObligationsQ3 += j.obligated;
-          break;
-        case 7:
-        case 8:
-        case 6:
-          totalRequestsQ4 += j.requested;
-          totalAllocationsQ4 += j.allocated;
-          totalObligationsQ4 += j.obligated;
-          break;
-        default:
-          console.log(`Invalid Month field in DB: ${reqDate.getMonth()}`);
-      }
+          totalRequestsQ1 += j.q1requested;
+          totalAllocationsQ1 += j.q1allocated;
+          totalObligationsQ1 += j.q1obligated;
+          totalRequestsQ2 += j.q2requested;
+          totalAllocationsQ2 += j.q2allocated;
+          totalObligationsQ2 += j.q2obligated;
+          totalRequestsQ3 += j.q3requested;
+          totalAllocationsQ3 += j.q3allocated;
+          totalObligationsQ3 += j.q3obligated;
+          totalRequestsQ4 += j.q4requested;
+          totalAllocationsQ4 += j.q4allocated;
+          totalObligationsQ4 += j.q4obligated;
     }
 
     // Calculate the delta (difference) between quarterly Allocations vs Obligations.

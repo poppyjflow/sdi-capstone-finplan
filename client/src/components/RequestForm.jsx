@@ -159,11 +159,11 @@ const RequestForm = () => {
             </Grid2>
             <Grid2 xs={3}>
               <TextField
-                name='reqDate'
+                name='fy'
                 variant='filled'
                 fullWidth
-                type='date'
-                label='Request Date'
+                // type='date'
+                label='4-Digit FY'
                 required
                 InputLabelProps={{ shrink: true }}
               />

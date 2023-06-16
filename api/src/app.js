@@ -31,6 +31,7 @@ app.get('/requests/:orgId', (req, res) => {
     .select('reqs.*', 'users.l_name', 'users.f_name', 'orgs.name as org_name')
     .where('reqs.org', '=', orgId)
     .then((result) => {
+      console.log(`HERE: ${result}`)
       res.status(201).json(result)
     })
 })
@@ -39,8 +40,8 @@ app.get('/fiscal_years/:orgId', (req, res) => {
   console.log(`OrgID = ${req.params}`);
   const { orgId } = req.params;
   console.log(`OrgID2 = ${orgId}`);
-  knex('requests').orderBy('req_date')
-  .select('req_date')
+  knex('requests').orderBy('fy')
+  .select('fy')
   .where('org', orgId)
   .limit(1)
   .then((result) => {
@@ -165,13 +166,14 @@ app.put('/users/:id', (req, res) => {
 });
 
 app.post('/requests', (req, res) => {
+  console.log(`HERE: ${req.body}`)
 
   const {
     user,
     org,
     priority,
     reqCode,
-    reqDate,
+    fy,
     requested,
     title,
     description,
@@ -182,7 +184,7 @@ app.post('/requests', (req, res) => {
     .insert({
       user: user,
       org: org,
-      req_date: reqDate,
+      fy: fy,
       priority: priority,
       requested: formatNum(requested),
       req_code: reqCode,
@@ -370,7 +372,7 @@ app.get('requests/user/:id', async (req, res) => {
 // This spools-up the data for the summary banner at the top of the grid page.
 app.post('/banner', async (req, res) => {
   const { org_id, year_fy } = req.body;
-  console.log(req.body)
+  console.log(`req.body: ${JSON.stringify(req.body)}`)
   getBannerData(res, org_id, year_fy);
 });
 
