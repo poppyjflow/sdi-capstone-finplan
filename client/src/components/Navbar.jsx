@@ -131,7 +131,7 @@ const Navbar = ({ navProps }) => {
             <h3>FINPLAN Tool</h3>
           </Box>
 
-          <Box sx={{ flexGrow: 4, display: 'flex', justifyContent: 'center' }}>
+          {/* <Box sx={{ flexGrow: 4, display: 'flex', justifyContent: 'center' }}>
           <FormControl fullWidth>
                   <InputLabel id="fy_options">Select the Exercise's Fiscal Year to Begin</InputLabel>
                     <Select
@@ -159,7 +159,7 @@ const Navbar = ({ navProps }) => {
                     </Select>
                 </FormControl>
 </Box>
-
+ */}
           <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'right' }}>
             {userData.rank} {userData.f_name} {userData.l_name}, {userData.org}
           </Box>

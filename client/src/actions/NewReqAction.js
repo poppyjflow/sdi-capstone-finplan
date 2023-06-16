@@ -19,7 +19,7 @@ const NewReqAction = async ({ request }) => {
     });
 
     // Reloads the webpage to trigger a DB pull.
-    window.location.reload(true);
+//    window.location.reload(true);
 
     return redirect('/main');
   }

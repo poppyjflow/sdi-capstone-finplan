@@ -13,6 +13,7 @@ import QuartersDialog from '../components/QuartersDialog';
 import NumericFormatCustom from '../components/NumericFormatCustom';
 import InputAdornment from '@mui/material/InputAdornment';
 import DownloadIcon from '@mui/icons-material/Download';
+import PriorityModal from '../components/PriorityModal';
 
 import {
   GridToolbarContainer,
@@ -186,8 +187,8 @@ const UserHome = () => {
     {
       field: 'req_code',
       description: 'Category each request falls into',
-      headerName: 'Category',
-      flex: .2,
+      headerName: 'Requirement',
+      flex: .1,
       headerAlign: 'center',
       align: 'center',
       editable: true,
@@ -195,7 +196,7 @@ const UserHome = () => {
     {
       field: 'req_title',
       headerName: 'Details',
-      flex: .35,
+      flex: .4,
       headerAlign: 'center',
       align: 'center',
       editable: false,
@@ -206,7 +207,7 @@ const UserHome = () => {
       field: 'requested',
       description: 'Requested funding',
       headerName: 'Requested',
-      flex: .15,
+      flex: .1,
       headerAlign: 'center',
       align: 'center',
       editable: true,
@@ -218,7 +219,7 @@ const UserHome = () => {
       description: 'Allocated funding',
       field: 'allocated',
       headerName: 'Allocated',
-      flex: .2,
+      flex: .1,
       headerAlign: 'center',
       align: 'center',
       editable: true,
@@ -228,7 +229,7 @@ const UserHome = () => {
       field: 'obligated',
       description: 'How much of the allocated funding has been spent',
       headerName: 'Obligated',
-      flex: .2,
+      flex: .1,
       headerAlign: 'center',
       align: 'center',
       editable: true,
@@ -236,7 +237,7 @@ const UserHome = () => {
     {
       field: 'qtrs',
       headerName: 'Qtrs',
-      flex: .1,
+      flex: .05,
       headerAlign: 'center',
       align: 'center',
       editable: false,
@@ -262,7 +263,7 @@ const UserHome = () => {
         <GridToolbarDensitySelector />
         <NewRequest />
         <GridToolbarExport />
-        <DownloadIcon />
+        <PriorityModal />
       </GridToolbarContainer>
     );
   };

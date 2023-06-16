@@ -21,6 +21,7 @@ const RequestForm = () => {
   const [userOrgID, setUserOrgID] = useState(null)
   const [org, setOrg] = useState('');
   const [pri, setPri] = useState('');
+  const [fy, setFY] = useState('');
   const [reqCode, setReqCode] = useState('');
   const orgArray = useLoaderData();
 
@@ -33,6 +34,11 @@ const RequestForm = () => {
   const handlePriUpdate = (e) => {
     e.preventDefault();
     setPri(e.target.value);
+  };
+
+  const handleFYUpdate = (e) => {
+    e.preventDefault();
+    setFY(e.target.value);
   };
 
   const handleReqUpdate = (e) => {
@@ -166,6 +172,7 @@ const RequestForm = () => {
                 label='4-Digit FY'
                 required
                 InputLabelProps={{ shrink: true }}
+                onChange={handleFYUpdate}
               />
             </Grid2>
             <Grid2 xs={2}>

@@ -42,8 +42,9 @@ export default function StatusBar({ updated, setUpdated }) {
   var q2Delta = null;
   var q3Delta = null;
   var q4Delta = null;
+  var fyDelta = null;
 
-  // var fyDropdownOptions = [];
+  var fyDropdownOptions = [];
 
   useEffect(() => {
     if (totals) {
@@ -81,49 +82,49 @@ export default function StatusBar({ updated, setUpdated }) {
   }, [fyDisplayed]);
   //  }, [updated]);
 
-  // useEffect(() => {
-  //   if (org) {
-  //     fetch(`http://localhost:8080/fiscal_years/${org}`
-  //     )
-  //       .then(res => res.json())
-  //       .then(res => {
-  //         if (res) {
+  useEffect(() => {
+    if (org) {
+      fetch(`http://localhost:8080/fiscal_years/${org}`
+      )
+        .then(res => res.json())
+        .then(res => {
+          if (res) {
 
-  //           //Game Plan: Populate the dropdown array with all FYs from the oldest record in the DB to the current FY+1.
-  //           var currFY = 0;
-  //           setFYList([]); // re-initialize these.
-  //           fyDropdownOptions = [];
+            //Game Plan: Populate the dropdown array with all FYs from the oldest record in the DB to the current FY+1.
+            var currFY = 0;
+            setFYList([]); // re-initialize these.
+            fyDropdownOptions = [];
 
-  //           // Current year.
-  //           const currDate = Date();
-  //           var tempArr = currDate.split(" ");
-  //           currFY = parseInt(tempArr[3]) + 1;
+            // Current year.
+            const currDate = Date();
+            var tempArr = currDate.split(" ");
+            currFY = parseInt(tempArr[3]) + 1;
 
-  //           // Oldest year from DB.
-  //           const fyCounter = parseInt(res.fy);
+            // Oldest year from DB.
+            const fyCounter = parseInt(res.fy);
 
-  //           // Populate the dropdown.
-  //           var ctr = 0;
-  //           while (currFY - fyCounter >= 0) {
-  //             fyDropdownOptions.push({ id: currFY, value: currFY });
-  //             currFY--; ctr++;
-  //           }
+            // Populate the dropdown.
+            var ctr = 0;
+            while (currFY - fyCounter >= 0) {
+              fyDropdownOptions.push({ id: currFY, value: currFY });
+              currFY--; ctr++;
+            }
 
-  //           setFYList(fyDropdownOptions); // re-populate this.
-  //         }
-  //       })
-  //       .catch(err => {
-  //         console.log(err);
-  //         alert('StatusBar.jsx: There was an error processing your request.');
-  //       });
-  //   }
-  //   return;
-  // }, []);
+            setFYList(fyDropdownOptions); // re-populate this.
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          alert('StatusBar.jsx: There was an error processing your request.');
+        });
+    }
+    return;
+  }, []);
 
-  // const handleYearChange = (selection) => {
-  //   // setFYSelected(selection);
-  //   setFYDisplayed({ id: selection.target.value, value: selection.target.value });
-  // };
+  const handleYearChange = (selection) => {
+    // setFYSelected(selection);
+    setFYDisplayed({ id: selection.target.value, value: selection.target.value });
+  };
 
   if (allData) {
     // Determine which percentage of available funds have been spent.
@@ -131,6 +132,7 @@ export default function StatusBar({ updated, setUpdated }) {
     q2Delta = allData.q2.allocations - allData.q2.obligations;
     q3Delta = allData.q3.allocations - allData.q3.obligations;
     q4Delta = allData.q4.allocations - allData.q4.obligations;
+    fyDelta = totals.totalAllocation - totals.totalObligations;
 
     // Populate dropdown array with Fiscal Year options by adding every FY from the oldest record to the current FY.
 
@@ -138,65 +140,58 @@ export default function StatusBar({ updated, setUpdated }) {
 
   return (
     <>
-      {allData ?
+      {allData && totals ?
         <Box
           component={Paper}
           flexGrow={1}
           p={2}
-          // inputprops={{
-          //   inputComponent: NumericFormatCustom,
-          // }}
         >
           <Grid container alignItems='flex-end' spacing={.8} padding={.1}>
-            {/* <Grid item xs={3}>
-              <Stack spacing={2.5}>
-                <Item>Submission Due Date: {allData.due_date}</Item>
-                <Item>Status: {reconciled ?
-                  <span style={{ color: 'green' }}>Reconciled</span>
-                  :
-                  <span style={{ color: 'red' }}>Needs Reconciled</span>
-                }
-                </Item>
-              </Stack>
-            </Grid> */}
 
             <Grid item xs={6}>
-              <Stack spacing={.6}>
-                {/* <Item>
-                <Grid width="25%"> */}
-                {/* <FormControl fullWidth>
-                  <InputLabel id="fy_options">Fiscal Year</InputLabel>
-                    <Select
-                      labelId="Fiscal Year"
-                      id="Fiscal Year"
-                      value={fyDisplayed.id}
-                      defaultValue={fyDisplayed.id}
-                      label="Fiscal Year"
-                      onChange={handleYearChange}
-                    >
-                      {
-                        fyList.map((category) => {
-                          return <MenuItem key={category.id} value={category.id}>{category.value}</MenuItem>;
-                        })
-                      }
-                    </Select>
-                </FormControl> */}
-                {/* </Grid>
-                               </Item> */}
-                <Item> <Box color={'cyan'} bgcolor={'charcoalgray'} align={'left'}>
+              <Stack spacing={0}>
+              <Item> <Box color={'#1A2027'}  align={'left'}>.</Box></Item>
+              <Item>
+                <Box color={'cyan'} bgcolor={'charcoalgray'} align={'center'}>
+                      SELECT A FISCAL YEAR:
+                    </Box>
 
-ANNUAL & QUARTERLY ROLLUPS
-</Box>
-</Item>
-<Item>
+                </Item>
+                <Item>
+                <Box align={'center'} width={'100%'}>
+                  <Grid width="50%">
+                    <FormControl fullWidth>
+                      <InputLabel id="fy_options">Fiscal Year</InputLabel>
+                      <Select
+                        labelId="Fiscal Year"
+                        id="Fiscal Year"
+                        value={fyDisplayed.id}
+                        defaultValue={fyDisplayed.id}
+                        label="Fiscal Year"
+                        onChange={handleYearChange}
+                      >
+                        {
+                          fyList.map((category) => {
+                            return <MenuItem key={category.id} value={category.id}>{category.value}</MenuItem>;
+                          })
+                        }
+                      </Select>
+                    </FormControl>
+                    </Grid>
+                    </Box>
+                </Item>
+                <Item> <Box color={'#1A2027'}  align={'left'}>.</Box></Item>
+                <Item> <Box color={'#1A2027'}  align={'left'}>.</Box></Item>
+                <Item> <Box color={'#1A2027'}  align={'left'}>.</Box></Item>
+                {/* <Item>
 
 Total Requests:  $ {totals ? totals.totalRequests.toLocaleString() : 0}
 {/* </Box> */}
-</Item>
+                {/* </Item> */}
 
 
 
-                <Item>Total Allocation:  $ {totals ? totals.totalAllocation.toLocaleString() : 0}</Item>
+                {/* <Item>Total Allocation:  $ {totals ? totals.totalAllocation.toLocaleString() : 0}</Item>
                 <Item>Total Obligations:  $ {totals ? totals.totalObligations.toLocaleString() : 0}</Item>
                 <Item>
                   <Box border='2px solid' borderRadius='8px'>
@@ -205,7 +200,7 @@ Total Requests:  $ {totals ? totals.totalRequests.toLocaleString() : 0}
                       bgcolor={q4Delta <= 0 ? '#115e0a' : '#800000'}
                     >
                       Delta:  $ {totals ? (totals.totalAllocation - totals.totalObligations).toLocaleString() : 0}
-                    </Box></Box></Item>
+                    </Box></Box></Item> */}
               </Stack>
 
             </Grid>
@@ -411,6 +406,39 @@ Total Requests:  $ {totals ? totals.totalRequests.toLocaleString() : 0}
                           bgcolor={q4Delta <= 0 ? '#115e0a' : '#800000'}
                         >
                           {`$ ${(allData.q4.allocations - allData.q4.obligations).toLocaleString()}`}
+                        </Box>
+                      </Box>
+                    </Item>
+                  </Grid>
+
+                  <Grid item xs={2}>
+                    <Item>
+                      FY
+                    </Item>
+                  </Grid>
+                  <Grid item xs={2.5}>
+                    <Item>
+                      $ {totals.totalRequests.toLocaleString()}
+                    </Item>
+                  </Grid>
+                  <Grid item xs={2.5}>
+                    <Item>
+                      {`$ ${totals.totalAllocation.toLocaleString()}`}
+                    </Item>
+                  </Grid>
+                  <Grid item xs={2.5}>
+                    <Item>
+                      {`$ ${totals.totalObligations.toLocaleString()}`}
+                    </Item>
+                  </Grid>
+                  <Grid item xs={2.5}>
+                    <Item>
+                      <Box border='2px solid' borderRadius='8px'>
+                        <Box
+                          borderRadius='8px'
+                          bgcolor={fyDelta <= 0 ? '#115e0a' : '#800000'}
+                        >
+                          {`$ ${(totals.totalAllocation - totals.totalObligations).toLocaleString()}`}
                         </Box>
                       </Box>
                     </Item>
