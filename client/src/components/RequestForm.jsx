@@ -119,13 +119,13 @@ const RequestForm = () => {
                 {priorityCodes?.map(({ name, code }) => (
                   <MenuItem
                     sx={{ display: 'flex', justifyContent: 'space-between' }}
-                    key={code}
-                    value={code}
+                    key={name}
+                    value={name}
                   >
-                    {code}
-                    <Tooltip key={code} placement='right' title={name} arrow TransitionComponent={Zoom} >
+                    {name}
+                    {/* <Tooltip key={code} placement='right' title={name} arrow TransitionComponent={Zoom} >
                       <InfoIcon />
-                    </Tooltip>
+                    </Tooltip> */}
                   </MenuItem>))},
 
               </TextField>
@@ -146,11 +146,11 @@ const RequestForm = () => {
                 {reqCodes?.map(({ name, code }) => (
                   <MenuItem
                     sx={{ display: 'flex', justifyContent: 'space-between' }}
-                    key={code}
-                    value={code}
+                    key={name}
+                    value={name}
                   >
-                    <ListItemText primary={code} />
-                    <Tooltip
+                    <ListItemText primary={name} />
+                    {/* <Tooltip
                       key={code}
                       placement='right'
                       title={name}
@@ -158,7 +158,7 @@ const RequestForm = () => {
                       TransitionComponent={Zoom}
                     >
                       <InfoIcon edge='end' />
-                    </Tooltip>
+                    </Tooltip> */}
                   </MenuItem>
                 ))}
               </TextField>

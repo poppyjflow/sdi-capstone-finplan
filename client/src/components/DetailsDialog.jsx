@@ -28,7 +28,7 @@ const DetailsDialog = ({ details, isOpen, close }) => {
         <TextField
           margin="dense"
           id="title"
-          label="Request Title"
+          label="Request Description"
           type="text"
           fullWidth
           defaultValue={details.title}
@@ -37,7 +37,7 @@ const DetailsDialog = ({ details, isOpen, close }) => {
         <TextField
           margin="dense"
           id="desc"
-          label="Request Description"
+          label="Request Detail"
           type="text"
           fullWidth
           defaultValue={details.body}
@@ -46,7 +46,7 @@ const DetailsDialog = ({ details, isOpen, close }) => {
         <TextField
           margin="dense"
           id="justification"
-          label="Request Justification"
+          label="Impact If Not Funded"
           type="text"
           fullWidth
           defaultValue={details.justification}

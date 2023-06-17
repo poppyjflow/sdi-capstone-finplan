@@ -9,6 +9,7 @@ import SideDrawer from '../components/SideDrawer';
 
 const ColorModeContext = createContext({ toggleColorMode: () => { } });
 const FYContext = createContext({});
+const OrgContext = createContext({});
 
 const ProtectedRoutes = () => {
   const [user, setUser] = useOutletContext();
@@ -39,8 +40,11 @@ const ProtectedRoutes = () => {
   var tempYear = Date().split(" ");
   const [defaultFY, setDefaultFY] = useState({id: parseInt(tempYear[3]) + 1, value: parseInt(tempYear[3]) + 1});
 
+  const [defaultOrg, setDefaultOrg] = useState(0);
+
   return (
     <FYContext.Provider value={[defaultFY, setDefaultFY]}>
+    <OrgContext.Provider value={[defaultOrg, setDefaultOrg]}>
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme} >
           <Box
@@ -68,7 +72,8 @@ const ProtectedRoutes = () => {
           </Box>
         </ThemeProvider>
       </ColorModeContext.Provider>
-    </FYContext.Provider>
+      </OrgContext.Provider>
+      </FYContext.Provider>
   );
 
 };
@@ -76,3 +81,4 @@ const ProtectedRoutes = () => {
 export default ProtectedRoutes;
 export { ColorModeContext };
 export { FYContext };
+export { OrgContext };

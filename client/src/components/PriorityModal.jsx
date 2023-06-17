@@ -3,14 +3,26 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import IconButton from '@mui/material/IconButton';
-import InfoIcon from '@mui/icons-material/Info';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import Grid from '@mui/material/Grid';
+import Stack from '@mui/material/Stack';
+import { styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(.5),
+  textAlign: 'center',
+  color: 'secondary.main',
+}));
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 900,
+  width: 400,
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -24,8 +36,9 @@ export default function PriorityModal() {
 
   return (
     <div>
-      <IconButton onClick={handleOpen} aria-label="information">
-        <InfoIcon sx={{ fontSize: 35 }} />
+      <IconButton onClick={handleOpen} aria-label="information" sx={{ color: 'primary.main', fontSize: 12, fontWeight: 'bold' }}>
+        <InfoOutlinedIcon sx={{ fontSize: 20 }} />
+        PRIORITY CODES
       </IconButton>
       <Modal
         open={open}
@@ -35,72 +48,32 @@ export default function PriorityModal() {
       >
         <Box sx={style}>
           <Typography id="modal-modal-description" sx={{ mt: 2, color: 'lightgray' }}>
-            <h1 style={{ marginTop: '-0.8em' }}>FinPlan Tips</h1>
-            <ol>
-              <li>
-                The submitted FinPlans may include the following with detailed justification narrative:
-                <ol>
-                  <li>
-                    Entries accounting for technical refresh of SIPRnet, JWICS and associated IT equipment
-                    (units are expected to replace 1/3 of inventory annually to meet three-year refresh requirement)
-                  </li>
-                  <li>
-                    Base-managed Contracts (MIP Mission only)
-                  </li>
-                  <li>
-                    Furniture
-                  </li>
-                  <li>
-                    Fuel (Non Flying Hours)
-                  </li>
-                </ol>
-              </li>
-              <li>
-                O&M FinPlans will not include:
-                <ol>
-                  <li>
-                    Reimbursements for  prior year requirements
-                  </li>
-                  <li>
-                    JWICS service funded by ISR (Please coordinate with Mr. Tommy Bertrand)
-                  </li>
-                  <li>
-                    Weapon System computers and equipment
-                  </li>
-                  <li>
-                    Weapon System Sustainment
-                  </li>
-                  <li>
-                    BOS Funding
-                  </li>
-                  <li>
-                    UTC Equipment
-                  </li>
-                  <li>
-                    DOMOPS
-                  </li>
-                </ol>
-              </li>
-            </ol>
-            **Please note:
-            <ol>
-              <li>
-                Approval of requirements listed in the FinPlans does not constitute
-                full guarantee of funding in a given fiscal year. Execution year funding levels
-                are limited to final appropriations and availability of funds. Timeline subject to
-                change based on FM's schedule and guidance.
-              </li>
-              <li>
-                Base Operating Support (BOS) transitioned out of MIP/MIP-like portfolio in FY 20.
-                Therefore, personnel movement out of the MIP portfolio needs to be factored into the X-plan submitted to FM.
-              </li>
-              <li>
-                SRM Requests require A4/7 approval via DD Form 1391. Please provide a copy
-              </li>
-              <li>
-                IT Requests require a CIPS Number.
-              </li>
-            </ol>
+            <h1 style={{ marginTop: '-0.8em', marginBottom: '0.8em' }}>Priority Codes</h1>
+
+            <Grid container alignItems='flex-end' spacing={1.8} padding={.1}>
+              <Grid item xs={3}>
+                <Box align={'right'}>MC/MP:</Box>
+              </Grid>
+              <Grid item xs={9}>
+                <Box align={'left'}>Mission Critical / Mission Priority
+                </Box>
+              </Grid>
+              <Grid item xs={3}>
+                <Box align={'right'}>ME:</Box>
+              </Grid>
+              <Grid item xs={9}>
+                <Box align={'left'}>Mission Essential
+                </Box>
+              </Grid>
+              <Grid item xs={3}>
+                <Box align={'right'}>MEn:</Box>
+              </Grid>
+              <Grid item xs={9}>
+                <Box align={'left'}>Mission Enhancing
+                </Box>
+              </Grid>
+            </Grid>
+
           </Typography>
         </Box>
       </Modal>

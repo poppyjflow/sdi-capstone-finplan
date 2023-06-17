@@ -14,6 +14,7 @@ import NumericFormatCustom from '../components/NumericFormatCustom';
 import InputAdornment from '@mui/material/InputAdornment';
 import DownloadIcon from '@mui/icons-material/Download';
 import PriorityModal from '../components/PriorityModal';
+import ExportAll from '../components/ExportAll';
 
 import {
   GridToolbarContainer,
@@ -125,56 +126,33 @@ const UserHome = () => {
     );
   };
 
-  const RenderObligatedCellColor = ({ row }) => {
-    if (row.allocated && row.obligated) {
+  const RenderDeltaCellColor = ({ row }) => {
       const delta = row.allocated - row.obligated
         return (
-             <Box
-        //     width={100}
-        //     alignItems='center'
-        //     justifyContent='center'
-        //     bgcolor={delta <= 0 ? '#115e0a' : '#800000'}
-        //     InputProps={{
-        //         startAdornment: <InputAdornment position="start">$</InputAdornment>,
-        //       inputComponent: NumericFormatCustom,
-        //     }}
-         >
-              {`$ ${row.obligated}`}
-</Box>
+
+          <Box border='2px solid' borderRadius='8px' width="100%" align="center">
+          <Box
+            borderRadius='8px'
+            bgcolor={delta <= 0 ? '#115e0a' : '#800000'}
+          >
+            {`$ ${delta.toLocaleString()}`}
+          </Box>
+        </Box>
         );
 
-    }
     return null;
   };
 
   const columns = [
     // {
-    //   field: 'id',
-    //   display: 'false'
-    // },
-    // {
-    //   field: 'req_date',
-    // },
-    // {
-    //   field: 'fiscal_quarter',
-    //   editable: false,
-    //   maxWidth: 80,
-    //   description: 'Fiscal quarter / year',
-    //   headerName: 'FQ',
+    //   field: 'fy',
+    //   description: 'Fiscal Year',
+    //   headerName: 'Fiscal Year',
+    //   flex: .1,
     //   headerAlign: 'center',
     //   align: 'center',
-    //   valueGetter: getFiscalQuarter,
-    //   sortComparator: quarterSort,
+    //   editable: true,
     // },
-    {
-      field: 'fy',
-      description: 'Fiscal Year',
-      headerName: 'Fiscal Year',
-      flex: .1,
-      headerAlign: 'center',
-      align: 'center',
-      editable: true,
-    },
     {
       field: 'priority',
       description: 'Priority codes',
@@ -195,8 +173,8 @@ const UserHome = () => {
     },
     {
       field: 'req_title',
-      headerName: 'Details',
-      flex: .4,
+      headerName: 'Description',
+      flex: .2,
       headerAlign: 'center',
       align: 'center',
       editable: false,
@@ -211,8 +189,6 @@ const UserHome = () => {
       headerAlign: 'center',
       align: 'center',
       editable: true,
-      //      renderCell: RenderRequested,
-//      renderCell: RenderObligatedCellColor,
 },
     {
       type: 'number',
@@ -233,6 +209,17 @@ const UserHome = () => {
       headerAlign: 'center',
       align: 'center',
       editable: true,
+    },
+    {
+      type: 'number',
+      field: 'delta',
+      description: 'How much is left to be spent',
+      headerName: 'Delta',
+      flex: .1,
+      headerAlign: 'center',
+      align: 'center',
+      editable: true,
+      renderCell: RenderDeltaCellColor,
     },
     {
       field: 'qtrs',
@@ -262,7 +249,8 @@ const UserHome = () => {
         <GridToolbarFilterButton />
         <GridToolbarDensitySelector />
         <NewRequest />
-        <GridToolbarExport />
+        {/* <GridToolbarExport /> */}
+        <ExportAll />
         <PriorityModal />
       </GridToolbarContainer>
     );

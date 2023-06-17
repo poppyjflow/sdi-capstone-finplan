@@ -17,6 +17,7 @@ import { useContext } from 'react';
 import { ColorModeContext } from '../layouts/ProtectedRoutes';
 import InfoModal from './InfoModal';
 import { FYContext } from '../layouts/ProtectedRoutes';
+import { OrgContext } from '../layouts/ProtectedRoutes';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
@@ -30,12 +31,16 @@ const Navbar = ({ navProps }) => {
   const colorMode = useContext(ColorModeContext);
   const theme = useTheme();
   const [fyDisplayed, setFYDisplayed] = useContext(FYContext);
+  const [orgContextVar, setOrgContextVar] = useContext(OrgContext);
   const [org, setOrg] = useState(userData.org_id);
   const [fyList, setFYList] = useState([{ id: ' ', value: ' ' }]);
   var fyDropdownOptions = [];
 
   useEffect(() => {
     if (org) {
+      // Set the Org context variable for later use.
+      setOrgContextVar(org);
+
       fetch(`http://localhost:8080/fiscal_years/${org}`
       )
         .then(res => res.json())
