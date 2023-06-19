@@ -22,7 +22,6 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-
 const Navbar = ({ navProps }) => {
   const userData = useRouteLoaderData('protected');
   const [user, setUser] = useOutletContext();
@@ -104,18 +103,18 @@ const Navbar = ({ navProps }) => {
 
   const handleSettings = () => {
     navigate('/settings');
-    handleCloseUserMenu()
-  }
+    handleCloseUserMenu();
+  };
 
   const handleProfile = () => {
     navigate('/profile');
-    handleCloseUserMenu()
-  }
+    handleCloseUserMenu();
+  };
 
   const handleSummary = () => {
     navigate('/summary');
-    handleCloseUserMenu()
-  }
+    handleCloseUserMenu();
+  };
 
   return (
     <>
@@ -133,6 +132,9 @@ const Navbar = ({ navProps }) => {
             <CottageOutlinedIcon sx={{ fontSize: 45, marginLeft: '-0.16em' }} />
           </IconButton>
           <Box sx={{ flexGrow: 2, display: 'flex', fontSize: 30, justifyContent: 'center' }}>
+            <Box sx={{ flexGrow: .2, display: 'flex', fontSize: 30, justifyContent: 'right' }}>
+              <img src={require('../images/Delta_Foxlogo_square.png')} alt='Nope!' crossOrigin="anonymous" width='50px' height='50px' />
+            </Box>
             <h3>FINPLAN Tool</h3>
           </Box>
 
