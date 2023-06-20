@@ -127,18 +127,51 @@ const UserHome = () => {
   };
 
   const RenderDeltaCellColor = ({ row }) => {
-      const delta = row.allocated - row.obligated
-        return (
+    const delta = row.allocated - row.obligated;
+    return (
 
-          <Box border='2px solid' borderRadius='8px' width="100%" align="center">
-          <Box
-            borderRadius='8px'
-            bgcolor={delta <= 0 ? '#115e0a' : '#800000'}
-          >
-            {`$ ${delta.toLocaleString()}`}
-          </Box>
+      <Box border='2px solid' borderRadius='8px' width="100%" align="center">
+        <Box
+          borderRadius='8px'
+          bgcolor={delta <= 0 ? '#115e0a' : '#800000'}
+        >
+          {`$ ${delta.toLocaleString()}`}
         </Box>
-        );
+      </Box>
+    );
+
+    return null;
+  };
+
+  const RenderDollaSignsRequested = ({ row }) => {
+    return (
+
+      <Box border='0px' borderRadius='8px' width="100%" align="center">
+          {`$ ${row.requested.toLocaleString()}`}
+      </Box>
+    );
+
+    return null;
+  };
+
+  const RenderDollaSignsAllocated = ({ row }) => {
+    return (
+
+      <Box border='0px' borderRadius='8px' width="100%" align="center">
+          {`$ ${row.allocated.toLocaleString()}`}
+      </Box>
+    );
+
+    return null;
+  };
+
+  const RenderDollaSignsObligated = ({ row }) => {
+    return (
+
+      <Box border='0px' borderRadius='8px' width="100%" align="center">
+          {`$ ${row.obligated.toLocaleString()}`}
+      </Box>
+    );
 
     return null;
   };
@@ -189,7 +222,8 @@ const UserHome = () => {
       headerAlign: 'center',
       align: 'center',
       editable: true,
-},
+      renderCell: RenderDollaSignsRequested,
+    },
     {
       type: 'number',
       description: 'Allocated funding',
@@ -199,6 +233,7 @@ const UserHome = () => {
       headerAlign: 'center',
       align: 'center',
       editable: true,
+      renderCell: RenderDollaSignsAllocated,
     },
     {
       type: 'number',
@@ -209,6 +244,7 @@ const UserHome = () => {
       headerAlign: 'center',
       align: 'center',
       editable: true,
+      renderCell: RenderDollaSignsObligated,
     },
     {
       type: 'number',

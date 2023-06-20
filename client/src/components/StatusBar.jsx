@@ -23,6 +23,14 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+const ItemReverse = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.text.secondary,
+  ...theme.typography.body2,
+  padding: theme.spacing(.5),
+  textAlign: 'center',
+  color: '#1A2027',
+}));
+
 export default function StatusBar({ updated, setUpdated }) {
   const user = useLoaderData();
   const [org, setOrg] = useState(user.org_id);
@@ -150,39 +158,39 @@ export default function StatusBar({ updated, setUpdated }) {
 
             <Grid item xs={6}>
               <Stack spacing={0}>
-              <Item> <Box color={'#1A2027'}  align={'left'}>.</Box></Item>
-              <Item>
-                <Box color={'cyan'} bgcolor={'charcoalgray'} align={'center'}>
-                      SELECT A FISCAL YEAR:
-                    </Box>
+                <Item> <Box color={'#1A2027'} align={'left'}>.</Box></Item>
+                <Item>
+                  <Box color={'cyan'} bgcolor={'charcoalgray'} align={'center'}>
+                    SELECT A FISCAL YEAR:
+                  </Box>
 
                 </Item>
                 <Item>
-                <Box align={'center'} width={'100%'}>
-                  <Grid width="50%">
-                    <FormControl fullWidth>
-                      <InputLabel id="fy_options">Fiscal Year</InputLabel>
-                      <Select
-                        labelId="Fiscal Year"
-                        id="Fiscal Year"
-                        value={fyDisplayed.id}
-                        defaultValue={fyDisplayed.id}
-                        label="Fiscal Year"
-                        onChange={handleYearChange}
-                      >
-                        {
-                          fyList.map((category) => {
-                            return <MenuItem key={category.id} value={category.id}>{category.value}</MenuItem>;
-                          })
-                        }
-                      </Select>
-                    </FormControl>
+                  <Box align={'center'} width={'100%'}>
+                    <Grid width="50%">
+                      <FormControl fullWidth>
+                        <InputLabel id="fy_options">Fiscal Year</InputLabel>
+                        <Select
+                          labelId="Fiscal Year"
+                          id="Fiscal Year"
+                          value={fyDisplayed.id}
+                          defaultValue={fyDisplayed.id}
+                          label="Fiscal Year"
+                          onChange={handleYearChange}
+                        >
+                          {
+                            fyList.map((category) => {
+                              return <MenuItem key={category.id} value={category.id}>{category.value}</MenuItem>;
+                            })
+                          }
+                        </Select>
+                      </FormControl>
                     </Grid>
-                    </Box>
+                  </Box>
                 </Item>
-                <Item> <Box color={'#1A2027'}  align={'left'}>.</Box></Item>
-                <Item> <Box color={'#1A2027'}  align={'left'}>.</Box></Item>
-                <Item> <Box color={'#1A2027'}  align={'left'}>.</Box></Item>
+                <Item> <Box color={'#1A2027'} align={'left'}>.</Box></Item>
+                <Item> <Box color={'#1A2027'} align={'left'}>.</Box></Item>
+                <Item> <Box color={'#1A2027'} align={'left'}>.</Box></Item>
                 {/* <Item>
 
 Total Requests:  $ {totals ? totals.totalRequests.toLocaleString() : 0}
@@ -299,52 +307,6 @@ Total Requests:  $ {totals ? totals.totalRequests.toLocaleString() : 0}
                     </Item>
                   </Grid>
 
-                  {/* <Grid item xs={5}>
-                    <Item>
-                      {q2Delta > .3
-                        ?
-                        <Box border='2px solid' borderRadius='8px'>
-                          <Box
-                            width={q2Delta}
-                            borderRadius='8px'
-                            bgcolor={q2Delta === 1 ? '#115e0a' : '#800000'}
-                          >
-                            {`$${allData.q2.obligations} / $${allData.q2.allocations}`}
-                          </Box>
-                        </Box>
-                        :
-                        <Grid item xs={3}>
-                        <Box border='2px solid' borderRadius='8px'>
-                          <Box
-                            width={q2Delta}
-                            borderRadius='8px'
-                            bgcolor={q2Delta === 1 ? '#115e0a' : '#800000'}
-                            >$
-                          </Box>
-                          <Box
-                            width={1 - q2Delta}
-                            borderRadius='8px'
-                            // bgcolor={q2Delta === 1 ? '#115e0a' : '#800000'}
-                            display="flex"
-                            justifyContent="flex-end"
-                            alignItems="flex-end"
-                            >
-                          {`$${allData.q2.obligations} / $${allData.q2.allocations}`}
-                          </Box>
-
-                        </Box>
-</Grid>
-                      }
-
-
-                    </Item>
-                  </Grid> */}
-                  {/* <Grid item xs={2.5}>
-                    <Item>
-                      $ {allData.q2.allocations - allData.q2.obligations}
-                    </Item>
-                  </Grid> */}
-
                   <Grid item xs={2}>
                     <Item>
                       Q3
@@ -412,24 +374,24 @@ Total Requests:  $ {totals ? totals.totalRequests.toLocaleString() : 0}
                   </Grid>
 
                   <Grid item xs={2}>
-                    <Item>
+                    <ItemReverse>
                       FY
-                    </Item>
+                    </ItemReverse>
                   </Grid>
                   <Grid item xs={2.5}>
-                    <Item>
+                    <ItemReverse>
                       $ {totals.totalRequests.toLocaleString()}
-                    </Item>
+                    </ItemReverse>
                   </Grid>
                   <Grid item xs={2.5}>
-                    <Item>
+                    <ItemReverse>
                       {`$ ${totals.totalAllocation.toLocaleString()}`}
-                    </Item>
+                    </ItemReverse>
                   </Grid>
                   <Grid item xs={2.5}>
-                    <Item>
+                    <ItemReverse>
                       {`$ ${totals.totalObligations.toLocaleString()}`}
-                    </Item>
+                    </ItemReverse>
                   </Grid>
                   <Grid item xs={2.5}>
                     <Item>
